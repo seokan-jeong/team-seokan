@@ -381,6 +381,14 @@ After every significant task, Team-Shinchan:
 
 ---
 
+## Credits
+
+Inspired by and built upon:
+- [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) by Yeachan Heo
+- [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode) by Yeongyu Kim
+
+---
+
 ## License
 
 MIT License
