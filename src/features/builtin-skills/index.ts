@@ -21,6 +21,9 @@ import { createMemoriesSkill } from './memories';
 import { createForgetSkill } from './forget';
 import { createLearnSkill } from './learn';
 
+// v2.1 토론 스킬
+import { createDebateSkill } from './debate';
+
 // ============================================================
 // 모든 내장 스킬 생성
 // ============================================================
@@ -41,6 +44,8 @@ export function createBuiltinSkills(context: PluginContext): SkillConfig[] {
     createMemoriesSkill(context),
     createForgetSkill(context),
     createLearnSkill(context),
+    // v2.1 토론 스킬
+    createDebateSkill(context),
   ];
 }
 
@@ -63,4 +68,6 @@ export {
   createMemoriesSkill,
   createForgetSkill,
   createLearnSkill,
+  // v2.1 토론 스킬
+  createDebateSkill,
 };

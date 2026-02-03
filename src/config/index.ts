@@ -92,6 +92,7 @@ export const AGENT_MODEL_MAP: Record<BuiltinAgentName, ModelTier> = {
   // 오케스트레이션 (Opus)
   jjangu: 'opus',
   jjanga: 'opus',
+  yiseul: 'opus',  // 토론 진행자
 
   // 실행 (Sonnet/Opus)
   maenggu: 'sonnet',
@@ -151,6 +152,7 @@ export const SKILL_TRIGGERS = {
   plan: ['plan', '계획', '설계', 'planning'],
   analyze: ['analyze', '분석', '디버깅', '왜 안', 'debug', 'investigate'],
   deepsearch: ['deepsearch', '깊은검색', '찾아줘', 'search'],
+  debate: ['debate', '토론', '의견', '논의', '장단점', '비교', '어떤 방법'],
   'git-master': ['commit', 'push', 'merge', 'rebase', 'git'],
   'frontend-ui-ux': ['UI', 'UX', '컴포넌트', '스타일', 'CSS', 'component'],
   cancel: ['cancel', '취소', '중단', 'stop', '멈춰'],

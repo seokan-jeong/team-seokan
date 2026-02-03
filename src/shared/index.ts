@@ -25,6 +25,7 @@ export function createEnvContext(): string {
 export const AGENT_DISPLAY_NAMES: Record<BuiltinAgentName, string> = {
   jjangu: '짱구',
   jjanga: '짱아',
+  yiseul: '이슬',
   maenggu: '맹구',
   cheolsu: '철수',
   suji: '수지',
@@ -42,6 +43,7 @@ export const AGENT_DISPLAY_NAMES: Record<BuiltinAgentName, string> = {
 export const AGENT_ROLES: Record<BuiltinAgentName, string> = {
   jjangu: 'Orchestrator',
   jjanga: 'Atlas',
+  yiseul: 'Moderator',
   maenggu: 'Executor',
   cheolsu: 'Hephaestus',
   suji: 'Frontend',

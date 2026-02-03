@@ -24,7 +24,8 @@ export type BuiltinAgentName =
   | 'actiongamen' // 액션가면 (Reviewer)
   | 'heendungi'   // 흰둥이 (Explorer)
   | 'chaesunga'   // 채성아 (Librarian)
-  | 'namiri';     // 나미리 (Multimodal)
+  | 'namiri'      // 나미리 (Multimodal)
+  | 'yiseul';     // 이슬 (Moderator) - 토론 진행자
 
 export interface AgentPromptMetadata {
   name: BuiltinAgentName;
@@ -178,6 +179,13 @@ export interface SessionState {
   memoryInitialized?: boolean;
   shouldRunBootstrap?: boolean;
   lastAgentOutput?: string;
+  // v2.1 토론 시스템
+  debateActive?: boolean;
+  debateRound?: number;
+  debateMaxRounds?: number;
+  debateParticipants?: BuiltinAgentName[];
+  debateTopic?: string;
+  debateOpinions?: DebateOpinion[];
 }
 
 export interface TodoItem {
@@ -197,6 +205,32 @@ export interface BackgroundTask {
   startTime: Date;
   endTime?: Date;
   result?: unknown;
+}
+
+// ============================================================
+// 토론 시스템 타입
+// ============================================================
+
+export interface DebateOpinion {
+  agent: BuiltinAgentName;
+  round: number;
+  opinion: string;
+  pros: string[];
+  cons: string[];
+  recommendation: string;
+  timestamp: Date;
+}
+
+export interface DebateResult {
+  topic: string;
+  participants: BuiltinAgentName[];
+  rounds: number;
+  opinions: DebateOpinion[];
+  consensus: string;
+  rationale: string[];
+  alternatives: { option: string; reason: string }[];
+  verified: boolean;
+  verificationResult?: string;
 }
 
 // ============================================================

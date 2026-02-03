@@ -20,6 +20,7 @@ import { createActiongamenAgent } from './actiongamen';
 import { createHeendungiAgent } from './heendungi';
 import { createChaesungaAgent } from './chaesunga';
 import { createNamiriAgent } from './namiri';
+import { createYiseulAgent } from './yiseul';
 
 // ============================================================
 // 에이전트 팩토리 맵
@@ -40,6 +41,7 @@ const AGENT_FACTORIES: Record<BuiltinAgentName, (settings: PluginSettings) => Ag
   heendungi: createHeendungiAgent,
   chaesunga: createChaesungaAgent,
   namiri: createNamiriAgent,
+  yiseul: createYiseulAgent,
 };
 
 // ============================================================
@@ -120,4 +122,5 @@ export {
   createHeendungiAgent,
   createChaesungaAgent,
   createNamiriAgent,
+  createYiseulAgent,
 };
