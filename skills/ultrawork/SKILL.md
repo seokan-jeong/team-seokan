@@ -1,5 +1,5 @@
 ---
-name: ultrawork
+name: team-shinchan:ultrawork
 description: Complete tasks quickly with parallel agent execution. Used for "fast", "parallel", "ulw" requests.
 user-invocable: true
 ---

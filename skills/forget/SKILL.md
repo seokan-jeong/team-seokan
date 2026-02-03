@@ -1,5 +1,5 @@
 ---
-name: forget
+name: team-shinchan:forget
 description: Delete specific memories. Use to remove outdated or incorrect learnings.
 user-invocable: true
 ---

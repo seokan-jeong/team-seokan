@@ -145,18 +145,18 @@ Auto-activate skills/agents when detecting these patterns:
 
 | Skill | Description | Trigger |
 |-------|-------------|---------|
-| `ultrawork` | Parallel execution mode | "ulw", "ultrawork", "parallel" |
-| `ralph` | Loop until complete | "ralph", "until done" |
-| `autopilot` | Autonomous execution | "autopilot", "auto" |
-| `plan` | Planning session | "plan", "design" |
-| `analyze` | Analysis mode | "analyze", "debug" |
-| `deepsearch` | Deep search | "deepsearch", "find" |
-| `docs-work` | Issue-based work workflow | "ISSUE-xxx", "docs-work" |
-| `debate` | Debate mode | "debate", "opinion", "discuss", "pros cons" |
-| `git-master` | Git specialist | git-related tasks |
-| `frontend-ui-ux` | UI/UX specialist | UI-related tasks |
-| `help` | Help | `/team-shinchan:help` |
-| `cancel` | Cancel | "cancel", "stop" |
+| `team-shinchan:ultrawork` | Parallel execution mode | "ulw", "ultrawork", "parallel" |
+| `team-shinchan:ralph` | Loop until complete | "ralph", "until done" |
+| `team-shinchan:autopilot` | Autonomous execution | "autopilot", "auto" |
+| `team-shinchan:plan` | Planning session | "plan", "design" |
+| `team-shinchan:analyze` | Analysis mode | "analyze", "debug" |
+| `team-shinchan:deepsearch` | Deep search | "deepsearch", "find" |
+| `team-shinchan:docs-work` | Issue-based work workflow | "ISSUE-xxx", "docs-work" |
+| `team-shinchan:debate` | Debate mode | "debate", "opinion", "discuss", "pros cons" |
+| `team-shinchan:learn` | Add new learning to memory | "learn", "remember this" |
+| `team-shinchan:memories` | View/manage learned memories | "memories", "what did you learn" |
+| `team-shinchan:forget` | Delete specific memories | "forget", "remove memory" |
+| `team-shinchan:help` | Help | `/team-shinchan:help` |
 
 ---
 

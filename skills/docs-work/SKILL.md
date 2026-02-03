@@ -1,5 +1,5 @@
 ---
-name: docs-work
+name: team-shinchan:docs-work
 description: Issue-based work workflow with docs folder. Invoke with "/docs-work ISSUE-xxx". Phase-based work, review, retrospective, auto-generates RETROSPECTIVE.md + IMPLEMENTATION.md on completion.
 user-invocable: true
 ---

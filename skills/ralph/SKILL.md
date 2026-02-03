@@ -1,5 +1,5 @@
 ---
-name: ralph
+name: team-shinchan:ralph
 description: Persistently loops until task is fully complete. Used for "until done", "complete it", "dont stop" requests.
 user-invocable: true
 ---

@@ -1,5 +1,5 @@
 ---
-name: help
+name: team-shinchan:help
 description: Guide for using Team-Shinchan plugin's agents, skills, and memory system. Use when you need help.
 user-invocable: true
 ---

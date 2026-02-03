@@ -1,5 +1,5 @@
 ---
-name: memories
+name: team-shinchan:memories
 description: View and manage learned memories (patterns, preferences, mistakes, decisions). Use to check current learnings.
 user-invocable: true
 ---
