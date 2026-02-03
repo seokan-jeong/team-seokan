@@ -15,7 +15,7 @@
       "version": "2.2.0",
       "description": "15 Shinchan character agents + Debate system + Self-learning memory system",
       "category": "productivity",
-      "source": "./",
+      "source": "https://github.com/seokan-jeong/team-shinchan",
       "homepage": "https://github.com/seokan-jeong/team-shinchan",
       "tags": [
         "multi-agent",

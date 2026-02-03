@@ -21,7 +21,9 @@
       "Bash(claude plugin uninstall:*)",
       "mcp__plugin_serena_serena__activate_project",
       "Bash(gh release:*)",
-      "Bash(npm run typecheck:*)"
+      "Bash(npm run typecheck:*)",
+      "Bash(gh repo rename:*)",
+      "Bash(git remote:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
