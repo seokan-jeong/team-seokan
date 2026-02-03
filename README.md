@@ -15,7 +15,19 @@ Claude Code를 위한 플러그인으로, 사용할수록 똑똑해지는 자기
 
 ## 🚀 설치
 
-### 원클릭 설치 (권장)
+### 마켓플레이스 설치 (권장)
+
+```bash
+# 1. 마켓플레이스 추가
+claude plugin marketplace add seokan-jeong/team-seokan
+
+# 2. 플러그인 설치
+claude plugin install team-seokan
+
+# 3. Claude Code 재시작
+```
+
+### 원클릭 스크립트 설치
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/seokan-jeong/team-seokan/main/install.sh | bash
@@ -27,23 +39,22 @@ curl -fsSL https://raw.githubusercontent.com/seokan-jeong/team-seokan/main/insta
 # 1. 플러그인 디렉토리에 클론
 git clone https://github.com/seokan-jeong/team-seokan.git ~/.claude/plugins/team-seokan
 
-# 2. 의존성 설치
+# 2. 의존성 설치 및 빌드
 cd ~/.claude/plugins/team-seokan
-npm install
+npm install && npx tsc --outDir dist
 
-# 3. 빌드
-npx tsc --outDir dist
-
-# 4. Claude Code 재시작
+# 3. Claude Code 재시작
 ```
 
 ### 업데이트
 
 ```bash
+# 마켓플레이스 방식
+claude plugin update team-seokan
+
+# 수동 방식
 cd ~/.claude/plugins/team-seokan
-git pull origin main
-npm install
-npx tsc --outDir dist
+git pull origin main && npm install && npx tsc --outDir dist
 ```
 
 ---
