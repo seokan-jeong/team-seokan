@@ -2,7 +2,7 @@
 
 # 🖍️ Team-Shinchan
 
-<img src="https://i.pinimg.com/1200x/1c/06/b0/1c06b009abbb5c764ba8335b827e3421.jpg" alt="Shinchan" width="300"/>
+<img src="https://i.pinimg.com/1200x/1c/06/b0/1c06b009abbb5c764ba8335b827e3421.jpg" alt="Shinchan" width="600"/>
 
 ### *"Stop doing everything yourself. Let the team handle it."*
 
@@ -14,18 +14,6 @@
 ![GitHub stars](https://img.shields.io/github/stars/seokan-jeong/team-shinchan?style=social)
 
 [**Quick Start**](#installation) • [**Commands**](#commands) • [**How It Works**](#how-skills-work) • [**The Team**](#the-team-15-agents)
-
-</div>
-
----
-
-## 🎬 See It In Action
-
-<div align="center">
-
-https://github.com/user-attachments/assets/demo-placeholder
-
-*Coming soon: Demo video showing Team-Shinchan in action*
 
 </div>
 
