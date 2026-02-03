@@ -1,46 +1,70 @@
 ---
-description: Explicitly invoke Shinnosuke to orchestrate a complex task
+description: Explicitly invoke Shinnosuke to orchestrate through the integrated workflow
 ---
 
 # Orchestrate Command
 
-Explicitly calls Shinnosuke (Main Orchestrator) to coordinate a complex task across multiple specialist agents.
-
-## When to Use
-
-- Complex tasks requiring multiple agents
-- When you want explicit orchestration control
-- Large features or refactoring projects
+Explicitly starts the full integrated workflow with Shinnosuke orchestrating.
 
 ## Usage
 
-```
+```bash
 /team-shinchan:orchestrate [task description]
 ```
 
-## What Happens
+## Integrated Workflow
 
-1. **Shinnosuke** analyzes the task
-2. Creates a TODO breakdown
-3. Delegates to specialist agents:
-   - **Bo** (Executor) - Code writing
-   - **Aichan** (Frontend) - UI/UX
-   - **Bunta** (Backend) - API/DB
-   - **Masao** (DevOps) - Infrastructure
-   - **Hiroshi** (Oracle) - Deep analysis
-   - **Nene** (Planner) - Planning
-4. Runs tasks in parallel when possible
-5. **Action Kamen** (Reviewer) verifies completion
+```
+┌─────────────────────────────────────────┐
+│  Stage 1: Requirements                  │
+│  ├─ Analyze request                     │
+│  ├─ Nene/Misae: Clarify if unclear     │
+│  ├─ Midori: Debate if design needed    │
+│  └─ Create REQUESTS.md                  │
+└─────────────────────┬───────────────────┘
+                      ↓
+┌─────────────────────────────────────────┐
+│  Stage 2: Planning                      │
+│  ├─ Nene: Break into phases            │
+│  ├─ Shiro: Impact analysis             │
+│  └─ Create PROGRESS.md                  │
+└─────────────────────┬───────────────────┘
+                      ↓
+┌─────────────────────────────────────────┐
+│  Stage 3: Execution (per phase)         │
+│  ├─ Impact analysis                     │
+│  ├─ Debate (if design decision)        │
+│  ├─ Delegate to specialists            │
+│  ├─ Action Kamen review                │
+│  └─ Phase retrospective                │
+└─────────────────────┬───────────────────┘
+                      ↓
+┌─────────────────────────────────────────┐
+│  Stage 4: Completion (auto)             │
+│  ├─ RETROSPECTIVE.md                   │
+│  ├─ IMPLEMENTATION.md                  │
+│  └─ Final verification                 │
+└─────────────────────────────────────────┘
+```
+
+## Debate Integration
+
+Design decisions automatically trigger debate:
+- 2+ implementation approaches
+- Architecture changes
+- Breaking existing patterns
+- Security-sensitive decisions
 
 ## Example
 
-```
-/team-shinchan:orchestrate Build a user authentication system with login, signup, and password reset
+```bash
+/team-shinchan:orchestrate Build user authentication with OAuth and session management
 ```
 
 Shinnosuke will:
-1. Break down into phases (DB schema, API endpoints, UI components)
-2. Delegate DB work to Bunta
-3. Delegate UI work to Aichan
-4. Delegate API work to Bunta
-5. Have Action Kamen review everything
+1. Create `shinchan-docs/main-001/` (or appropriate ID)
+2. Interview for requirements (Nene)
+3. Debate OAuth vs Session approach (Midori)
+4. Break into phases (Nene)
+5. Execute with specialist delegation
+6. Generate all documentation
