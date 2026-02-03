@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="https://i.pinimg.com/1200x/1c/06/b0/1c06b009abbb5c764ba8335b827e3421.jpg" alt="Shinchan" width="200"/>
+<img src="https://i.pinimg.com/1200x/1c/06/b0/1c06b009abbb5c764ba8335b827e3421.jpg" alt="Shinchan" width="400"/>
 
 **15 Shinchan character agents that debate, plan, execute, and learn.**
 
