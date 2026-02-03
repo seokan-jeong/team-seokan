@@ -1,0 +1,21 @@
+{
+  "name": "team-seokan",
+  "version": "2.0.0",
+  "description": "짱구 캐릭터 기반 멀티 에이전트 오케스트레이션 시스템 - 자기학습, 회고, 개선 기능 포함",
+  "license": "MIT",
+  "repository": "https://github.com/seokan-jeong/team-seokan",
+  "keywords": [
+    "claude-code",
+    "plugin",
+    "multi-agent",
+    "orchestration",
+    "self-learning",
+    "memory",
+    "korean"
+  ],
+  "claude": {
+    "skills": "skills/",
+    "hooks": "hooks/",
+    "agents": "agents/"
+  }
+}
