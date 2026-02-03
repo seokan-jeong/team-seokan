@@ -1,90 +1,120 @@
-# 🎭 Team-Seokan
+# 🎭 Team-Seokan v2.0
 
 **짱구 캐릭터 기반 멀티 에이전트 오케스트레이션 시스템**
 
-Claude Code를 위한 플러그인으로, oh-my-opencode에서 영감을 받아 제작되었습니다.
+Claude Code를 위한 플러그인으로, 사용할수록 똑똑해지는 자기학습 시스템을 탑재했습니다.
 
-## 🌟 특징
+## ✨ v2.0 새로운 기능
 
-- **14개 전문 에이전트**: 짱구 캐릭터들이 각자의 역할 수행
-- **3티어 모델 라우팅**: Opus/Sonnet/Haiku 자동 선택
-- **병렬 실행**: 여러 에이전트 동시 실행
-- **완료 보장**: Ralph 모드로 작업 완료까지 자동 반복
-- **품질 검증**: 액션가면(Reviewer)의 필수 검증
+- **🧠 자기학습**: 작업 결과에서 자동으로 패턴, 선호도, 실수 학습
+- **🔄 회고 시스템**: 작업 완료 후 자동 회고 및 개선점 도출
+- **💾 메모리 관리**: 학습된 내용을 영구 저장하고 활용
+- **🚀 부트스트랩**: 프로젝트 첫 실행 시 자동 분석
+
+---
+
+## 🚀 설치
+
+### 원클릭 설치 (권장)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/seokan-jeong/team-seokan/main/install.sh | bash
+```
+
+### 수동 설치
+
+```bash
+# 1. 플러그인 디렉토리에 클론
+git clone https://github.com/seokan-jeong/team-seokan.git ~/.claude/plugins/team-seokan
+
+# 2. 의존성 설치
+cd ~/.claude/plugins/team-seokan
+npm install
+
+# 3. 빌드
+npx tsc --outDir dist
+
+# 4. Claude Code 재시작
+```
+
+### 업데이트
+
+```bash
+cd ~/.claude/plugins/team-seokan
+git pull origin main
+npm install
+npx tsc --outDir dist
+```
+
+---
 
 ## 🎭 에이전트 팀
 
 ### 오케스트레이션
-| 캐릭터 | 역할 | 모델 |
-|--------|------|------|
-| **짱구** | Orchestrator | Opus |
-| **짱아** | Atlas | Opus |
+| 캐릭터 | 역할 | 모델 | 설명 |
+|--------|------|------|------|
+| **짱구** | Orchestrator | Opus | 작업 분석 및 위임 |
+| **짱아** | Atlas | Opus | 복잡한 작업 분해 |
 
 ### 실행
-| 캐릭터 | 역할 | 모델 |
-|--------|------|------|
-| **맹구** | Executor | Sonnet |
-| **철수** | Hephaestus | Opus |
+| 캐릭터 | 역할 | 모델 | 설명 |
+|--------|------|------|------|
+| **맹구** | Executor | Sonnet | 코드 작성/수정 |
+| **철수** | Hephaestus | Opus | 복잡한 구현 |
 
 ### 전문가
-| 캐릭터 | 역할 | 모델 |
-|--------|------|------|
-| **수지** | Frontend | Sonnet |
-| **흑곰** | Backend | Sonnet |
-| **훈이** | DevOps | Sonnet |
+| 캐릭터 | 역할 | 모델 | 설명 |
+|--------|------|------|------|
+| **수지** | Frontend | Sonnet | UI/UX 개발 |
+| **흑곰** | Backend | Sonnet | 서버/API 개발 |
+| **훈이** | DevOps | Sonnet | 인프라/배포 |
 
 ### 조언 (읽기 전용)
-| 캐릭터 | 역할 | 모델 |
-|--------|------|------|
-| **신형만** | Oracle | Opus |
-| **유리** | Planner | Opus |
-| **봉미선** | Metis | Sonnet |
-| **액션가면** | Reviewer | Opus |
+| 캐릭터 | 역할 | 모델 | 설명 |
+|--------|------|------|------|
+| **신형만** | Oracle | Opus | 아키텍처 조언 |
+| **유리** | Planner | Opus | 전략적 계획 |
+| **봉미선** | Metis | Sonnet | 요구사항 분석 |
+| **액션가면** | Reviewer | Opus | 코드 리뷰 |
 
 ### 탐색 (읽기 전용)
-| 캐릭터 | 역할 | 모델 |
-|--------|------|------|
-| **흰둥이** | Explorer | Haiku |
-| **채성아** | Librarian | Sonnet |
-| **나미리** | Multimodal | Sonnet |
+| 캐릭터 | 역할 | 모델 | 설명 |
+|--------|------|------|------|
+| **흰둥이** | Explorer | Haiku | 빠른 코드 탐색 |
+| **채성아** | Librarian | Sonnet | 문서/라이브러리 검색 |
+| **나미리** | Multimodal | Sonnet | 이미지/시각 분석 |
 
-## 🚀 설치
+---
 
+## 🧠 메모리 시스템 (v2.0)
+
+### 자동 학습
+플러그인이 자동으로 학습하는 내용:
+- **선호도**: 사용자의 코딩 스타일, 명명 규칙
+- **패턴**: 자주 사용하는 코드 패턴
+- **실수**: 반복되는 실수와 해결법
+- **결정**: 아키텍처 결정 사항
+- **컨벤션**: 프로젝트 컨벤션
+
+### 메모리 명령어
 ```bash
-# 저장소 클론
-git clone https://github.com/seokan/team-seokan.git
-cd team-seokan
-
-# 의존성 설치
-bun install
-
-# 빌드
-bun run build
-
-# Claude Code에 플러그인 설치
-bun run install-plugin
+/memories          # 학습된 메모리 조회
+/memories search   # 메모리 검색
+/learn "내용"      # 수동으로 학습 추가
+/forget <id>       # 특정 메모리 삭제
 ```
 
-## 📖 사용법
+### 저장 위치
+- **전역**: `~/.team-seokan/memories/` (모든 프로젝트에서 공유)
+- **프로젝트**: `.team-seokan/memories/` (해당 프로젝트에서만 사용)
 
-### 에이전트 위임
+---
 
-```typescript
-// 맹구에게 코드 작성 위임
-delegate_task(agent="maenggu", task="Button 컴포넌트 생성")
-
-// 흰둥이에게 코드 탐색 위임
-delegate_task(agent="heendungi", task="API 엔드포인트 찾기")
-
-// 배경에서 실행
-background_task(agent="chaesunga", task="관련 문서 검색")
-```
-
-### 스킬 사용
+## 💡 스킬 사용
 
 | 스킬 | 트리거 | 설명 |
 |------|--------|------|
-| `ultrawork` | "ulw", "병렬" | 병렬 실행 모드 |
+| `ultrawork` | "ulw", "병렬", "빠르게" | 병렬 실행 모드 |
 | `ralph` | "끝까지", "완료할 때까지" | 완료까지 반복 |
 | `autopilot` | "자동으로", "알아서" | 자율 실행 |
 | `plan` | "계획", "설계" | 계획 세션 |
@@ -104,6 +134,8 @@ ulw 이 기능 구현해줘
 autopilot: REST API 만들어줘
 ```
 
+---
+
 ## ⚙️ 설정
 
 `~/.config/team-seokan/config.json` 또는 프로젝트 루트의 `.team-seokan/config.json`:
@@ -122,30 +154,41 @@ autopilot: REST API 만들어줘
 }
 ```
 
+---
+
 ## 🏗️ 프로젝트 구조
 
 ```
 team-seokan/
 ├── src/
-│   ├── agents/          # 14개 에이전트
-│   ├── hooks/           # 25개 훅
-│   ├── tools/           # 15개 도구
-│   ├── features/        # 기능 모듈
-│   │   └── builtin-skills/  # 10개 스킬
-│   ├── config/          # 설정
-│   ├── shared/          # 공유 유틸리티
-│   └── types/           # 타입 정의
-├── CLAUDE.md            # 시스템 프롬프트
-├── plugin.json          # 플러그인 매니페스트
+│   ├── agents/              # 14개 에이전트
+│   ├── hooks/               # 훅 시스템
+│   ├── tools/               # 도구
+│   ├── features/
+│   │   ├── memory/          # 🆕 메모리 시스템
+│   │   ├── learning/        # 🆕 학습 엔진
+│   │   ├── reflection/      # 🆕 회고 엔진
+│   │   ├── context/         # 🆕 컨텍스트 주입
+│   │   ├── bootstrap/       # 🆕 부트스트랩
+│   │   └── builtin-skills/  # 스킬
+│   ├── config/              # 설정
+│   ├── shared/              # 공유 유틸리티
+│   └── types/               # 타입 정의
+├── CLAUDE.md                # 시스템 프롬프트
+├── plugin.json              # 플러그인 매니페스트
+├── install.sh               # 설치 스크립트
 └── package.json
 ```
+
+---
 
 ## 🤝 영감
 
 이 프로젝트는 다음에서 영감을 받았습니다:
 
-- [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode) - OpenCode 플러그인
-- [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) - Claude Code 플러그인
+- [oh-my-claudecode](https://github.com/anthropics/claude-code) - Claude Code 플러그인
+
+---
 
 ## 📄 라이선스
 
@@ -153,4 +196,4 @@ MIT License
 
 ---
 
-**Team-Seokan** - 짱구와 친구들이 당신의 코딩을 도와드립니다! 🖍️
+**Team-Seokan v2.0** - 짱구와 친구들이 사용할수록 똑똑해집니다! 🖍️
