@@ -1,258 +1,248 @@
-# 🎭 Team-Shinchan v2.2
+# Team-Shinchan
 
-**Shinchan character-based multi-agent orchestration system**
+<div align="center">
 
-A Claude Code plugin with a self-learning system that gets smarter with use.
+<img src="https://i.pinimg.com/1200x/1c/06/b0/1c06b009abbb5c764ba8335b827e3421.jpg" alt="Shinchan" width="200"/>
 
-## ✨ v2.2 New Features
+**15 Shinchan character agents that debate, plan, execute, and learn.**
 
-- **🌍 Japanese Character Names**: All characters now use their original Japanese names
-- **📝 English Documentation**: All skill documents now in English
+*Stop doing everything yourself - orchestrate a team.*
 
-### v2.1 Features
+[![Version](https://img.shields.io/badge/version-2.7.0-blue.svg)](https://github.com/seokan-jeong/team-shinchan/releases)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-purple.svg)](https://claude.ai)
 
-- **🗣️ Debate System**: Multiple expert agents debate to find optimal solutions
-- **🎭 Midori Agent**: Discussion Moderator for facilitating debates
-- **📋 Workflow Checklists**: Copy-paste checklists for each skill
-- **📚 Skill Best Practices**: Documentation improved following Claude Skill guidelines
-
-### v2.0 Features
-
-- **🧠 Self-Learning**: Auto-learns patterns, preferences, mistakes from work results
-- **🔄 Reflection System**: Auto-reflection and improvement after task completion
-- **💾 Memory Management**: Persistent storage and utilization of learnings
-- **🚀 Bootstrap**: Automatic analysis on first project run
+</div>
 
 ---
 
-## 🚀 Installation
+## Why Team-Shinchan?
 
-### Marketplace Installation (Recommended)
+| Problem | Solution |
+|---------|----------|
+| Making architectural decisions alone | **Debate System**: Multiple expert agents discuss and reach consensus |
+| Slow sequential task execution | **Parallel Execution**: 5x faster with coordinated agents |
+| Forgetting project conventions | **Learning Memory**: Remembers and applies your preferences |
+| Incomplete task tracking | **Integrated Workflow**: Requirements → Planning → Execution → Review |
 
-```bash
-# 1. Add marketplace
-claude plugin marketplace add seokan-jeong/team-shinchan
+---
 
-# 2. Install plugin
-claude plugin install team-shinchan
+## Use Cases
 
-# 3. Restart Claude Code
+### 1. Debate-Driven Design Decisions
+
+```
+User: Add OAuth2 authentication
+
+💭 [Midori] Design decision needed. Starting debate...
+
+   👩 [Aichan] JWT is better for frontend SPA
+   👨 [Bunta] Session is simpler for backend
+   🧓 [Hiroshi] Hybrid approach: JWT + refresh tokens
+
+   ✅ Consensus: JWT with refresh token rotation
 ```
 
-### One-Click Script Installation
+### 2. Parallel Execution for Speed
+
+```
+User: ulw fix all TypeScript errors
+
+⚡ Running in parallel:
+├─ 🔨 [Bo] Fixing src/auth/*.ts (3 errors)
+├─ 🔨 [Bo] Fixing src/api/*.ts (4 errors)
+└─ 🔨 [Bo] Fixing src/utils/*.ts (5 errors)
+
+✅ Completed in 2 minutes (vs ~10 minutes sequential)
+```
+
+### 3. Self-Learning Memory
+
+```
+# Week 1
+User: Use Zustand for state management
+🧠 Learned: "Prefer Zustand over Redux"
+
+# Week 2
+User: Add user preferences feature
+🔨 [Aichan] Implementing with Zustand (remembered!)
+```
+
+---
+
+## Installation
+
+### From Marketplace (Recommended)
+
+```bash
+# Add marketplace and install
+/plugin marketplace add seokan-jeong/team-shinchan
+/plugin install team-shinchan
+```
+
+### One-Click Install
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/seokan-jeong/team-shinchan/main/install.sh | bash
 ```
 
-### Manual Installation
+### Manual Install
 
 ```bash
-# 1. Clone to plugin directory
 git clone https://github.com/seokan-jeong/team-shinchan.git ~/.claude/plugins/team-shinchan
-
-# 2. Install dependencies and build
-cd ~/.claude/plugins/team-shinchan
-npm install && npx tsc --outDir dist
-
-# 3. Restart Claude Code
-```
-
-### Update
-
-```bash
-# Marketplace method
-claude plugin update team-shinchan
-
-# Manual method
-cd ~/.claude/plugins/team-shinchan
-git pull origin main && npm install && npx tsc --outDir dist
 ```
 
 ---
 
-## 🎭 Agent Team (15 Members)
+## The Team (15 Agents)
+
+<table>
+<tr>
+<td>
 
 ### Orchestration
-| Character | Role | Model | Description |
-|-----------|------|-------|-------------|
-| **Shinnosuke** | Orchestrator | Opus | Task analysis and delegation |
-| **Himawari** | Atlas | Opus | Complex task decomposition |
-| **Midori** | Moderator | Opus | Discussion facilitation |
+| Agent | Role |
+|-------|------|
+| **Shinnosuke** | Orchestrator |
+| **Himawari** | Atlas (Large Projects) |
+| **Midori** | Debate Moderator |
 
 ### Execution
-| Character | Role | Model | Description |
-|-----------|------|-------|-------------|
-| **Bo** | Executor | Sonnet | Code writing/modification |
-| **Kazama** | Hephaestus | Opus | Complex implementation |
+| Agent | Role |
+|-------|------|
+| **Bo** | Code Executor |
+| **Kazama** | Deep Worker |
+
+</td>
+<td>
 
 ### Specialists
-| Character | Role | Model | Description |
-|-----------|------|-------|-------------|
-| **Aichan** | Frontend | Sonnet | UI/UX development |
-| **Bunta** | Backend | Sonnet | Server/API development |
-| **Masao** | DevOps | Sonnet | Infrastructure/deployment |
+| Agent | Role |
+|-------|------|
+| **Aichan** | Frontend/UI |
+| **Bunta** | Backend/API |
+| **Masao** | DevOps/Infra |
 
-### Advisors (Read-only)
-| Character | Role | Model | Description |
-|-----------|------|-------|-------------|
-| **Hiroshi** | Oracle | Opus | Architecture advice |
-| **Nene** | Planner | Opus | Strategic planning |
-| **Misae** | Metis | Sonnet | Requirements analysis |
-| **Action Kamen** | Reviewer | Opus | Code review |
+### Advisors
+| Agent | Role |
+|-------|------|
+| **Hiroshi** | Senior Oracle |
+| **Nene** | Strategic Planner |
+| **Misae** | Requirements Analyst |
+| **Action Kamen** | Code Reviewer |
 
-### Exploration (Read-only)
-| Character | Role | Model | Description |
-|-----------|------|-------|-------------|
-| **Shiro** | Explorer | Haiku | Fast code search |
-| **Masumi** | Librarian | Sonnet | Documentation search |
-| **Ume** | Multimodal | Sonnet | Image/visual analysis |
+</td>
+<td>
+
+### Utility
+| Agent | Role |
+|-------|------|
+| **Shiro** | Fast Explorer |
+| **Masumi** | Documentation |
+| **Ume** | Image/PDF Analysis |
+
+</td>
+</tr>
+</table>
 
 ---
 
-## 🗣️ Debate System (v2.1)
+## Commands
 
-Multiple expert agents debate to find optimal solutions.
-
-### Discussion Patterns
-| Pattern | Description |
+| Command | Description |
 |---------|-------------|
-| Round Table | Sequential opinions with mutual feedback |
-| Dialectic | Thesis ↔ Antithesis → Synthesis |
-| Expert Panel | Domain-specific perspectives |
-
-### Automatic Participant Selection
-| Topic | Summoned Agents |
-|-------|-----------------|
-| UI, Frontend | Aichan, Hiroshi |
-| API, Backend, DB | Bunta, Hiroshi |
-| Deploy, Infrastructure | Masao, Hiroshi |
-| Architecture, Design | Hiroshi, Nene, Misae |
-
-### Usage Examples
-```
-Debate: Should we use React or Vue?
-Compare pros and cons: REST API vs GraphQL
-Gather opinions: Microservices architecture adoption
-```
+| `/team-shinchan:start` | Start integrated workflow |
+| `/team-shinchan:debate` | Trigger expert debate |
+| `/team-shinchan:plan` | Planning session |
+| `/team-shinchan:analyze` | Deep analysis |
+| `/team-shinchan:deepsearch` | Codebase search |
+| `/team-shinchan:autopilot` | Autonomous execution |
+| `/team-shinchan:ultrawork` | Parallel execution |
+| `/team-shinchan:ralph` | Loop until complete |
+| `/team-shinchan:memories` | View learned memories |
+| `/team-shinchan:learn` | Add to memory |
+| `/team-shinchan:forget` | Remove memory |
+| `/team-shinchan:help` | Show help |
 
 ---
 
-## 🧠 Memory System (v2.0)
+## Quick Triggers
 
-### Auto-Learning
-The plugin automatically learns:
-- **Preferences**: User's coding style, naming conventions
-- **Patterns**: Frequently used code patterns
-- **Mistakes**: Recurring mistakes and solutions
-- **Decisions**: Architecture decisions
-- **Conventions**: Project conventions
+No commands needed - just say:
 
-### Memory Commands
+| Say This | Activates |
+|----------|-----------|
+| "ulw", "fast", "parallel" | Ultrawork (parallel mode) |
+| "until done", "complete it" | Ralph (persistence mode) |
+| "autopilot", "auto" | Autopilot (autonomous) |
+| "debate", "pros and cons" | Debate system |
+| "analyze", "debug", "why" | Deep analysis |
+
+---
+
+## Integrated Workflow
+
+When you start a task, Team-Shinchan follows this workflow:
+
+```
+┌─────────────────────────────────────┐
+│  Stage 1: Requirements              │
+│  └─ Nene interviews, Midori debates │
+└─────────────────┬───────────────────┘
+                  ↓
+┌─────────────────────────────────────┐
+│  Stage 2: Planning                  │
+│  └─ Nene plans, Shiro analyzes      │
+└─────────────────┬───────────────────┘
+                  ↓
+┌─────────────────────────────────────┐
+│  Stage 3: Execution                 │
+│  └─ Bo/Aichan/Bunta + Action Kamen  │
+└─────────────────┬───────────────────┘
+                  ↓
+┌─────────────────────────────────────┐
+│  Stage 4: Completion                │
+│  └─ Masumi documents, final review  │
+└─────────────────────────────────────┘
+```
+
+All documentation saved to `shinchan-docs/{task-id}/`
+
+---
+
+## Memory System
+
+Team-Shinchan learns from every interaction:
+
 ```bash
-/memories          # View learned memories
-/memories search   # Search memories
-/learn "content"   # Manually add learning
-/forget <id>       # Delete specific memory
+# View what's been learned
+/team-shinchan:memories
+
+# Manually teach something
+/team-shinchan:learn "Always use TypeScript strict mode"
+
+# Remove outdated learning
+/team-shinchan:forget
 ```
 
-### Storage Locations
-- **Global**: `~/.team-shinchan/memories/` (shared across all projects)
-- **Project**: `.team-shinchan/memories/` (project-specific)
+**Learns automatically:**
+- Coding preferences & patterns
+- Architecture decisions
+- Project conventions
+- Common mistakes & solutions
 
 ---
 
-## 💡 Skills Usage
-
-| Skill | Trigger | Description |
-|-------|---------|-------------|
-| `ultrawork` | "ulw", "parallel", "fast" | Parallel execution mode |
-| `ralph` | "until done", "complete" | Loop until complete |
-| `autopilot` | "auto", "automatically" | Autonomous execution |
-| `plan` | "plan", "design" | Planning session |
-| `analyze` | "analyze", "debug" | Deep analysis |
-| `deepsearch` | "find", "search" | Deep search |
-| `debate` | "debate", "opinion", "compare" | Agent debate |
-
-### Examples
-
-```
-# Ultrawork mode for fast execution
-ulw implement this feature
-
-# Ralph mode until completion
-complete it: finish all TODOs
-
-# Autopilot for autonomous execution
-autopilot: create REST API
-
-# Debate for optimal solution
-debate: state management library selection
-```
-
----
-
-## ⚙️ Configuration
-
-`~/.config/team-shinchan/config.json` or `.team-shinchan/config.json` in project root:
-
-```json
-{
-  "defaultModel": "sonnet",
-  "maxConcurrentAgents": 5,
-  "maxRetries": 3,
-  "contextWarningThreshold": 50,
-  "enableRalphLoop": true,
-  "enableTodoEnforcer": true,
-  "enableIntentGate": true,
-  "enableReviewerCheck": true,
-  "language": "en"
-}
-```
-
----
-
-## 🏗️ Project Structure
-
-```
-team-shinchan/
-├── src/
-│   ├── agents/              # 15 agents
-│   ├── hooks/               # Hook system
-│   ├── tools/               # Tools
-│   ├── features/
-│   │   ├── memory/          # Memory system
-│   │   ├── learning/        # Learning engine
-│   │   ├── reflection/      # Reflection engine
-│   │   ├── context/         # Context injection
-│   │   ├── bootstrap/       # Bootstrap
-│   │   └── builtin-skills/  # Skills
-│   ├── config/              # Configuration
-│   ├── shared/              # Shared utilities
-│   └── types/               # Type definitions
-├── skills/                  # Skill documents
-│   ├── debate/              # Debate skill
-│   └── ...
-├── CLAUDE.md                # System prompt
-├── plugin.json              # Plugin manifest
-├── install.sh               # Installation script
-└── package.json
-```
-
----
-
-## 🤝 Inspiration
-
-This project was inspired by:
-
-- [oh-my-claudecode](https://github.com/anthropics/claude-code) - Claude Code plugin
-
----
-
-## 📄 License
+## License
 
 MIT License
 
 ---
 
-**Team-Shinchan v2.2** - Shinchan and friends debate, learn, and grow! 🖍️
+<div align="center">
+
+**Team-Shinchan** - Shinchan and friends debate, learn, and grow together!
+
+*Built with love for the Claude Code community*
+
+</div>
