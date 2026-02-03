@@ -10,7 +10,9 @@
     "test": "bun test",
     "lint": "eslint src/",
     "typecheck": "tsc --noEmit",
-    "install-plugin": "bun run build && cp -r dist ~/.claude/plugins/team-shinchan/"
+    "install-plugin": "bun run build && cp -r dist ~/.claude/plugins/team-shinchan/",
+    "sync-version": "./scripts/sync-version.sh",
+    "release": "npm run sync-version && git add -A && git commit -m \"chore: bump version to $(node -p \"require('./package.json').version\")\" && git push origin main"
   },
   "keywords": [
     "claude-code",
