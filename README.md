@@ -1,16 +1,31 @@
-# Team-Shinchan
-
 <div align="center">
 
-<img src="https://i.pinimg.com/1200x/1c/06/b0/1c06b009abbb5c764ba8335b827e3421.jpg" alt="Shinchan" width="400"/>
+# 🖍️ Team-Shinchan
 
-**15 Shinchan character agents that debate, plan, execute, and learn.**
+<img src="https://i.pinimg.com/1200x/1c/06/b0/1c06b009abbb5c764ba8335b827e3421.jpg" alt="Shinchan" width="300"/>
 
-*Stop doing everything yourself - orchestrate a team.*
+### *"Stop doing everything yourself. Let the team handle it."*
+
+**15 Shinchan character agents that debate, plan, execute, and learn together.**
 
 [![Version](https://img.shields.io/badge/version-2.8.0-blue.svg)](https://github.com/seokan-jeong/team-shinchan/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-purple.svg)](https://claude.ai)
+![GitHub stars](https://img.shields.io/github/stars/seokan-jeong/team-shinchan?style=social)
+
+[**Quick Start**](#installation) • [**Commands**](#commands) • [**How It Works**](#how-skills-work) • [**The Team**](#the-team-15-agents)
+
+</div>
+
+---
+
+## 🎬 See It In Action
+
+<div align="center">
+
+https://github.com/user-attachments/assets/demo-placeholder
+
+*Coming soon: Demo video showing Team-Shinchan in action*
 
 </div>
 
