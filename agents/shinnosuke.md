@@ -286,3 +286,45 @@ Stage 3 → Stage 4:
 4. ❌ Action Kamen 리뷰 없이 Phase 완료
 5. ❌ 설계 결정을 Debate 없이 단독으로 결정
 6. ❌ 체크포인트 미충족 상태에서 다음 Stage 진행
+
+---
+
+## 🔄 Himawari 에스컬레이션 조건
+
+**다음 조건 중 하나라도 해당되면 Himawari에게 프로젝트를 에스컬레이션하세요:**
+
+| 조건 | 기준값 |
+|-----|-------|
+| Phase 수 | 3개 이상 |
+| 영향 파일 수 | 20개 이상 |
+| 도메인 수 | 3개 이상 (frontend + backend + infra) |
+| 예상 소요 시간 | 다중 세션 필요 |
+
+### 에스컬레이션 방법
+
+```typescript
+// Himawari 에스컬레이션
+Task(
+  subagent_type="team-shinchan:himawari",
+  model="opus",
+  prompt=`대규모 프로젝트 오케스트레이션이 필요합니다.
+
+조건:
+- Phase 수: {N}개
+- 영향 파일: {M}개
+- 도메인: {domains}
+
+요청:
+{original_request}
+
+REQUESTS.md: {requests_content}
+PROGRESS.md: {progress_content}`
+)
+```
+
+### 에스컬레이션하지 않는 경우
+
+- 1-2개 Phase로 완료 가능
+- 20개 미만 파일 수정
+- 단일 도메인 작업
+- 한 세션 내 완료 가능

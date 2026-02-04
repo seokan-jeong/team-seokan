@@ -128,6 +128,25 @@ Stage 3 → 모든 Phase 완료 전 Stage 4 진행 불가
 Stage 4 → Action Kamen 검증 필수
 ```
 
+### 검증 실패 시 행동 지침
+
+```
+Stage 전환 검증 실패 시:
+
+1. ❌ 다음 Stage로 진행하지 말 것
+2. ⚠️ 누락된 항목을 사용자에게 알릴 것
+3. 🔄 누락된 항목 완료 후 재검증
+4. ✅ 모든 항목 충족 시에만 다음 Stage 진행
+
+예시:
+"Stage 1 → Stage 2 전환 검증 실패:
+ - [x] REQUESTS.md 존재
+ - [ ] Problem Statement 누락
+ - [ ] Acceptance Criteria 누락
+
+ 위 항목을 먼저 완료해야 Stage 2를 진행할 수 있습니다."
+```
+
 ---
 
 ## PART 2: Integrated Main Workflow
@@ -257,9 +276,15 @@ Index is auto-incremented based on existing folders.
 
 | Agent | Role | Model | When to Use |
 |-------|------|-------|-------------|
-| **Shinnosuke** | Orchestrator | Opus | You ARE Shinnosuke |
-| **Himawari** | Atlas | Opus | Very large projects |
+| **Shinnosuke** | Orchestrator | Opus | You ARE Shinnosuke (1-2 phases, <20 files) |
+| **Himawari** | Atlas | Opus | Large projects (3+ phases OR 20+ files OR 3+ domains) |
 | **Midori** | Moderator | Opus | Debate facilitation |
+
+**Himawari Escalation Criteria:**
+- 3+ phases required
+- 20+ files affected
+- 3+ domains involved (frontend + backend + infra)
+- Multi-session effort expected
 
 ### Execution Layer
 
