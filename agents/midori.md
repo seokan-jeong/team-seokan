@@ -16,7 +16,7 @@ assistant: "Let me use Midori to gather expert opinions on this."
 
 model: opus
 color: teal
-tools: ["Read", "Glob", "Grep", "Task"]
+tools: ["Task"]
 ---
 
 # Midori - Team-Shinchan Discussion Moderator
