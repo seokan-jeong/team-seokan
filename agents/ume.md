@@ -59,3 +59,22 @@ After analyzing visual content, you can search for related code:
 - Extract relevant information
 - Note any uncertainty
 - Use Grep to connect visual content with codebase
+
+---
+
+## 📋 표준 출력 형식
+
+**작업 완료 시 다음 형식으로 결과를 반환하세요:**
+
+```
+## Summary
+- {핵심 발견/결과 1}
+- {핵심 발견/결과 2}
+- {핵심 발견/결과 3}
+
+## Details
+{상세 내용...}
+
+## Next Steps (optional)
+- {권장 다음 단계}
+```

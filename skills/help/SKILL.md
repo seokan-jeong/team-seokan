@@ -14,7 +14,6 @@ user-invocable: true
 |-----------|------|-------------|
 | Shinnosuke | Orchestrator | Task analysis and delegation |
 | Himawari | Atlas | Complex task decomposition |
-| Midori | Moderator | Discussion facilitation |
 
 ### Execution
 

@@ -37,7 +37,7 @@
 ```
 User: Add OAuth2 authentication
 
-💭 [Midori] Design decision needed. Starting debate...
+💭 [Shinnosuke] Design decision needed. Starting debate...
 
    👩 [Aichan] JWT is better for frontend SPA
    👨 [Bunta] Session is simpler for backend
@@ -108,7 +108,7 @@ git clone https://github.com/seokan-jeong/team-shinchan.git ~/.claude/plugins/te
 |-------|------|
 | **Shinnosuke** | Orchestrator |
 | **Himawari** | Atlas (Large Projects) |
-| **Midori** | Debate Moderator |
+| **Midori** | Debate Guide (Reference) |
 
 ### Execution
 | Agent | Role |
@@ -177,7 +177,7 @@ git clone https://github.com/seokan-jeong/team-shinchan.git ~/.claude/plugins/te
 | `/plan` | Nene → Structured planning |
 | `/analyze` | Hiroshi → Deep analysis |
 | `/deepsearch` | Shiro → Masumi |
-| `/debate` | Midori → Expert panel |
+| `/debate` | Shinnosuke → Expert panel |
 | `/autopilot` | Shinnosuke → Autonomous mode |
 | `/ultrawork` | Shinnosuke → Parallel execution |
 | `/ralph` | Kazama → Persistent loop |
@@ -235,7 +235,7 @@ User Request
 │                                                         │
 │ 👧 Nene: Interviews user for clarity                    │
 │ 👩 Misae: Discovers hidden requirements                 │
-│ 🌿 Midori: Moderates debate (if design decision needed) │
+│ 👦 Shinnosuke: Orchestrates debate (if needed)          │
 │                                                         │
 │ 📄 Output: shinchan-docs/{id}/REQUESTS.md               │
 └─────────────────────┬───────────────────────────────────┘
@@ -256,7 +256,7 @@ User Request
 │                                                         │
 │ For each phase:                                         │
 │ ├─ 🐕 Shiro: Impact analysis                            │
-│ ├─ 🌿 Midori: Debate if needed                          │
+│ ├─ 👦 Shinnosuke: Orchestrates debate if needed         │
 │ ├─ 🔨 Implementation:                                   │
 │ │   ├─ 👩 Aichan (Frontend/UI)                          │
 │ │   ├─ 👨 Bunta (Backend/API)                           │
@@ -309,7 +309,7 @@ shinchan-docs/
 📋 Stage 1: Requirements
    Nene: "Which providers? Google, GitHub?"
    User: "Google only for now"
-   Midori: "JWT vs Session?" → Debate triggered
+   Shinnosuke: "JWT vs Session?" → Debate triggered
    → REQUESTS.md created
 
 📋 Stage 2: Planning

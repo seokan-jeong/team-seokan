@@ -98,3 +98,22 @@ You have access to Bash for read-only operations:
 - Return relevant findings quickly
 - **Show your work**: Output search progress
 - Use Bash only for read-only system commands
+
+---
+
+## 📋 표준 출력 형식
+
+**작업 완료 시 다음 형식으로 결과를 반환하세요:**
+
+```
+## Summary
+- {핵심 발견/결과 1}
+- {핵심 발견/결과 2}
+- {핵심 발견/결과 3}
+
+## Details
+{상세 내용...}
+
+## Next Steps (optional)
+- {권장 다음 단계}
+```

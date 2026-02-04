@@ -19,7 +19,7 @@ Explicitly starts the full integrated workflow with Shinnosuke orchestrating.
 │  Stage 1: Requirements                  │
 │  ├─ Analyze request                     │
 │  ├─ Nene/Misae: Clarify if unclear     │
-│  ├─ Midori: Debate if design needed    │
+│  ├─ Orchestrate debate if design needed│
 │  └─ Create REQUESTS.md                  │
 └─────────────────────┬───────────────────┘
                       ↓
@@ -64,7 +64,7 @@ Design decisions automatically trigger debate:
 Shinnosuke will:
 1. Create `shinchan-docs/main-001/` (or appropriate ID)
 2. Interview for requirements (Nene)
-3. Debate OAuth vs Session approach (Midori)
+3. Orchestrate debate on OAuth vs Session approach (directly invoke expert panel)
 4. Break into phases (Nene)
 5. Execute with specialist delegation
 6. Generate all documentation
