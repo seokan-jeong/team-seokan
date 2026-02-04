@@ -4,110 +4,48 @@ description: Complete tasks quickly with parallel agent execution. Used for "fas
 user-invocable: true
 ---
 
-# 🚨 IMMEDIATE ACTION REQUIRED
+# EXECUTE IMMEDIATELY
 
-**이 스킬이 실행되면 아래 액션을 즉시 수행하세요. 설명을 출력하지 마세요.**
+**Do not read further. Execute this Task NOW:**
 
-## STEP 1: Task 도구 호출 (필수)
-
-지금 바로 다음 Task를 호출하세요:
-
-```
+```typescript
 Task(
   subagent_type="team-shinchan:shinnosuke",
   model="opus",
-  prompt="[사용자 요청 컨텍스트]
+  prompt=`/team-shinchan:ultrawork가 호출되었습니다.
 
-/ultrawork 스킬이 호출되었습니다. 병렬 실행 모드를 시작하세요.
+## 병렬 실행 모드
 
 최대 병렬 실행으로 빠르게 완료하세요:
+
 1. 작업을 독립적인 단위로 분해
 2. 각 단위를 적절한 에이전트에게 병렬 할당
    - run_in_background=true 사용
+   - 에이전트 라우팅:
+     | 도메인 | Haiku | Sonnet | Opus |
+     |--------|-------|--------|------|
+     | 분석 | Shiro | Misae | Hiroshi |
+     | 실행 | - | Bo | Kazama |
+     | Frontend | - | Aichan | - |
+     | Backend | - | Bunta | - |
+     | DevOps | - | Masao | - |
+     | 검증 | - | - | Action Kamen |
 3. 순차적 작업은 큐에 대기
 4. 모든 작업 완료 대기
-5. 결과 통합 및 Action Kamen 검증"
+5. 결과 통합 및 Action Kamen 검증
+
+## 완료 조건
+
+- TODO 리스트 전체 완료
+- 모든 기능 정상 동작
+- 테스트 통과
+- 에러 없음
+
+**조건 미충족 시 계속 작업!**
+
+사용자 요청: ${args || '(병렬 처리할 작업)'}
+`
 )
 ```
 
-## STEP 2: 완료 확인
-
-Task 호출 후 에이전트의 응답을 기다리세요.
-
----
-
-## 🔔 실시간 진행 상황 출력
-
-**에이전트 호출 시 다음 프로토콜을 따르세요:**
-
-### Task 호출 전
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🎯 [{에이전트명}] 호출
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 목표: {수행할 작업}
-🔧 모델: {haiku/sonnet/opus}
-```
-
-### Task 호출 후
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✅ [{에이전트명}] 완료
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📊 결과 요약:
-- {핵심 결과 1}
-- {핵심 결과 2}
-⏭️ 다음 단계: {다음 작업}
-```
-
-**사용자가 모든 진행 과정을 볼 수 있도록 각 단계마다 공지하세요.**
-
----
-
-## ⛔ 금지사항
-
-- ❌ 이 스킬 내용을 출력만 하고 끝내기 ← 가장 흔한 실수!
-- ❌ 직접 코드 탐색/수정
-- ❌ Task 호출 없이 진행
-- ❌ 순차적으로 작업하기
-
----
-
-## 참고 정보
-
-## Features
-
-- Multiple agents process independent tasks simultaneously
-- Immediate routing to specialized agents
-- Long tasks run in background
-- Continues until all tasks complete and verify
-
-## Agent Routing
-
-| Domain | Haiku | Sonnet | Opus |
-|--------|-------|--------|------|
-| Analysis | Shiro | Misae | Hiroshi |
-| Execution | - | Bo | Kazama |
-| Frontend | - | Aichan | - |
-| Backend | - | Bunta | - |
-| DevOps | - | Masao | - |
-| Review | - | - | Action Kamen |
-
-## Workflow Checklist
-
-```
-[ ] Analyze and decompose tasks
-[ ] Assign independent tasks in parallel
-[ ] Queue sequential tasks
-[ ] Wait for all tasks to complete
-[ ] Integrate results and verify
-```
-
-## Completion Criteria
-
-- TODO list: No remaining tasks
-- Features: All requested features work
-- Tests: All tests pass
-- Errors: No unresolved errors
-
-**If any criteria not met → continue working!**
+**STOP HERE. The above Task handles everything.**

@@ -297,6 +297,83 @@ Index is auto-incremented based on existing folders.
 
 ---
 
+## PART 3.5: Workflow State Management (NEW)
+
+### WORKFLOW_STATE.yaml
+
+**모든 활성 워크플로우에는 상태 파일이 있습니다:**
+
+```
+shinchan-docs/{DOC_ID}/
+├── WORKFLOW_STATE.yaml  ← 워크플로우 상태 추적 (항상 먼저 생성)
+├── REQUESTS.md
+├── PROGRESS.md
+└── ...
+```
+
+### 상태 파일 구조
+
+```yaml
+version: 1
+doc_id: "main-001"
+
+current:
+  stage: requirements  # requirements | planning | execution | completion
+  phase: null          # null or phase number
+  owner: nene          # Current agent
+  status: active       # active | paused | blocked | completed
+
+stage_rules:
+  requirements:
+    allowed_tools: [Read, Glob, Grep, Task, AskUserQuestion]
+    blocked_tools: [Edit, Write, TodoWrite]
+    interpretation:
+      "~해줘": "요구사항 추가"  # NOT implementation request
+```
+
+### Stage-Tool Matrix
+
+| Stage | Read | Glob/Grep | Task | Edit/Write | TodoWrite |
+|-------|------|-----------|------|------------|-----------|
+| **requirements** | OK | OK | OK | **BLOCK** | **BLOCK** |
+| **planning** | OK | OK | OK | **BLOCK** | **BLOCK** |
+| **execution** | OK | OK | OK | OK | OK |
+| **completion** | OK | BLOCK | OK | BLOCK (docs OK) | BLOCK |
+
+### Transition Gates
+
+| 전환 | 필수 검증 항목 |
+|-----|--------------|
+| requirements → planning | REQUESTS.md + Problem Statement + Requirements + AC + User Approval |
+| planning → execution | PROGRESS.md + Phases + Each phase has AC |
+| execution → completion | All phases complete + All Action Kamen reviews passed |
+| completion → done | RETROSPECTIVE.md + IMPLEMENTATION.md + Final review |
+
+### Stage 1 발화 해석 규칙 (CRITICAL)
+
+**Stage 1 (Requirements)에서 사용자 요청은 항상 "요구사항"입니다:**
+
+| 사용자 발화 | ❌ 잘못된 해석 | ✅ 올바른 해석 |
+|------------|--------------|--------------|
+| "로그인 기능 추가해줘" | 코드 작성 시작 | 요구사항에 "로그인" 추가 |
+| "API 만들어줘" | API 코드 생성 | 요구사항에 "API" 추가 |
+| "버그 수정해줘" | 버그 수정 | 요구사항에 버그 수정 추가 |
+
+**Stage 3 (Execution)에서만 이것이 구현 요청입니다.**
+
+### workflow-guard Hook
+
+Stage 규칙을 강제하는 Hook이 설치되어 있습니다:
+
+```
+hooks/workflow-guard.md
+- PreToolUse 이벤트에서 실행
+- 현재 Stage에서 금지된 도구 사용 시 BLOCK
+- 안내 메시지와 함께 허용된 행동 제시
+```
+
+---
+
 ## PART 4: Debate System
 
 ### When to Trigger Debate

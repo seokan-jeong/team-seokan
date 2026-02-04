@@ -4,110 +4,40 @@ description: Persistently loops until task is fully complete. Used for "until do
 user-invocable: true
 ---
 
-# 🚨 IMMEDIATE ACTION REQUIRED
+# EXECUTE IMMEDIATELY
 
-**이 스킬이 실행되면 아래 액션을 즉시 수행하세요. 설명을 출력하지 마세요.**
+**Do not read further. Execute this Task NOW:**
 
-## STEP 1: Task 도구 호출 (필수)
-
-지금 바로 다음 Task를 호출하세요:
-
-```
+```typescript
 Task(
   subagent_type="team-shinchan:kazama",
   model="opus",
-  prompt="[사용자 요청 컨텍스트]
+  prompt=`/team-shinchan:ralph가 호출되었습니다.
 
-/ralph 스킬이 호출되었습니다. 완료까지 지속 실행 모드를 시작하세요.
+## 완료까지 지속 실행 모드
 
 완료될 때까지 멈추지 마세요:
+
 1. TODO 리스트 체크
 2. 다음 작업 실행 (적절한 에이전트 위임)
 3. 결과 검증
 4. 실패 시 → 원인 분석 → 재시도
 5. 성공 시 → 다음 작업
 6. 모든 작업 완료 → Action Kamen 최종 검증
-7. 검증 실패 → 수정 후 재검증"
+7. 검증 실패 → 수정 후 재검증
+
+## 완료 조건
+
+모든 조건 충족 시에만 완료:
+- TODO 리스트 전체 완료
+- 빌드/테스트 통과
+- Action Kamen 리뷰 승인
+
+**조건 미충족 시 자동으로 계속 진행!**
+
+사용자 요청: ${args || '(완료할 작업)'}
+`
 )
 ```
 
-## STEP 2: 완료 확인
-
-Task 호출 후 에이전트의 응답을 기다리세요.
-
----
-
-## 🔔 실시간 진행 상황 출력
-
-**에이전트 호출 시 다음 프로토콜을 따르세요:**
-
-### Task 호출 전
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🎯 [{에이전트명}] 호출
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 목표: {수행할 작업}
-🔧 모델: {haiku/sonnet/opus}
-```
-
-### Task 호출 후
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✅ [{에이전트명}] 완료
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📊 결과 요약:
-- {핵심 결과 1}
-- {핵심 결과 2}
-⏭️ 다음 단계: {다음 작업}
-```
-
-**사용자가 모든 진행 과정을 볼 수 있도록 각 단계마다 공지하세요.**
-
----
-
-## ⛔ 금지사항
-
-- ❌ 이 스킬 내용을 출력만 하고 끝내기 ← 가장 흔한 실수!
-- ❌ 직접 코드 탐색/수정
-- ❌ Task 호출 없이 진행
-- ❌ 중간에 멈추기
-
----
-
-## 참고 정보
-
-## Features
-
-- Infinite retry until task completion
-- Auto-recovery on errors
-- Progress tracking via TODO list
-- Final verification by Action Kamen(Reviewer)
-
-## Ralph Loop
-
-1. Check TODO list
-2. Execute next task
-3. Verify result
-4. On failure → analyze cause → retry
-5. On success → next task
-6. All tasks done → final verification
-7. Verification failed → fix and re-verify
-
-## Workflow Checklist
-
-```
-[ ] Initialize task list
-[ ] Execute current task
-[ ] Verify task result
-[ ] Complete all tasks
-[ ] Action Kamen final verification
-```
-
-## Completion Criteria
-
-Complete only when ALL conditions met:
-- All TODO list items completed
-- Build/tests pass
-- Action Kamen review approved
-
-**Auto-continues if criteria not met**
+**STOP HERE. The above Task handles everything.**
