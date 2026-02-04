@@ -1,8 +1,7 @@
 # Dependencies
 node_modules/
 
-# Build output
-dist/
+# Build output (dist/ is tracked - contains actual plugin code)
 src/
 
 # Package files (not needed for this plugin)
@@ -37,3 +36,6 @@ npm-debug.log*
 
 # Team-Shinchan workflow docs (local only)
 shinchan-docs/
+
+# Team-Shinchan learnings (local project-specific data)
+.team-shinchan/

@@ -1,0 +1,107 @@
+/**
+ * Memory Injector Hook
+ * 에이전트 실행 전 관련 메모리 주입
+ */
+import { getCachedAgentContext, contextCache } from '../features/context';
+/**
+ * 에이전트 이름 추출
+ */
+function extractAgentName(subagentType) {
+    // team-shinchan:shinnosuke -> shinnosuke
+    if (subagentType.startsWith('team-shinchan:')) {
+        return subagentType.replace('team-shinchan:', '');
+    }
+    // 직접 에이전트 이름
+    const validAgents = [
+        'jjangu', 'jjanga', 'maenggu', 'cheolsu', 'suji', 'heukgom',
+        'hooni', 'shinhyungman', 'yuri', 'bongmisun', 'actiongamen',
+        'heendungi', 'chaesunga', 'namiri',
+    ];
+    if (validAgents.includes(subagentType)) {
+        return subagentType;
+    }
+    return null;
+}
+export function createMemoryInjectorHook(context) {
+    return {
+        name: 'memory-injector',
+        event: 'PreToolUse',
+        description: '에이전트 실행 전 학습된 메모리를 주입합니다.',
+        enabled: true,
+        priority: 80,
+        handler: async ({ toolName, toolInput, sessionState, }) => {
+            // Task 도구만 처리
+            if (toolName !== 'Task') {
+                return { continue: true };
+            }
+            const input = toolInput;
+            const subagentType = input.subagent_type;
+            const prompt = input.prompt;
+            if (!subagentType || !prompt) {
+                return { continue: true };
+            }
+            // 에이전트 이름 추출
+            const agentName = extractAgentName(subagentType);
+            if (!agentName) {
+                return { continue: true };
+            }
+            try {
+                // 캐시된 컨텍스트 가져오기
+                const memoryContext = await getCachedAgentContext(agentName, prompt);
+                if (!memoryContext || memoryContext.trim() === '') {
+                    return { continue: true };
+                }
+                // 세션 상태에 마지막 에이전트 기록
+                if (sessionState) {
+                    sessionState.lastAgent = agentName;
+                    sessionState.taskStartTime = Date.now();
+                }
+                // 메모리 컨텍스트를 inject로 주입
+                return {
+                    continue: true,
+                    inject: memoryContext,
+                };
+            }
+            catch (error) {
+                console.error('Memory injection error:', error);
+                return { continue: true };
+            }
+        },
+    };
+}
+/**
+ * 세션 시작 시 메모리 초기화 훅
+ */
+export function createMemoryInitHook(pluginContext) {
+    return {
+        name: 'memory-init',
+        event: 'SessionStart',
+        description: '세션 시작 시 메모리 시스템을 초기화합니다.',
+        enabled: true,
+        priority: 100,
+        handler: async ({ sessionState }) => {
+            try {
+                // 캐시 초기화
+                contextCache.invalidate();
+                // 부트스트랩 체크 (첫 실행 시)
+                const state = sessionState;
+                const isFirstRun = !state?.memoryInitialized;
+                if (isFirstRun && state) {
+                    state.memoryInitialized = true;
+                    // 프로젝트 분석 플래그 설정
+                    state.shouldRunBootstrap = true;
+                }
+                return {
+                    continue: true,
+                    message: isFirstRun
+                        ? '🧠 메모리 시스템 초기화됨'
+                        : undefined,
+                };
+            }
+            catch (error) {
+                console.error('Memory init error:', error);
+                return { continue: true };
+            }
+        },
+    };
+}
