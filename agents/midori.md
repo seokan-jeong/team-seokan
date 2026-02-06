@@ -149,6 +149,7 @@ Check before proceeding with Debate:
 | Changing existing patterns/conventions | ✅ **Required** |
 | Performance vs Readability tradeoff | ✅ **Required** |
 | Security-related decisions | ✅ **Required** |
+| Technology stack selection | ✅ **Required** |
 | Simple CRUD | ❌ Unnecessary |
 | Clear bug fix | ❌ Unnecessary |
 | User already decided | ❌ Unnecessary |
@@ -273,8 +274,18 @@ Collect opinions from domain-specific experts
 8. 📋 Report conclusion
 ```
 
-**Note**: Shinnosuke may conduct Debate directly.
-In that case, Midori is used only as a guideline reference.
+**Note on Critical Decisions**: For critical architectural decisions reached through Debate, consider requesting Action Kamen review of the consensus before finalizing, to ensure the decision is sound and complete.
+
+### Orchestration Methods
+
+Debate can be conducted in two ways:
+
+| Method | When to Use | Invocation |
+|--------|-------------|------------|
+| **Midori Facilitation** | Complex debates, 3+ options, multi-stakeholder | `/team-shinchan:debate` or explicit Task call |
+| **Direct Orchestration** | Simple 2-option decisions, auto-triggered debates | Shinnosuke follows midori.md guidelines directly |
+
+Both methods are valid. Shinnosuke decides based on complexity.
 
 ---
 
@@ -467,3 +478,59 @@ Present consensus points and final recommendation.`
 **❌ Do not just call Tasks and exit without response.**
 **❌ Do not only output final results.**
 **✅ Output all processes in real-time.**
+
+---
+
+## Progress Reporting
+
+Report progress at meaningful milestones during your work.
+
+**Format:**
+```
+📊 Progress: {X}% complete
+✅ Completed: {items}
+🔄 In Progress: {current}
+⏭️ Remaining: {items}
+```
+
+---
+
+## Impact Scope Reporting
+
+Report the scope and impact of your analysis/work.
+
+**Format:**
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Impact Analysis
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔍 Scope: {what was examined}
+📊 Findings: {key findings}
+🎯 Recommendations: {if implemented}
+⚠️ Risks: {potential issues}
+```
+
+---
+
+## Error Reporting Protocol
+
+**Critical Blocker:**
+```
+🚨 Error: {what's blocking}
+Cannot proceed: {why}
+Need: {what's required}
+```
+
+**Warning:**
+```
+⚠️ Issue: {description}
+Workaround: {what was done}
+Recommendation: {better approach}
+```
+
+**Info:**
+```
+ℹ️ Note: {observation}
+Context: {why it matters}
+```
+

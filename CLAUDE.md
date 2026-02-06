@@ -385,13 +385,19 @@ hooks/workflow-guard.md
 | Breaking existing patterns | ✅ |
 | Performance vs Readability tradeoff | ✅ |
 | Security-sensitive decisions | ✅ |
+| Technology stack selection | ✅ |
 | Simple CRUD | ❌ |
 | Clear bug fix | ❌ |
 | User explicitly decided | ❌ |
 
-### Debate Process (Delegated to Midori)
+### Debate Process
 
-**Shinnosuke calls Midori via Task to conduct the Debate, and decides the result together with the user.**
+**Two orchestration methods are available:**
+
+1. **Midori Facilitation**: For complex debates with 3+ options or multiple stakeholders, Shinnosuke delegates to Midori via Task call
+2. **Direct Orchestration**: For simple 2-option debates or auto-triggered scenarios, Shinnosuke may follow midori.md guidelines directly
+
+Both methods are valid. Shinnosuke chooses based on debate complexity.
 
 ```
 ┌─────────────────────────────────────────┐
@@ -476,6 +482,8 @@ hooks/workflow-guard.md
 📝 Rationale: {Decision rationale}
 ```
 
+**Note**: For critical architectural decisions reached through Debate, consider requesting Action Kamen review of the consensus before finalizing.
+
 ### Panel Selection by Topic
 
 | Topic | Panelists |
@@ -485,6 +493,9 @@ hooks/workflow-guard.md
 | DevOps/Infra | Masao, Hiroshi |
 | Architecture | Hiroshi, Nene, Misae |
 | Full-stack | Aichan, Bunta, Masao, Hiroshi |
+| Security | Hiroshi, Bunta, Masao |
+| Performance | Hiroshi, Bunta |
+| Testing Strategy | Hiroshi, Nene |
 
 ---
 

@@ -4,9 +4,11 @@ description: Specialized agents debate to find optimal solutions. Used for "deba
 user-invocable: true
 ---
 
-# EXECUTE IMMEDIATELY - Delegate to Midori
+# EXECUTE IMMEDIATELY - Debate Initiation
 
-**Invoke Midori using the Task tool to proceed with Debate.**
+**Explicit `/team-shinchan:debate` command invokes Midori via Task tool.**
+
+**Auto-triggered debates may be conducted directly by Shinnosuke following midori.md guidelines, or delegated to Midori for complex cases.**
 
 ---
 
@@ -21,6 +23,7 @@ user-invocable: true
 | Breaking existing patterns | ✅ | Proposing different approach from existing conventions |
 | Performance vs Readability tradeoff | ✅ | Optimization vs Maintainability |
 | Security-sensitive decisions | ✅ | Authentication method, data encryption approach |
+| Technology stack selection | ✅ | React vs Vue, PostgreSQL vs MongoDB |
 | Simple CRUD | ❌ | Simple CRUD endpoints |
 | Clear bug fix | ❌ | Obvious bug fix |
 | User explicitly decided | ❌ | User has already decided |
@@ -105,6 +108,10 @@ After delivering results, ask the user:
 | API/Backend | Bunta, Hiroshi |
 | DevOps/Infra | Masao, Hiroshi |
 | Architecture | Hiroshi, Nene, Misae |
+| Full-stack | Aichan, Bunta, Masao, Hiroshi |
+| Security | Hiroshi, Bunta, Masao |
+| Performance | Hiroshi, Bunta |
+| Testing Strategy | Hiroshi, Nene |
 
 ---
 

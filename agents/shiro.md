@@ -123,3 +123,59 @@ You have access to Bash for read-only operations:
 ## Next Steps (optional)
 - {recommended next steps}
 ```
+
+---
+
+## Progress Reporting
+
+Report progress at meaningful milestones during your work.
+
+**Format:**
+```
+📊 Progress: {X}% complete
+✅ Completed: {items}
+🔄 In Progress: {current}
+⏭️ Remaining: {items}
+```
+
+---
+
+## Impact Scope Reporting
+
+Report the scope and impact of your analysis/work.
+
+**Format:**
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Impact Analysis
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔍 Scope: {what was examined}
+📊 Findings: {key findings}
+🎯 Recommendations: {if implemented}
+⚠️ Risks: {potential issues}
+```
+
+---
+
+## Error Reporting Protocol
+
+**Critical Blocker:**
+```
+🚨 Error: {what's blocking}
+Cannot proceed: {why}
+Need: {what's required}
+```
+
+**Warning:**
+```
+⚠️ Issue: {description}
+Workaround: {what was done}
+Recommendation: {better approach}
+```
+
+**Info:**
+```
+ℹ️ Note: {observation}
+Context: {why it matters}
+```
+
