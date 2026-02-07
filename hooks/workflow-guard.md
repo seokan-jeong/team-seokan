@@ -54,26 +54,72 @@ Prevent workflow derailment by:
 
 ## Block Message Format
 
-When a tool is blocked, output this message:
+When a tool is blocked, output a SPECIFIC message based on the stage:
 
+### Stage 1 (requirements) Block Message
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 [Workflow Guard] Action Blocked
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Current Stage: {stage}
+Current Stage: requirements
 Requested Tool: {tool_name}
 
-Reason: {tool_name} is not allowed in Stage: {stage}
+{tool_name} is not allowed during requirements gathering.
+See PART 6: Workflow State Management for stage rules.
 
-Allowed Tools in {stage}:
-{allowed_tools_list}
+Instead, use these tools:
+  → Read/Glob/Grep: Explore codebase for context
+  → Task: Delegate analysis to agents
+  → AskUserQuestion: Clarify requirements with user
 
-Allowed Actions:
-{allowed_actions_list}
+To advance to planning stage, complete:
+  □ REQUESTS.md with Problem Statement
+  □ Requirements and Acceptance Criteria defined
+  □ User approval received
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
 
-To proceed to next stage, complete:
-{transition_requirements}
+### Stage 2 (planning) Block Message
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[Workflow Guard] Action Blocked
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Current Stage: planning
+Requested Tool: {tool_name}
+
+{tool_name} is not allowed during planning.
+See PART 6: Workflow State Management for stage rules.
+
+Instead, use these tools:
+  → Read/Glob/Grep: Analyze codebase for planning
+  → Task: Delegate to Nene (planning) or Shiro (impact analysis)
+  → AskUserQuestion: Clarify approach with user
+
+To advance to execution stage, complete:
+  □ PROGRESS.md with Phase breakdown
+  □ Each phase has acceptance criteria
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+### Stage 4 (completion) Block Message
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[Workflow Guard] Action Blocked
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Current Stage: completion
+Requested Tool: {tool_name}
+
+{tool_name} is not allowed during completion.
+See PART 6: Workflow State Management for stage rules.
+
+In completion stage, only documentation tools are allowed:
+  → Task: Delegate to Masumi for documentation
+  → Write: Create RETROSPECTIVE.md and IMPLEMENTATION.md only
+
+To finish workflow, complete:
+  □ RETROSPECTIVE.md written
+  □ IMPLEMENTATION.md written
+  □ Final Action Kamen review passed
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 

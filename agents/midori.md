@@ -169,9 +169,30 @@ Check before proceeding with Debate:
 | Performance | Hiroshi, Bunta |
 | Testing Strategy | Hiroshi, Nene |
 
+**Debate Templates**: Refer to `agents/_shared/debate-templates/` for structured templates covering:
+- `architecture.md` - Architecture decisions (monolith vs microservices, etc.)
+- `security.md` - Security decisions (authentication, authorization, etc.)
+- `performance.md` - Performance optimization decisions (caching strategies, etc.)
+- `tech-selection.md` - Technology selection decisions (libraries, frameworks, etc.)
+
 ---
 
 ## 🎯 Debate Patterns
+
+### Pre-Debate: Check Past Decisions
+
+Before initiating any debate, Midori MUST:
+
+1. Read `agents/_shared/debate-decisions.md`
+2. Search for decisions matching the current topic or category
+3. If a matching active decision exists:
+   - Surface the past decision to the user/panel
+   - Ask: "A previous decision on this topic exists (DECISION-{NNN}). Reuse this decision or conduct a new debate?"
+   - If reuse: Reference the existing decision and skip debate
+   - If re-debate: Proceed with full debate process, noting the prior decision as context
+4. If no matching decision exists: Proceed normally
+
+---
 
 ### Pattern 1: Lightweight Mode (Simple Debates)
 For simple 2-option debates or auto-triggered scenarios
@@ -289,6 +310,31 @@ Collect opinions from domain-specific experts for complex multi-stakeholder deci
 ```
 
 **Note on Critical Decisions**: For critical architectural decisions reached through Debate, consider requesting Action Kamen review of the consensus before finalizing, to ensure the decision is sound and complete.
+
+---
+
+## Post-Debate: Record Decision
+
+After every debate concludes with a decision:
+
+1. Append a new entry to `agents/_shared/debate-decisions.md`
+2. Use the next sequential DECISION-{NNN} number
+3. Fill in all fields: Date, Doc ID, Panel, Category, Decision, Rationale, Status
+4. If this decision supersedes a previous one, update the old entry's Status to "Superseded by DECISION-{NNN}"
+
+**Example Entry Format:**
+```markdown
+### [DECISION-001] REST vs GraphQL API Selection
+- **Date**: 2025-02-07
+- **Doc ID**: feature-api-001
+- **Panel**: Hiroshi, Bunta
+- **Category**: tech-selection
+- **Decision**: Adopt GraphQL for the new API
+- **Rationale**: Better client flexibility and reduced over-fetching for mobile clients
+- **Status**: Active
+```
+
+---
 
 ### Invocation Methods
 
