@@ -6,6 +6,15 @@ description: Start a new task with the integrated workflow
 
 **When this command is invoked, immediately execute the following:**
 
+## 0. Execute Immediately: Pause Active Workflows
+
+```bash
+# Scan for active workflows
+# For each shinchan-docs/*/WORKFLOW_STATE.yaml with status: active:
+#   - Set status to "paused", add paused event
+#   - Notify: "⏸️ Paused {doc_id} (was at Stage {stage}, Phase {phase})"
+```
+
 ## 1. Execute Immediately: Determine DOC_ID
 
 ```bash

@@ -8,6 +8,22 @@ user-invocable: true
 
 **When this skill is invoked, execute immediately. Do not explain.**
 
+## Step 0: Pause Active Workflows
+
+```
+Before creating a new workflow, check for active ones:
+1. Scan shinchan-docs/*/WORKFLOW_STATE.yaml
+2. For each with status: active:
+   - Set status to "paused"
+   - Add paused event to history:
+     - timestamp: "{timestamp}"
+       event: paused
+       agent: shinnosuke
+       reason: new_workflow_started
+   - Notify: "⏸️ Paused {doc_id} (was at Stage {stage}, Phase {phase})"
+3. If none found, proceed silently.
+```
+
 ## Step 1: Setup (Folder + State)
 
 ```

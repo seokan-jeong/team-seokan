@@ -54,5 +54,5 @@ Learning: "{content}"
 
 - Learnings are **project-specific** (saved in `.team-shinchan/`)
 - High confidence because user explicitly taught it
-- Loaded at every session start via `load-learnings` hook
+- Loaded at every session start via `load-kb` hook
 - Remove with `/team-shinchan:forget`

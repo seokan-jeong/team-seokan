@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Memory System Validator
- * Validates that memory skills (learn/memories/forget) and load-learnings hook are consistent
+ * Validates that memory skills (learn/memories/forget) and load-kb hook are consistent
  */
 
 const fs = require('fs');
@@ -13,7 +13,7 @@ const REQUIRED_FILES = [
   { path: 'skills/learn/SKILL.md', name: 'learn skill' },
   { path: 'skills/memories/SKILL.md', name: 'memories skill' },
   { path: 'skills/forget/SKILL.md', name: 'forget skill' },
-  { path: 'hooks/load-learnings.md', name: 'load-learnings hook' },
+  { path: 'hooks/load-kb.md', name: 'load-kb hook' },
 ];
 
 const STORAGE_PATH = '.team-shinchan/learnings.md';

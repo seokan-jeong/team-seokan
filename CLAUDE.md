@@ -119,6 +119,7 @@ No REQUESTS.md, PROGRESS.md, or shinchan-docs/ needed.
 | `/team-shinchan:analyze` | Hiroshi | opus |
 | `/team-shinchan:deepsearch` | Shiro + Masumi | haiku/sonnet |
 | `/team-shinchan:debate` | Midori | opus |
+| `/team-shinchan:resume` | Shinnosuke | opus |
 
 ### ⛔ Absolutely Prohibited
 
@@ -379,6 +380,7 @@ Shinnosuke always delegates to Midori for all debate scenarios, regardless of co
 | `/team-shinchan:ralph` | Persistent loop | Must complete |
 | `/team-shinchan:ultrawork` | Parallel execution | Speed priority |
 | `/team-shinchan:start` | Start new task | Begin integrated workflow |
+| `/team-shinchan:resume` | Resume workflow | Continue interrupted work |
 | `/team-shinchan:status` | Show workflow status | Check progress |
 | `/team-shinchan:learn` | Add to memory | Remember patterns |
 | `/team-shinchan:memories` | View memories | Check learnings |

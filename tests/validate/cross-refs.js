@@ -15,7 +15,7 @@ const CLAUDE_MD = path.join(ROOT_DIR, 'CLAUDE.md');
 // Skills are not agents - they have their own files in skills/
 const KNOWN_SKILLS = [
   'start', 'status', 'autopilot', 'ralph', 'ultrawork', 'plan', 'analyze',
-  'deepsearch', 'debate', 'orchestrate', 'learn', 'memories', 'forget', 'help'
+  'deepsearch', 'debate', 'orchestrate', 'learn', 'memories', 'forget', 'help', 'resume'
 ];
 
 function getActualAgents() {
