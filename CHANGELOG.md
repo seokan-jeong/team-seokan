@@ -2,7 +2,7 @@
 
 All notable changes to Team-Shinchan will be documented in this file.
 
-## [3.0.0-rc1] - 2026-02-07
+## [3.0.0] - 2026-02-07
 
 ### API Freeze
 
