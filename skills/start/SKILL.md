@@ -87,6 +87,32 @@ transition_gates:
       - IMPLEMENTATION.md exists
       - Final review passed
 
+metrics:
+  workflow:
+    total_duration_minutes: null
+    stages_completed: 0
+  stages:
+    requirements:
+      start: "{current timestamp}"
+      end: null
+      duration_minutes: null
+    planning:
+      start: null
+      end: null
+      duration_minutes: null
+    execution:
+      start: null
+      end: null
+      duration_minutes: null
+      phases_planned: 0
+      phases_completed: 0
+      review_pass_rate: null
+    completion:
+      start: null
+      end: null
+      duration_minutes: null
+  agents: {}
+
 history:
   - timestamp: "{current timestamp}"
     event: workflow_started

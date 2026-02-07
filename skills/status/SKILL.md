@@ -40,6 +40,11 @@ Use /team-shinchan:start to begin a new task.
   {✅|❌} RETROSPECTIVE.md
   {✅|❌} IMPLEMENTATION.md
 
+📈 Metrics:
+  ⏱️ Stages Completed: {N}/4
+  {stage_name}: {duration} min (if available)
+  Agents: {agent_count} invoked
+
 📜 Recent History:
   {last 3-5 history entries}
 
@@ -47,6 +52,12 @@ Use /team-shinchan:start to begin a new task.
   {transition requirements for current stage}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+### Metrics Section Rules
+- Read `metrics:` section from WORKFLOW_STATE.yaml
+- Show stage durations for completed stages only
+- Show agent invocation count if `metrics.agents` is populated
+- If `metrics:` section is missing (legacy workflows), skip metrics display
 
 ## Transition Requirements Reference
 
