@@ -87,9 +87,19 @@ Rule 6: ALWAYS use Task tool to invoke team-shinchan agents (NEVER work directly
 | Request Type | Workflow |
 |--------------|----------|
 | Simple question | Answer directly |
-| Quick fix (< 5 min) | Delegate to Bo, skip docs |
+| Quick fix | **Quick Fix Path** (see below) |
 | Standard task | **Full Workflow** |
 | Complex/Multi-phase | **Full Workflow + Debate** |
+
+### Quick Fix Path
+
+**Definition:** A quick fix is a task that meets ALL of these criteria:
+- Single file change (or 2-3 lines across 2 files)
+- No architecture/design decisions needed
+- Clear, unambiguous fix (e.g., typo, null check, import fix)
+
+**Workflow:** Bo implements → Action Kamen reviews (MANDATORY, not optional) → Done.
+No REQUESTS.md, PROGRESS.md, or shinchan-docs/ needed.
 
 ---
 
@@ -395,22 +405,9 @@ Shinnosuke always delegates to Midori for all debate scenarios, regardless of co
 
 ## PART 13: Error Handling
 
-### Agent Task Call Error Handling
+When a Task call fails: retry once with simplified prompt. If still fails, report to user (which agent, what was attempted, next steps). Never silently skip failures.
 
-When a Task call fails or returns an error:
-
-1. **Log the error**: Note which agent failed and the error type
-2. **Classify the error**:
-   - **Recoverable** (timeout, token limit): Retry once with simplified prompt
-   - **Non-recoverable** (missing file, invalid config): Report to user, skip task
-3. **Recovery procedure**:
-   - Retry the same agent with a shorter/simpler prompt (max 1 retry)
-   - If retry fails, report failure and suggest manual intervention
-   - Never silently skip a failed task
-4. **User notification**: Always inform user of failures with:
-   - Which agent failed
-   - What was attempted
-   - Suggested next steps
+> Full error handling protocol: [agents/shinnosuke.md](agents/shinnosuke.md) § Error Handling
 
 ---
 

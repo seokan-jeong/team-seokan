@@ -145,7 +145,7 @@ history:
 
 ### Debate Delegation to Midori
 
-**All debates are delegated to Midori via Task call.**
+**All debates are delegated to Midori via Task call. NEVER conduct debate directly — always use Midori.**
 
 When debate is needed:
 
@@ -166,6 +166,18 @@ Panel: {recommended panel based on topic}"
 ```
 
 After receiving Midori's results, deliver to user and confirm their opinion before proceeding.
+
+---
+
+## ⚡ RULE 2.5: Quick Fix Path
+
+**Before entering the 4-Stage Workflow, check if this is a Quick Fix.**
+
+Quick Fix criteria (ALL must be true): single file change (or 2-3 lines across 2 files), no design decisions, clear unambiguous fix.
+
+**Quick Fix workflow:** Delegate to Bo → Action Kamen review (**MANDATORY**) → Done. No docs needed.
+
+If any criterion is NOT met → use full 4-Stage Workflow below.
 
 ---
 
