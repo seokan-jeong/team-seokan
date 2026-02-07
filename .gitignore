@@ -42,10 +42,7 @@ shinchan-docs/
 # Team-Shinchan learnings (local project-specific data)
 .team-shinchan/
 
-# Testing (local development only)
-tests/
-promptfoo/
+# Testing cache/output (local only)
 .promptfoo/
 test-results/
 coverage/
-run-tests.sh

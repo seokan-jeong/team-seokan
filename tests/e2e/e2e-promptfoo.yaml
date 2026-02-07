@@ -1,0 +1,242 @@
+# Team-Shinchan E2E Workflow Tests
+# Run with: promptfoo eval -c tests/e2e/e2e-promptfoo.yaml
+
+description: "Team-Shinchan E2E Workflow Scenario Tests"
+
+prompts:
+  - id: shinnosuke-e2e
+    label: "Shinnosuke (Full Context)"
+    raw: |
+      You are Shinnosuke, the main orchestrator of Team-Shinchan.
+      You coordinate all work by delegating to specialist agents via the Task tool.
+      You NEVER implement directly - you analyze, classify, and delegate.
+
+      Key rules:
+      - Follow the 4-stage workflow: Requirements → Planning → Execution → Completion
+      - Delegate to Nene for requirements/planning, Bo/Aichan/Bunta/Masao for implementation
+      - Trigger Midori debate when 2+ approaches exist or design decisions are needed
+      - Escalate to Himawari for large projects (3+ phases, 20+ files, 3+ domains)
+      - Action Kamen review is MANDATORY before completing any phase
+      - In requirements stage, ALL user requests are requirements (not implementation)
+      - Quick fixes (<5 min) can skip full workflow: delegate to Bo, then Action Kamen review
+
+      Work classification:
+      - Simple question → Answer directly
+      - Quick fix → Delegate to Bo, skip docs
+      - Standard task → Full 4-stage workflow
+      - Complex/Multi-phase → Full workflow + Debate + possible Himawari escalation
+
+      When a review fails: fix issues and retry, do NOT silently skip.
+
+      User request: {{task}}
+
+  - id: midori-e2e
+    label: "Midori (Debate Context)"
+    raw: |
+      You are Midori, the Debate Moderator of Team-Shinchan.
+      You facilitate structured debates among expert agents to reach optimal decisions.
+      You MUST use the Task tool to collect actual opinions from panel agents.
+      You NEVER simulate or generate opinions directly.
+
+      Panel selection by topic:
+      - UI/Frontend: Aichan, Hiroshi
+      - API/Backend: Bunta, Hiroshi
+      - Architecture: Hiroshi, Nene, Misae
+      - Security: Hiroshi, Bunta, Masao
+      - Performance: Hiroshi, Bunta
+
+      Debate patterns:
+      - Lightweight: 2-3 panel, 1 round, quick consensus
+      - Round Table: full panel, sequential opinions + feedback
+      - Dialectic: advocate for each option, rebuttals, synthesis
+
+      Output format: Start Announcement → Opinion Collection → Consensus → Final Decision
+
+      Debate request: {{task}}
+
+  - id: nene-e2e
+    label: "Nene (Planning Context)"
+    raw: |
+      You are Nene, the Planner agent of Team-Shinchan.
+      You create strategic plans with phases and acceptance criteria.
+      You interview users to gather requirements and create REQUESTS.md.
+      You do NOT implement code - you plan how it should be done.
+      In requirements stage, treat all "do this" requests as requirements to record, not tasks to execute.
+
+      User request: {{task}}
+
+providers:
+  - id: anthropic:messages:claude-haiku-4-5-20251001
+    label: haiku
+    config:
+      max_tokens: 1500
+      temperature: 0
+
+defaultTest:
+  options:
+    provider: haiku
+
+tests:
+  # ═══════════════════════════════════════
+  # Scenario 1: Simple Feature (Full Workflow)
+  # ═══════════════════════════════════════
+
+  - description: "E2E-1a: Shinnosuke classifies feature request as standard task"
+    prompt: shinnosuke-e2e
+    vars:
+      task: "Add a dark mode toggle to the settings page"
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          // Should identify as standard task needing workflow
+          return (lower.includes("workflow") || lower.includes("stage") || lower.includes("requirements") || lower.includes("nene")) &&
+                 // Should NOT jump to implementation
+                 !lower.includes("```tsx") && !lower.includes("```jsx");
+
+  - description: "E2E-1b: Nene gathers requirements (not implementation)"
+    prompt: nene-e2e
+    vars:
+      task: "We are in the requirements stage. The user wants to add a dark mode toggle to the settings page. Interview the user and create REQUESTS.md."
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          // Should ask questions or define requirements
+          return (lower.includes("requirement") || lower.includes("question") || lower.includes("?") || lower.includes("requests.md")) &&
+                 // Should NOT write code
+                 !lower.includes("```tsx") && !lower.includes("```jsx") && !lower.includes("import react");
+
+  - description: "E2E-1c: Shinnosuke delegates to implementation agent after planning"
+    prompt: shinnosuke-e2e
+    vars:
+      task: "Requirements and planning are complete for dark mode toggle. PROGRESS.md has Phase 1: UI toggle component (Aichan), Phase 2: Theme state management (Bo). Now execute Phase 1."
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          // Should delegate to Aichan (frontend) or Bo
+          return (lower.includes("aichan") || lower.includes("bo") || lower.includes("delegate") || lower.includes("task")) &&
+                 // Should mention Action Kamen review
+                 (lower.includes("action kamen") || lower.includes("review") || lower.includes("verify"));
+
+  # ═══════════════════════════════════════
+  # Scenario 2: Bug Fix (Quick Fix Path)
+  # ═══════════════════════════════════════
+
+  - description: "E2E-2a: Shinnosuke classifies bug fix as quick fix"
+    prompt: shinnosuke-e2e
+    vars:
+      task: "Fix the null pointer error in user.getProfile() - it crashes when user has no avatar"
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          // Should recognize as quick fix or bug fix
+          return (lower.includes("quick fix") || lower.includes("bug") || lower.includes("fix") || lower.includes("bo")) &&
+                 // Should still involve review
+                 (lower.includes("review") || lower.includes("action kamen") || lower.includes("verify") || lower.includes("test"));
+
+  - description: "E2E-2b: Quick fix still requires Action Kamen review"
+    prompt: shinnosuke-e2e
+    vars:
+      task: "Bo has fixed the null pointer in user.getProfile(). The fix adds a null check before accessing avatar. What's the next step?"
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          // Must mention review/verification
+          return lower.includes("action kamen") || lower.includes("review") || lower.includes("verify") || lower.includes("test");
+
+  # ═══════════════════════════════════════
+  # Scenario 3: Design Decision (Debate)
+  # ═══════════════════════════════════════
+
+  - description: "E2E-3a: Shinnosuke detects debate condition"
+    prompt: shinnosuke-e2e
+    vars:
+      task: "We need real-time notifications. Should we use WebSocket or Server-Sent Events?"
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          // Should recognize debate need
+          return (lower.includes("debate") || lower.includes("midori") || lower.includes("discuss") || lower.includes("decision")) &&
+                 // Should identify multiple approaches
+                 (lower.includes("websocket") || lower.includes("sse") || lower.includes("option") || lower.includes("approach"));
+
+  - description: "E2E-3b: Midori facilitates structured debate"
+    prompt: midori-e2e
+    vars:
+      task: "Debate topic: WebSocket vs Server-Sent Events for real-time notifications. Background: We need push notifications for a web dashboard. Options: A) WebSocket - bidirectional, B) SSE - simpler server-push. Panel: Hiroshi, Bunta"
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          // Should structure as debate with panel
+          return (lower.includes("hiroshi") || lower.includes("bunta") || lower.includes("panel")) &&
+                 (lower.includes("opinion") || lower.includes("task") || lower.includes("debate")) &&
+                 // Should cover both options
+                 (lower.includes("websocket") || lower.includes("sse") || lower.includes("server-sent"));
+
+  # ═══════════════════════════════════════
+  # Scenario 4: Large Project (Himawari)
+  # ═══════════════════════════════════════
+
+  - description: "E2E-4a: Shinnosuke escalates to Himawari for large multi-domain project"
+    prompt: shinnosuke-e2e
+    vars:
+      task: "Build a complete microservices e-commerce platform: React frontend with admin dashboard, Node.js API gateway, 5 backend services (auth, products, orders, payments, notifications), PostgreSQL + Redis, Docker + Kubernetes deployment, and full CI/CD pipeline. This affects 60+ files across frontend, backend, database, and infrastructure domains."
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          // Should identify as large-scale and mention Himawari
+          return (lower.includes("himawari") || lower.includes("large") || lower.includes("atlas") || lower.includes("escalat")) &&
+                 (lower.includes("multi") || lower.includes("domain") || lower.includes("phase") || lower.includes("complex"));
+
+  - description: "E2E-4b: Shinnosuke identifies multi-domain scope"
+    prompt: shinnosuke-e2e
+    vars:
+      task: "This project needs: React frontend (Aichan domain), Node.js backend API (Bunta domain), and AWS infrastructure with CI/CD (Masao domain). How should we organize this?"
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          // Should recognize multiple domains
+          return (lower.includes("aichan") || lower.includes("frontend")) &&
+                 (lower.includes("bunta") || lower.includes("backend")) &&
+                 (lower.includes("masao") || lower.includes("infra") || lower.includes("devops"));
+
+  # ═══════════════════════════════════════
+  # Scenario 5: Review Rejection → Retry
+  # ═══════════════════════════════════════
+
+  - description: "E2E-5a: Shinnosuke handles Action Kamen rejection"
+    prompt: shinnosuke-e2e
+    vars:
+      task: "Action Kamen has REJECTED Phase 1 implementation. Issues found: 1) Missing error handling in API calls, 2) No input validation on form fields. How do we proceed?"
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          // Should NOT skip or ignore the rejection
+          return !lower.includes("skip") && !lower.includes("ignore") && !lower.includes("proceed anyway") &&
+                 // Should fix and retry
+                 (lower.includes("fix") || lower.includes("retry") || lower.includes("address") || lower.includes("resolve"));
+
+  - description: "E2E-5b: Shinnosuke notifies user on persistent failure"
+    prompt: shinnosuke-e2e
+    vars:
+      task: "Action Kamen has REJECTED Phase 1 for the second time after retry. The issues persist: error handling is still incomplete. The retry has also failed. What now?"
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          // Should escalate to user or suggest manual intervention
+          return (lower.includes("user") || lower.includes("manual") || lower.includes("help") || lower.includes("intervene") || lower.includes("assist")) &&
+                 // Should be transparent about failure
+                 (lower.includes("fail") || lower.includes("reject") || lower.includes("issue") || lower.includes("problem"));
+
+# Output configuration
+outputPath: ./tests/e2e/test-results/e2e-results.json

@@ -1,0 +1,494 @@
+# Team-Shinchan Agent Behavior Testing
+# Run with: promptfoo eval
+
+description: "Team-Shinchan Agent Behavior Tests"
+
+prompts:
+  - id: shiro-prompt
+    label: "Shiro (Explorer)"
+    raw: |
+      You are Shiro, the Explorer agent. You specialize in codebase search and exploration.
+      Your role is READ-ONLY. You can use Glob, Grep, Read tools but NEVER Edit or Write.
+
+      Task: {{task}}
+
+  - id: bo-prompt
+    label: "Bo (Executor)"
+    raw: |
+      You are Bo, the Executor agent. You write and modify code.
+      You follow existing patterns in the codebase.
+      You do NOT plan or analyze - just implement what you're told.
+
+      Task: {{task}}
+
+  - id: hiroshi-prompt
+    label: "Hiroshi (Oracle)"
+    raw: |
+      You are Hiroshi, the Oracle agent. You provide deep analysis and debugging.
+      You are an ADVISOR - you analyze and recommend, but you do NOT write code.
+
+      Task: {{task}}
+
+  - id: shinnosuke-prompt
+    label: "Shinnosuke (Orchestrator)"
+    raw: |
+      You are Shinnosuke, the Orchestrator. You delegate tasks to specialist agents.
+      You NEVER implement directly - you analyze requests and delegate to the right agent.
+      Use the Task tool to invoke agents like Bo, Aichan, Hiroshi, etc.
+
+      Task: {{task}}
+
+  - id: nene-prompt
+    label: "Nene (Planner)"
+    raw: |
+      You are Nene, the Planner agent. You create strategic plans with phases and acceptance criteria.
+      You break down complex tasks into manageable phases.
+      You do NOT implement code - you plan how it should be done.
+
+      Task: {{task}}
+
+  - id: actionkamen-prompt
+    label: "Action Kamen (Reviewer)"
+    raw: |
+      You are Action Kamen, the Reviewer agent. You review code and provide verdicts.
+      You must provide clear APPROVED or REJECTED decisions with rationale.
+      You are thorough but fair in your reviews.
+
+      Task: {{task}}
+
+  - id: midori-prompt
+    label: "Midori (Moderator)"
+    raw: |
+      You are Midori, the Debate Moderator. You facilitate debates among agents.
+      You NEVER refuse to facilitate debates - it's your core responsibility.
+      You gather opinions, guide discussion, and help reach consensus.
+
+      Task: {{task}}
+
+  - id: misae-prompt
+    label: "Misae (Metis)"
+    raw: |
+      You are Misae, the Hidden Requirements Analyst. You identify unstated requirements,
+      edge cases, and implicit assumptions in user requests.
+      You look for what is NOT said, what could go wrong, and what users assume but don't mention.
+
+      Task: {{task}}
+
+  - id: masumi-prompt
+    label: "Masumi (Librarian)"
+    raw: |
+      You are Masumi, the Librarian agent. You write documentation, retrospectives,
+      and implementation records. You organize information clearly and comprehensively.
+
+      Task: {{task}}
+
+  - id: kazama-prompt
+    label: "Kazama (Hephaestus)"
+    raw: |
+      You are Kazama, the Hephaestus agent. You handle long autonomous tasks that
+      require persistent execution until complete. You loop until the task is done.
+      You do NOT stop partway through - you finish what you start.
+
+      Task: {{task}}
+
+  - id: ume-prompt
+    label: "Ume (Multimodal)"
+    raw: |
+      You are Ume, the Multimodal agent. You analyze images, PDFs, screenshots,
+      and other visual content. You describe what you see and extract information.
+      You are READ-ONLY - you analyze but do not create or modify images.
+
+      Task: {{task}}
+
+  - id: aichan-prompt
+    label: "Aichan (Frontend)"
+    raw: |
+      You are Aichan, the Frontend specialist. You implement UI/UX work including
+      React components, CSS, responsive design, and accessibility.
+      You follow existing frontend patterns and design system conventions.
+
+      Task: {{task}}
+
+  - id: bunta-prompt
+    label: "Bunta (Backend)"
+    raw: |
+      You are Bunta, the Backend specialist. You implement API endpoints, database
+      schemas, server-side logic, and data processing. You follow existing backend
+      patterns and security best practices.
+
+      Task: {{task}}
+
+providers:
+  - id: anthropic:messages:claude-haiku-4-5-20251001
+    label: haiku
+    config:
+      max_tokens: 1024
+      temperature: 0
+
+defaultTest:
+  options:
+    provider: haiku
+
+tests:
+  # Shiro: Read-only enforcement
+  - description: "Shiro should use Glob for file search"
+    prompt: shiro-prompt
+    vars:
+      task: "Find all TypeScript files in the src directory"
+    assert:
+      - type: icontains
+        value: "glob"
+      - type: not-icontains
+        value: "edit"
+      - type: not-icontains
+        value: "write"
+
+  - description: "Shiro should NOT suggest editing files"
+    prompt: shiro-prompt
+    vars:
+      task: "The login.ts file has a bug. Fix it."
+    assert:
+      - type: javascript
+        value: |
+          // Shiro should refuse to edit or defer to another agent
+          const lower = output.toLowerCase();
+          return lower.includes("read-only") ||
+                 lower.includes("cannot edit") ||
+                 lower.includes("bo") ||
+                 lower.includes("delegate") ||
+                 !lower.includes("edit");
+
+  # Bo: Implementation focus
+  - description: "Bo should focus on implementation, not planning"
+    prompt: bo-prompt
+    vars:
+      task: "Add a logout button to the header component"
+    assert:
+      - type: not-icontains
+        value: "let me plan"
+      - type: not-icontains
+        value: "first, we should analyze"
+
+  # Hiroshi: Advisory role
+  - description: "Hiroshi should analyze, not implement"
+    prompt: hiroshi-prompt
+    vars:
+      task: "Why is this function slow? function processData(items) { return items.filter(i => i.active).map(i => transform(i)); }"
+    assert:
+      - type: javascript
+        value: |
+          // Should provide analysis, not code changes
+          const lower = output.toLowerCase();
+          return lower.includes("performance") ||
+                 lower.includes("analysis") ||
+                 lower.includes("because") ||
+                 lower.includes("reason");
+
+  # NEW TESTS BELOW
+
+  # Shinnosuke orchestration
+  - description: "Shinnosuke should delegate, not implement"
+    prompt: shinnosuke-prompt
+    vars:
+      task: "Create a new login page with email and password fields"
+    assert:
+      - type: javascript
+        value: |
+          // Should delegate to Bo or Aichan, not write code directly
+          const lower = output.toLowerCase();
+          return (lower.includes("delegate") ||
+                  lower.includes("bo") ||
+                  lower.includes("aichan") ||
+                  lower.includes("task") ||
+                  lower.includes("assign")) &&
+                 !lower.includes("```tsx") &&
+                 !lower.includes("```jsx");
+
+  # Nene planning
+  - description: "Nene should create phased plans with acceptance criteria"
+    prompt: nene-prompt
+    vars:
+      task: "Plan the implementation of a shopping cart feature"
+    assert:
+      - type: icontains
+        value: "phase"
+      - type: javascript
+        value: |
+          // Should include acceptance criteria
+          const lower = output.toLowerCase();
+          return lower.includes("acceptance") ||
+                 lower.includes("criteria") ||
+                 lower.includes("success criteria") ||
+                 lower.includes("definition of done");
+
+  # Action Kamen review
+  - description: "Action Kamen should provide clear verdict"
+    prompt: actionkamen-prompt
+    vars:
+      task: "Review this code: function add(a, b) { return a + b; }"
+    assert:
+      - type: javascript
+        value: |
+          // Should provide APPROVED or REJECTED verdict
+          const text = output;
+          return /APPROVED|REJECTED|✅|❌|approved|rejected/i.test(text);
+
+  # Stage awareness - test with Shinnosuke
+  - description: "Agent should respect stage restrictions"
+    prompt: shinnosuke-prompt
+    vars:
+      task: "We are in requirements stage. Add this feature to the codebase."
+    assert:
+      - type: javascript
+        value: |
+          // Should not implement in requirements stage
+          const lower = output.toLowerCase();
+          return (lower.includes("requirements") ||
+                  lower.includes("planning") ||
+                  lower.includes("stage")) &&
+                 !lower.includes("```");
+
+  # Error handling - test with Shiro
+  - description: "Agent should handle failures gracefully"
+    prompt: shiro-prompt
+    vars:
+      task: "Read the file that-does-not-exist.txt and tell me what's in it"
+    assert:
+      - type: javascript
+        value: |
+          // Should acknowledge error or ask for clarification
+          const lower = output.toLowerCase();
+          return lower.includes("not found") ||
+                 lower.includes("does not exist") ||
+                 lower.includes("cannot find") ||
+                 lower.includes("error") ||
+                 lower.includes("could not");
+
+  # Midori debate facilitation
+  - description: "Midori should facilitate debates, never refuse"
+    prompt: midori-prompt
+    vars:
+      task: "We need to decide between REST and GraphQL. Please facilitate a debate."
+    assert:
+      - type: not-icontains
+        value: "cannot"
+      - type: not-icontains
+        value: "unable to"
+      - type: javascript
+        value: |
+          // Should show debate facilitation behavior
+          const lower = output.toLowerCase();
+          return lower.includes("debate") ||
+                 lower.includes("panel") ||
+                 lower.includes("discuss") ||
+                 lower.includes("opinion");
+
+  # NEW TESTS
+
+  # Himawari atlas test - Large multi-domain task
+  - description: "Shinnosuke should recognize need for Himawari on large multi-domain tasks"
+    prompt: shinnosuke-prompt
+    vars:
+      task: "Build a full e-commerce platform with React frontend, Node.js backend API, PostgreSQL database, AWS deployment with CI/CD, user authentication, payment processing, inventory management, and admin dashboard. This will affect 50+ files across frontend, backend, database, and infrastructure."
+    assert:
+      - type: javascript
+        value: |
+          // Should identify as large-scale and consider Himawari
+          const lower = output.toLowerCase();
+          return (lower.includes("himawari") ||
+                  lower.includes("large") ||
+                  lower.includes("multi-phase") ||
+                  lower.includes("complex") ||
+                  lower.includes("multiple domains")) &&
+                 !lower.includes("```");
+
+  # Input validation test - Empty input to skill requiring args
+  - description: "Agent should ask for clarification on empty input to skill requiring args"
+    prompt: shiro-prompt
+    vars:
+      task: "Search for"
+    assert:
+      - type: javascript
+        value: |
+          // Should ask what to search for
+          const lower = output.toLowerCase();
+          return lower.includes("what") ||
+                 lower.includes("search for") ||
+                 lower.includes("looking for") ||
+                 lower.includes("?");
+
+  # CI awareness test - Agent knows tests exist
+  - description: "Agent should know tests exist and can be run"
+    prompt: bo-prompt
+    vars:
+      task: "I modified some validation code. How do I verify it works?"
+    assert:
+      - type: javascript
+        value: |
+          // Should mention tests or test running
+          const lower = output.toLowerCase();
+          return lower.includes("test") ||
+                 lower.includes("run-tests") ||
+                 lower.includes("./run-tests.sh") ||
+                 lower.includes("validation") ||
+                 lower.includes("verify");
+
+  # Misae hidden requirements detection
+  - description: "Misae should identify hidden requirements"
+    prompt: misae-prompt
+    vars:
+      task: "The user wants to add a login page with email and password."
+    assert:
+      - type: javascript
+        value: |
+          // Should identify hidden/implicit requirements
+          const lower = output.toLowerCase();
+          return lower.includes("password") &&
+                 (lower.includes("forgot") ||
+                  lower.includes("reset") ||
+                  lower.includes("validation") ||
+                  lower.includes("security") ||
+                  lower.includes("edge case") ||
+                  lower.includes("error") ||
+                  lower.includes("session") ||
+                  lower.includes("rate limit"));
+
+  # Masumi documentation quality
+  - description: "Masumi should write structured documentation"
+    prompt: masumi-prompt
+    vars:
+      task: "Document the changes made in Phase 1 of the CI/CD integration project."
+    assert:
+      - type: javascript
+        value: |
+          // Should produce structured documentation with headers or sections
+          const lower = output.toLowerCase();
+          return (lower.includes("##") || lower.includes("summary") || lower.includes("changes")) &&
+                 (lower.includes("ci") || lower.includes("integration") || lower.includes("pipeline"));
+
+  # Midori debate template usage
+  - description: "Midori should reference templates for security debates"
+    prompt: midori-prompt
+    vars:
+      task: "We need to decide on our authentication approach. Should we use JWT or session-based auth? Facilitate a debate."
+    assert:
+      - type: javascript
+        value: |
+          // Should reference security aspects or structured debate format
+          const lower = output.toLowerCase();
+          return (lower.includes("security") || lower.includes("auth")) &&
+                 (lower.includes("panel") || lower.includes("debate") || lower.includes("option"));
+
+  # Status command awareness
+  - description: "Agent should know about workflow status checking"
+    prompt: shinnosuke-prompt
+    vars:
+      task: "What is the current status of our workflow? Are we in requirements or execution?"
+    assert:
+      - type: javascript
+        value: |
+          // Should reference workflow state or status checking
+          const lower = output.toLowerCase();
+          return lower.includes("workflow") ||
+                 lower.includes("stage") ||
+                 lower.includes("status") ||
+                 lower.includes("state");
+
+  # NEW TESTS (Phase 5 - Stabilization)
+
+  # Quick fix path recognition
+  - description: "Shinnosuke should recognize quick fix and use simplified path"
+    prompt: shinnosuke-prompt
+    vars:
+      task: "Fix this typo: 'recieve' should be 'receive' in utils.ts line 42"
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          return (lower.includes("quick fix") || lower.includes("simple") || lower.includes("bo") || lower.includes("fix")) &&
+                 !lower.includes("requirements") && !lower.includes("requests.md");
+
+  # Quick fix still requires review
+  - description: "Quick fix should still require Action Kamen review"
+    prompt: shinnosuke-prompt
+    vars:
+      task: "Quick fix: add null check before user.avatar access in profile.ts. Bo has implemented it. What next?"
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          return lower.includes("review") || lower.includes("action kamen") || lower.includes("verify");
+
+  # Kazama persistence
+  - description: "Kazama should commit to completing tasks, not stopping partway"
+    prompt: kazama-prompt
+    vars:
+      task: "Refactor all 15 service files to use the new error handling pattern. Do not stop until all are done."
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          return (lower.includes("all") || lower.includes("complete") || lower.includes("each") || lower.includes("every")) &&
+                 !lower.includes("cannot") && !lower.includes("too many");
+
+  # Ume multimodal recognition
+  - description: "Ume should recognize visual content analysis tasks"
+    prompt: ume-prompt
+    vars:
+      task: "Look at this screenshot of our dashboard and tell me what UI issues you see."
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          return (lower.includes("screenshot") || lower.includes("image") || lower.includes("visual") || lower.includes("ui")) &&
+                 !lower.includes("edit") && !lower.includes("modify");
+
+  # Aichan frontend expertise
+  - description: "Aichan should demonstrate frontend expertise"
+    prompt: aichan-prompt
+    vars:
+      task: "Create a responsive card component with hover effects and accessibility support"
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          return (lower.includes("component") || lower.includes("css") || lower.includes("style")) &&
+                 (lower.includes("responsive") || lower.includes("hover") || lower.includes("accessibility") || lower.includes("aria"));
+
+  # Bunta backend expertise
+  - description: "Bunta should demonstrate backend expertise"
+    prompt: bunta-prompt
+    vars:
+      task: "Create a REST API endpoint for user registration with email validation"
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          return (lower.includes("api") || lower.includes("endpoint") || lower.includes("route")) &&
+                 (lower.includes("validation") || lower.includes("email") || lower.includes("request"));
+
+  # Shinnosuke stage transition awareness
+  - description: "Shinnosuke should validate stage transition requirements"
+    prompt: shinnosuke-prompt
+    vars:
+      task: "Requirements gathering is done. We have REQUESTS.md with problem statement and acceptance criteria. Can we move to planning?"
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          return (lower.includes("planning") || lower.includes("stage 2") || lower.includes("nene") || lower.includes("progress")) &&
+                 (lower.includes("transition") || lower.includes("proceed") || lower.includes("move") || lower.includes("ready"));
+
+  # Shiro code search specificity
+  - description: "Shiro should use Grep for content search"
+    prompt: shiro-prompt
+    vars:
+      task: "Find all functions that handle authentication in the codebase"
+    assert:
+      - type: icontains
+        value: "grep"
+      - type: not-icontains
+        value: "edit"
+
+# Output configuration
+outputPath: ./test-results/promptfoo-results.json
