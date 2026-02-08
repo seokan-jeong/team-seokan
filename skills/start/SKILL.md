@@ -57,16 +57,28 @@ history:
 
 > Stage rules and transition gates are defined in CLAUDE.md PART 6. Do not duplicate here.
 
-## Step 2: Output + Invoke Nene
+## Step 2: Friendly Greeting + Invoke Nene
+
+**Output a warm, friendly greeting (adapt to user's language):**
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🚀 Team-Shinchan Workflow Started
+👦 [Shinnosuke] Hey! Let's build something great~ 💪
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📁 Document ID: {DOC_ID}
-📋 Stage 1: Requirements → Owner: Nene
+
+📁 Project: {DOC_ID}
+🎯 Stage: Requirements (with 📋 Nene)
+
+Tell me what you want to create!
+Our team is ready to help~ 🚀
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+**Multi-language examples:**
+
+- 🇺🇸 "Hey! Let's build something great~"
+- 🇰🇷 "안녕! 뭔가 멋진 걸 만들어보자~"
+- 🇯🇵 "やぁ！素敵なものを作ろう〜"
 
 Then immediately invoke Nene:
 
