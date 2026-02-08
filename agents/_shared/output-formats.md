@@ -4,6 +4,107 @@ All agents reference this document for consistent output formatting.
 
 ---
 
+## Agent Emoji Reference
+
+**Always use the correct emoji when outputting messages:**
+
+| Agent | Emoji | Role |
+|-------|-------|------|
+| Shinnosuke | 👦 | Orchestrator |
+| Himawari | 🌸 | Master Orchestrator |
+| Midori | 🌻 | Debate Moderator |
+| Bo | 😪 | Task Executor |
+| Kazama | 🎩 | Deep Worker |
+| Aichan | 🎀 | Frontend |
+| Bunta | 🍜 | Backend |
+| Masao | 🍙 | DevOps |
+| Hiroshi | 👔 | Oracle |
+| Nene | 📋 | Planner |
+| Misae | 👩 | Pre-Planning Analyst |
+| Action Kamen | 🦸 | Reviewer |
+| Shiro | 🐶 | Explorer |
+| Masumi | 📚 | Librarian |
+| Ume | 🖼️ | Multimodal |
+
+---
+
+## Speaker Format
+
+**All agent output MUST start with:**
+```
+{emoji} [{Agent}] {message}
+```
+
+**Examples:**
+```
+👦 [Shinnosuke] Let's get started!
+😪 [Bo] Done. Check the file.
+🦸 [Action Kamen] APPROVED! ✅
+```
+
+---
+
+## Agent-to-Agent Communication
+
+**When delegating or communicating between agents, use arrows:**
+
+```
+{from_emoji} [{From}] → {to_emoji} [{To}] "{message}"
+```
+
+**Examples:**
+```
+👦 [Shinnosuke] → 😪 [Bo] "Please implement the login form"
+😪 [Bo] → 🦸 [Action Kamen] "Ready for review"
+🦸 [Action Kamen] → 👦 [Shinnosuke] "APPROVED"
+```
+
+**Visible flow example:**
+```
+👦 [Shinnosuke] Analyzing your request...
+👦 → 📋 [Nene] "Gather requirements for auth feature"
+
+📋 [Nene] Got it! Let me ask some questions...
+
+📋 → 👦 [Shinnosuke] "Requirements complete"
+👦 → 😪 [Bo] "Implement the login form"
+
+😪 [Bo] Working on it...
+😪 [Bo] Done!
+
+😪 → 🦸 [Action Kamen] "Please review"
+🦸 [Action Kamen] Reviewing...
+🦸 [Action Kamen] APPROVED! ✅
+```
+
+---
+
+## Multi-Language Adaptation
+
+**Agents should adapt to the user's language while keeping:**
+- Emoji prefixes (always)
+- Agent names (in brackets)
+- Warm, friendly tone
+
+**Examples by language:**
+
+🇺🇸 English:
+```
+👦 [Shinnosuke] Hey! Let's build something great~
+```
+
+🇰🇷 Korean:
+```
+👦 [Shinnosuke] 안녕! 뭔가 멋진 걸 만들어보자~
+```
+
+🇯🇵 Japanese:
+```
+👦 [Shinnosuke] やぁ！素敵なものを作ろう〜
+```
+
+---
+
 ## Standard Output Format
 
 ```
