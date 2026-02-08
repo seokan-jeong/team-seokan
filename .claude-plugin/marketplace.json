@@ -2,9 +2,9 @@
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "team-shinchan",
   "metadata": {
-    "description": "Shinchan character-based multi-agent orchestration system. Provides 15 specialist agents + debate system + self-learning memory system."
+    "description": "Turn Claude Code into a full AI development team. 15 specialist agents debate decisions, plan systematically, execute in parallel, and learn from your project conventions."
   },
-  "description": "15 Shinchan character agents + Debate system + Self-learning memory system",
+  "description": "Turn Claude Code into a full AI development team. 15 specialist agents debate decisions, plan systematically, execute in parallel, and learn from your project conventions.",
   "owner": {
     "name": "seokan",
     "email": "kd04199@gmail.com"
@@ -13,7 +13,7 @@
     {
       "name": "team-shinchan",
       "version": "3.0.0",
-      "description": "15 Shinchan character agents + Debate system + Self-learning memory system",
+      "description": "Turn Claude Code into a full AI development team. 15 specialist agents debate decisions, plan systematically, execute in parallel, and learn from your project conventions.",
       "category": "productivity",
       "source": "./",
       "repository": "https://github.com/seokan-jeong/team-shinchan.git",
@@ -24,7 +24,15 @@
         "self-learning",
         "memory",
         "reflection",
-        "shinchan"
+        "shinchan",
+        "workflow",
+        "automation",
+        "debate",
+        "code-review",
+        "planning",
+        "productivity",
+        "ai-agents",
+        "team"
       ]
     }
   ]

@@ -67,7 +67,7 @@ Ensure shared-refs validator passes.
 - 15/15 agent shared template migration
 - orchestrate skill created
 - CLAUDE.md PARTs renumbered 1-14
-- 11 validators + 13 promptfoo tests
+- 13 validators + 25 promptfoo tests
 
 ### Month 3 (main-014): Unreleased
 - CI/CD completed (promptfoo in GitHub Actions)

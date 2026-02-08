@@ -2,7 +2,7 @@
 
 ## Overview
 
-11 static validators ensure consistency across the Team-Shinchan codebase.
+13 static validators ensure consistency across the Team-Shinchan codebase.
 
 ## Coverage Matrix
 
@@ -19,6 +19,8 @@
 | input-validation | skills/*/SKILL.md | 8 user-invocable skills have input validation |
 | error-handling | CLAUDE.md, agents/shinnosuke.md, agents/midori.md, hooks/workflow-guard.md | Error handling documentation present |
 | part-numbering | CLAUDE.md | PARTs are sequential (1 through N) with no gaps |
+| quick-fix-path | CLAUDE.md | Quick Fix Path criteria and mandatory Action Kamen review |
+| memory-system | hooks/load-kb.md, skills/learn/SKILL.md, skills/memories/SKILL.md, skills/forget/SKILL.md | Memory system files exist and cross-reference correctly |
 
 ## Overlap Analysis
 

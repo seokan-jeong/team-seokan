@@ -75,7 +75,7 @@ cd tests/validate && node index.js
 ```
 
 This runs:
-- 11 static validation tests (stage-matrix, debate-consistency, shared-refs, etc.)
+- 13 static validation tests (stage-matrix, debate-consistency, shared-refs, etc.)
 - Promptfoo agent behavior tests are in `promptfoo/promptfoo.yaml`
 
 All tests must pass before committing.

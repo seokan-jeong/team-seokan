@@ -1,6 +1,6 @@
 {
   "name": "team-shinchan",
-  "description": "15 Shinchan character agents + Debate system + Self-learning memory system",
+  "description": "Turn Claude Code into a full AI development team. 15 specialist agents debate decisions, plan systematically, execute in parallel, and learn from your project conventions.",
   "version": "3.0.0",
   "author": {
     "name": "seokan",
@@ -17,6 +17,14 @@
     "self-learning",
     "memory",
     "reflection",
-    "shinchan"
+    "shinchan",
+    "workflow",
+    "automation",
+    "debate",
+    "code-review",
+    "planning",
+    "productivity",
+    "ai-agents",
+    "team"
   ]
 }

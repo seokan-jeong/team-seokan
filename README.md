@@ -4,29 +4,78 @@
 
 <img src="https://i.pinimg.com/1200x/1c/06/b0/1c06b009abbb5c764ba8335b827e3421.jpg" alt="Shinchan" width="600"/>
 
-### *"Stop doing everything yourself. Let the team handle it."*
+### *"Stop doing everything yourself. Get a team of AI specialists."*
 
-**15 Shinchan character agents that debate, plan, execute, and learn together.**
+**15 AI agents that debate decisions, plan systematically, execute in parallel, and learn from your project.**
 
 [![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)](https://github.com/seokan-jeong/team-shinchan/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-purple.svg)](https://claude.ai)
 ![GitHub stars](https://img.shields.io/github/stars/seokan-jeong/team-shinchan?style=social)
 
-[**Quick Start**](#installation) • [**Commands**](#commands) • [**How It Works**](#how-skills-work) • [**The Team**](#the-team-15-agents)
+[**Try It**](#try-it-in-2-minutes) • [**Commands**](#commands) • [**The Team**](#the-team-15-agents) • [**How It Works**](#how-skills-work)
 
 </div>
 
 ---
 
-## Why Team-Shinchan?
+## What is Team-Shinchan?
 
-| Problem | Solution |
-|---------|----------|
-| Making architectural decisions alone | **Debate System**: Multiple expert agents discuss and reach consensus |
-| Slow sequential task execution | **Parallel Execution**: 5x faster with coordinated agents |
-| Forgetting project conventions | **Learning Memory**: Remembers and applies your preferences |
-| Incomplete task tracking | **Integrated Workflow**: Requirements → Planning → Execution → Review |
+Team-Shinchan is a **Claude Code plugin** that gives you **15 specialist AI agents** working as an organized team.
+
+Instead of one AI doing everything, you get experts in frontend, backend, DevOps, planning, code review, and more. They **debate architectural decisions**, **execute tasks in parallel** (5x faster), and **remember your project's conventions** so you don't repeat yourself.
+
+No more context-switching between roles. No more forgetting past decisions. No more reviewing your own code.
+
+---
+
+## Before / After
+
+| Without Team-Shinchan | With Team-Shinchan |
+|----------------------|---------------------|
+| ❌ You plan alone | ✅ Nene creates structured multi-phase plans |
+| ❌ You review your own code | ✅ Action Kamen reviews every change |
+| ❌ You forget past decisions | ✅ Memory system remembers conventions & preferences |
+| ❌ Sequential execution (slow) | ✅ Parallel execution (5x faster) |
+| ❌ No design debate | ✅ Expert panel debates trade-offs before coding |
+| ❌ Ad-hoc task tracking | ✅ Structured workflow with documentation |
+| ❌ Repeat the same context | ✅ Self-learning from retrospectives |
+
+---
+
+## Try It in 2 Minutes
+
+### Install
+
+**From Marketplace (Recommended)**
+```bash
+/plugin marketplace add seokan-jeong/team-shinchan
+/plugin install team-shinchan
+```
+
+**One-Click Install**
+```bash
+curl -fsSL https://raw.githubusercontent.com/seokan-jeong/team-shinchan/main/install.sh | bash
+```
+
+**Manual Install**
+```bash
+git clone https://github.com/seokan-jeong/team-shinchan.git ~/.claude/plugins/team-shinchan
+```
+
+### Verify Installation
+
+```bash
+/team-shinchan:help
+```
+
+If you see the help menu, you're ready to go.
+
+### What's Next?
+
+- Read the [Getting Started Guide](docs/getting-started.md) for your first task
+- Try `/team-shinchan:start {your task}` to see the full workflow
+- Use `/team-shinchan:debate` for design decisions
 
 ---
 
@@ -69,30 +118,6 @@ User: Use Zustand for state management
 # Week 2
 User: Add user preferences feature
 🔨 [Aichan] Implementing with Zustand (remembered!)
-```
-
----
-
-## Installation
-
-### From Marketplace (Recommended)
-
-```bash
-# Add marketplace and install
-/plugin marketplace add seokan-jeong/team-shinchan
-/plugin install team-shinchan
-```
-
-### One-Click Install
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/seokan-jeong/team-shinchan/main/install.sh | bash
-```
-
-### Manual Install
-
-```bash
-git clone https://github.com/seokan-jeong/team-shinchan.git ~/.claude/plugins/team-shinchan
 ```
 
 ---
@@ -150,6 +175,41 @@ git clone https://github.com/seokan-jeong/team-shinchan.git ~/.claude/plugins/te
 
 ---
 
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `/team-shinchan:start` | Start integrated workflow |
+| `/team-shinchan:resume` | Resume interrupted workflow |
+| `/team-shinchan:debate` | Trigger expert debate |
+| `/team-shinchan:plan` | Planning session |
+| `/team-shinchan:analyze` | Deep analysis |
+| `/team-shinchan:deepsearch` | Codebase search |
+| `/team-shinchan:autopilot` | Autonomous execution |
+| `/team-shinchan:ultrawork` | Parallel execution |
+| `/team-shinchan:ralph` | Loop until complete |
+| `/team-shinchan:status` | Show workflow status |
+| `/team-shinchan:memories` | View learned memories |
+| `/team-shinchan:learn` | Add to memory |
+| `/team-shinchan:forget` | Remove memory |
+| `/team-shinchan:help` | Show help |
+
+---
+
+## Quick Triggers
+
+No commands needed - just say:
+
+| Say This | Activates |
+|----------|-----------|
+| "ulw", "fast", "parallel" | Ultrawork (parallel mode) |
+| "until done", "complete it" | Ralph (persistence mode) |
+| "autopilot", "auto" | Autopilot (autonomous) |
+| "debate", "pros and cons" | Debate system |
+| "analyze", "debug", "why" | Deep analysis |
+
+---
+
 ## How Skills Work
 
 **Skills are not just documentation - they automatically invoke specialist agents.**
@@ -186,39 +246,6 @@ git clone https://github.com/seokan-jeong/team-shinchan.git ~/.claude/plugins/te
 
 ---
 
-## Commands
-
-| Command | Description |
-|---------|-------------|
-| `/team-shinchan:start` | Start integrated workflow |
-| `/team-shinchan:debate` | Trigger expert debate |
-| `/team-shinchan:plan` | Planning session |
-| `/team-shinchan:analyze` | Deep analysis |
-| `/team-shinchan:deepsearch` | Codebase search |
-| `/team-shinchan:autopilot` | Autonomous execution |
-| `/team-shinchan:ultrawork` | Parallel execution |
-| `/team-shinchan:ralph` | Loop until complete |
-| `/team-shinchan:memories` | View learned memories |
-| `/team-shinchan:learn` | Add to memory |
-| `/team-shinchan:forget` | Remove memory |
-| `/team-shinchan:help` | Show help |
-
----
-
-## Quick Triggers
-
-No commands needed - just say:
-
-| Say This | Activates |
-|----------|-----------|
-| "ulw", "fast", "parallel" | Ultrawork (parallel mode) |
-| "until done", "complete it" | Ralph (persistence mode) |
-| "autopilot", "auto" | Autopilot (autonomous) |
-| "debate", "pros and cons" | Debate system |
-| "analyze", "debug", "why" | Deep analysis |
-
----
-
 ## Quick Fix Path
 
 For simple fixes (typo, null check, import fix), Team-Shinchan skips the full workflow:
@@ -239,7 +266,7 @@ Done! No REQUESTS.md or PROGRESS.md needed.
 
 ## Integrated Workflow
 
-Team-Shinchan follows a 4-stage workflow for every non-trivial task.
+Team-Shinchan follows a structured 4-stage workflow for every non-trivial task, ensuring quality and completeness.
 
 ### Overview
 
@@ -249,53 +276,31 @@ User Request
      ▼
 ┌─────────────────────────────────────────────────────────┐
 │ Stage 1: REQUIREMENTS                                   │
-│ "What exactly do we need to build?"                     │
-│                                                         │
-│ 👧 Nene: Interviews user for clarity                    │
-│ 👩 Misae: Discovers hidden requirements                 │
-│ 👦 Shinnosuke: Orchestrates debate (if needed)          │
-│                                                         │
-│ 📄 Output: shinchan-docs/{id}/REQUESTS.md               │
+│ Nene + Misae clarify requirements, debate if needed     │
+│ Output: shinchan-docs/{id}/REQUESTS.md                  │
 └─────────────────────┬───────────────────────────────────┘
                       ▼
 ┌─────────────────────────────────────────────────────────┐
 │ Stage 2: PLANNING                                       │
-│ "How should we break this down?"                        │
-│                                                         │
-│ 👧 Nene: Breaks into phases with acceptance criteria    │
-│ 🐕 Shiro: Analyzes codebase impact                      │
-│                                                         │
-│ 📄 Output: shinchan-docs/{id}/PROGRESS.md               │
+│ Nene breaks into phases, Shiro analyzes impact          │
+│ Output: shinchan-docs/{id}/PROGRESS.md                  │
 └─────────────────────┬───────────────────────────────────┘
                       ▼
 ┌─────────────────────────────────────────────────────────┐
 │ Stage 3: EXECUTION (per phase)                          │
-│ "Build it right."                                       │
-│                                                         │
-│ For each phase:                                         │
-│ ├─ 🐕 Shiro: Impact analysis                            │
-│ ├─ 👦 Shinnosuke: Orchestrates debate if needed         │
-│ ├─ 🔨 Implementation:                                   │
-│ │   ├─ 👩 Aichan (Frontend/UI)                          │
-│ │   ├─ 👨 Bunta (Backend/API)                           │
-│ │   ├─ 👦 Masao (DevOps/Infra)                          │
-│ │   └─ 💪 Bo (General code)                             │
-│ └─ 🦸 Action Kamen: Code review (MANDATORY)             │
-│                                                         │
-│ 📄 Output: Phase retrospective in PROGRESS.md           │
+│ Bo/Aichan/Bunta/Masao implement                         │
+│ Action Kamen reviews each phase (MANDATORY)             │
+│ Output: Phase retrospectives in PROGRESS.md             │
 └─────────────────────┬───────────────────────────────────┘
                       ▼
 ┌─────────────────────────────────────────────────────────┐
-│ Stage 4: COMPLETION (automatic)                         │
-│ "Document and verify."                                  │
-│                                                         │
-│ 📚 Masumi: Writes RETROSPECTIVE.md                      │
-│ 📚 Masumi: Writes IMPLEMENTATION.md                     │
-│ 🦸 Action Kamen: Final verification                     │
-│                                                         │
-│ 📄 Output: Complete documentation package               │
+│ Stage 4: COMPLETION                                     │
+│ Masumi writes docs, Action Kamen final review           │
+│ Output: RETROSPECTIVE.md + IMPLEMENTATION.md            │
 └─────────────────────────────────────────────────────────┘
 ```
+
+**Want more details?** See the [full workflow guide](docs/workflow-guide.md) for stage-by-stage pseudo-code and checklists.
 
 ### When Debate Triggers
 
@@ -321,39 +326,13 @@ shinchan-docs/
     └── IMPLEMENTATION.md   # Technical details
 ```
 
-### Example: "Add OAuth2 Login"
-
-```
-📋 Stage 1: Requirements
-   Nene: "Which providers? Google, GitHub?"
-   User: "Google only for now"
-   Shinnosuke: "JWT vs Session?" → Debate triggered
-   → REQUESTS.md created
-
-📋 Stage 2: Planning
-   Nene: "3 phases: Backend API, Frontend UI, Integration"
-   Shiro: "Impacts: auth/, components/, api/"
-   → PROGRESS.md created
-
-📋 Stage 3: Execution
-   Phase 1: Bunta implements OAuth API
-   Phase 2: Aichan builds login UI
-   Phase 3: Bo integrates and tests
-   Action Kamen: Reviews each phase
-
-📋 Stage 4: Completion
-   Masumi: Documents the implementation
-   Action Kamen: Final approval
-   → Complete!
-```
-
 ---
 
 ## Self-Learning System
 
-Team-Shinchan gets smarter with every interaction through automatic retrospection.
+Team-Shinchan gets smarter with every task through automatic retrospection.
 
-### How It Works
+### Learning Cycle
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -369,13 +348,15 @@ Task Complete ──→ Auto-Retrospective ──→ Save Learning
 New Session ────→ Load Learnings ────→ Apply to Work
 ```
 
-### Automatic Learning
+### What Gets Learned
 
-After every significant task, Team-Shinchan:
-1. **Reflects** on what worked and what didn't
-2. **Extracts** patterns, mistakes, and insights
-3. **Saves** learnings to `.team-shinchan/learnings.md`
-4. **Applies** learnings in future sessions
+| Category | Example |
+|----------|---------|
+| **Preferences** | "User prefers Zustand over Redux" |
+| **Patterns** | "Use early returns for validation" |
+| **Conventions** | "This project uses pnpm, not npm" |
+| **Mistakes** | "Always null-check before .map()" |
+| **Decisions** | "JWT with refresh token rotation" |
 
 ### Manual Commands
 
@@ -390,15 +371,38 @@ After every significant task, Team-Shinchan:
 /team-shinchan:forget
 ```
 
-### What Gets Learned
+---
 
-| Category | Example |
-|----------|---------|
-| **Preferences** | "User prefers Zustand over Redux" |
-| **Patterns** | "Use early returns for validation" |
-| **Conventions** | "This project uses pnpm, not npm" |
-| **Mistakes** | "Always null-check before .map()" |
-| **Decisions** | "JWT with refresh token rotation" |
+## FAQ
+
+### Does this replace Claude Code?
+
+No. Team-Shinchan is a **plugin** that enhances Claude Code by adding specialized agents and workflows. You still use Claude Code as normal, but now you have a team of experts instead of one generalist.
+
+### Is it free?
+
+Yes, Team-Shinchan is **MIT licensed** and free to use. Agent calls consume your Claude Code API credits (same as any other Claude conversation). The complexity of your task determines the number of calls.
+
+### How many API calls does it make?
+
+**Quick fixes:** ~3 calls (Bo implements → Action Kamen reviews → done)
+**Standard tasks:** 10-30 calls (requirements → planning → execution → completion)
+**Complex tasks with debates:** 20-50 calls (includes expert panel discussions)
+
+Each call is purposeful and documented in the workflow.
+
+### Can I use individual agents without the full workflow?
+
+Yes. Each skill works standalone:
+- `/team-shinchan:analyze` → Just Hiroshi (deep analysis)
+- `/team-shinchan:plan` → Just Nene (planning)
+- `/team-shinchan:deepsearch` → Just Shiro + Masumi (search)
+
+Or let Shinnosuke orchestrate the full workflow with `/team-shinchan:start`.
+
+### Does it work with other AI tools?
+
+Currently **Claude Code only**. Team-Shinchan is designed specifically for Claude Code's plugin architecture and uses Claude's multi-agent capabilities.
 
 ---
 
