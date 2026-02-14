@@ -17,7 +17,9 @@ const KNOWN_SKILLS = [
   'start', 'status', 'autopilot', 'ralph', 'ultrawork', 'plan', 'analyze',
   'deepsearch', 'debate', 'orchestrate', 'learn', 'memories', 'forget', 'help', 'resume',
   'review', 'frontend', 'backend', 'devops', 'implement',
-  'requirements', 'vision', 'bigproject', 'verify-implementation', 'manage-skills'
+  'requirements', 'vision', 'bigproject', 'verify-implementation', 'manage-skills',
+  'verify-agents', 'verify-skills', 'verify-consistency',
+  'verify-workflow', 'verify-memory', 'verify-budget', 'research'
 ];
 
 function getActualAgents() {
