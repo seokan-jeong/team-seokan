@@ -120,7 +120,7 @@ All notable changes to Team-Shinchan will be documented in this file.
 - 15 agents across 5 layers (Orchestration, Execution, Specialist, Advisory, Utility)
 - 13 skills for workflow automation
 - 4-stage workflow (Requirements, Planning, Execution, Completion)
-- Integrated documentation system (shinchan-docs/)
+- Integrated documentation system (.shinchan-docs/)
 - Debate system for design decisions
 - WORKFLOW_STATE.yaml for state management
 - Action Kamen verification layer

@@ -62,7 +62,7 @@ Design decisions automatically trigger debate:
 ```
 
 Shinnosuke will:
-1. Create `shinchan-docs/main-001/` (or appropriate ID)
+1. Create `.shinchan-docs/main-001/` (or appropriate ID)
 2. Interview for requirements (Nene)
 3. Orchestrate debate on OAuth vs Session approach (directly invoke expert panel)
 4. Break into phases (Nene)

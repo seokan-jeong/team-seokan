@@ -21,7 +21,7 @@ Prevent workflow derailment by:
 
 ```
 1. Look for active workflow:
-   - Search for shinchan-docs/*/WORKFLOW_STATE.yaml
+   - Search for .shinchan-docs/*/WORKFLOW_STATE.yaml
    - If NOT found → ALLOW (no active workflow)
 
 2. Read current stage:
@@ -213,7 +213,7 @@ When state file cannot be read, use these defaults:
 
 ## Implementation Notes
 
-1. This hook should check for WORKFLOW_STATE.yaml in any subdirectory of shinchan-docs/
+1. This hook should check for WORKFLOW_STATE.yaml in any subdirectory of .shinchan-docs/
 2. If multiple workflows exist, use the most recently updated one
 3. The hook should be lightweight and not slow down normal operations
 4. When no workflow is active, all tools should be allowed

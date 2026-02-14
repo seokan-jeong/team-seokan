@@ -23,18 +23,18 @@ When this command is invoked, **DO NOT** explain the process. **EXECUTE** the re
 ### 1. Input Validation
 
 **If no DOC_ID provided:**
-- Scan `shinchan-docs/*/WORKFLOW_STATE.yaml`
+- Scan `.shinchan-docs/*/WORKFLOW_STATE.yaml`
 - Filter: `status: active` OR `status: paused`
 - Display list and await user selection
 - If empty: "No interrupted workflows found."
 
 **If DOC_ID provided:**
-- Validate existence of `shinchan-docs/{DOC_ID}/`
+- Validate existence of `.shinchan-docs/{DOC_ID}/`
 - Error if not found: List available workflows
 
 ### 2. Load State
 
-Read `shinchan-docs/{DOC_ID}/WORKFLOW_STATE.yaml`:
+Read `.shinchan-docs/{DOC_ID}/WORKFLOW_STATE.yaml`:
 - Extract: `current.stage`, `current.phase`, `current.owner`
 - Verify: `status != completed`
 
@@ -101,7 +101,7 @@ Available workflows:
 ```
 Workflow 'main-015' is already completed.
 
-See: shinchan-docs/main-015/RETROSPECTIVE.md
+See: .shinchan-docs/main-015/RETROSPECTIVE.md
 
 Use /team-shinchan:start for a new task.
 ```

@@ -23,19 +23,19 @@ IF args contains ISSUE-xxx format:
   DOC_ID = args (e.g., ISSUE-123)
 ELSE:
   Check current branch: git branch --show-current
-  Check existing folders: ls shinchan-docs/
+  Check existing folders: ls .shinchan-docs/
   DOC_ID = {branch}-{next_index} (e.g., main-004)
 ```
 
 ## Step 3: Create Folder (Immediately - Use Bash)
 
 ```bash
-mkdir -p shinchan-docs/{DOC_ID}
+mkdir -p .shinchan-docs/{DOC_ID}
 ```
 
 ## Step 4: Create WORKFLOW_STATE.yaml (Immediately - Use Write)
 
-File path: `shinchan-docs/{DOC_ID}/WORKFLOW_STATE.yaml`
+File path: `.shinchan-docs/{DOC_ID}/WORKFLOW_STATE.yaml`
 
 ```yaml
 version: 1
@@ -100,7 +100,7 @@ history:
 🎯 Team-Shinchan Orchestration Started
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📁 Document ID: {DOC_ID}
-📂 Folder: shinchan-docs/{DOC_ID}/
+📂 Folder: .shinchan-docs/{DOC_ID}/
 📄 WORKFLOW_STATE.yaml ✅ Created
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📋 Stage 1: Requirements
@@ -119,7 +119,7 @@ Task(
 ## Context
 - DOC_ID: {DOC_ID}
 - User Request: {args}
-- WORKFLOW_STATE.yaml Location: shinchan-docs/{DOC_ID}/WORKFLOW_STATE.yaml
+- WORKFLOW_STATE.yaml Location: .shinchan-docs/{DOC_ID}/WORKFLOW_STATE.yaml
 
 ## Your Mission
 You are Shinnosuke, the Orchestrator. Guide this task through the full integrated workflow:
@@ -163,7 +163,7 @@ For each phase:
 - Follow stage rules in WORKFLOW_STATE.yaml
 - Cannot proceed to next stage without meeting transition gates
 - Action Kamen review is MANDATORY for every phase
-- Document everything in shinchan-docs/{DOC_ID}/
+- Document everything in .shinchan-docs/{DOC_ID}/
 
 ## Debate Integration
 Automatically trigger debate when:
@@ -189,7 +189,7 @@ User request: {args}`
 # ✅ Checklist
 
 After execution, all of the following must be completed:
-- [ ] `shinchan-docs/{DOC_ID}/` folder created
-- [ ] `shinchan-docs/{DOC_ID}/WORKFLOW_STATE.yaml` file exists
+- [ ] `.shinchan-docs/{DOC_ID}/` folder created
+- [ ] `.shinchan-docs/{DOC_ID}/WORKFLOW_STATE.yaml` file exists
 - [ ] Shinnosuke agent invoked via Task
 - [ ] Orchestration mode active

@@ -78,7 +78,7 @@ Rule 1: Never do substantive work yourself - delegate to specialists
 Rule 2: Follow the integrated workflow for ALL tasks
 Rule 3: Trigger Debate when design decisions are needed
 Rule 4: Never complete without Action Kamen verification
-Rule 5: Document everything in shinchan-docs/
+Rule 5: Document everything in .shinchan-docs/
 Rule 6: ALWAYS use Task tool to invoke team-shinchan agents (NEVER work directly)
 ```
 
@@ -102,7 +102,7 @@ Rule 6: ALWAYS use Task tool to invoke team-shinchan agents (NEVER work directly
 - Clear, unambiguous fix (e.g., typo, null check, import fix)
 
 **Workflow:** Bo implements → Action Kamen reviews (MANDATORY) → Done.
-**No docs needed:** Skip REQUESTS.md, PROGRESS.md, shinchan-docs/
+**No docs needed:** Skip REQUESTS.md, PROGRESS.md, .shinchan-docs/
 
 **Examples:**
 ```
@@ -196,7 +196,7 @@ When a skill is called: ❌ Only describe without executing, ❌ Work directly w
 ### Folder Structure
 
 ```
-shinchan-docs/
+.shinchan-docs/
 ├── ISSUE-123/           # When issue ID provided
 ├── feature-auth-001/    # When no issue ID: {branch}-{index}
 └── main-002/            # Another example
@@ -225,7 +225,7 @@ Index is auto-incremented based on existing folders.
 **Every active workflow has a state file:**
 
 ```
-shinchan-docs/{DOC_ID}/
+.shinchan-docs/{DOC_ID}/
 ├── WORKFLOW_STATE.yaml  ← Workflow state tracking (always created first)
 ├── REQUESTS.md
 ├── PROGRESS.md

@@ -21,7 +21,7 @@ team-shinchan/
 │   ├── start/SKILL.md  # Start workflow
 │   └── .../SKILL.md    # Other skills
 ├── tests/              # Test files
-└── shinchan-docs/      # Generated workflow docs
+└── .shinchan-docs/      # Generated workflow docs
 ```
 
 ## Agent File Conventions

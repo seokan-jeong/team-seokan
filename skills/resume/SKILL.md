@@ -22,7 +22,7 @@ Resume a paused or interrupted workflow by loading its saved state and delegatin
 ### Step 0: Input Validation
 
 **If DOC_ID not provided:**
-1. Scan `shinchan-docs/*/WORKFLOW_STATE.yaml`
+1. Scan `.shinchan-docs/*/WORKFLOW_STATE.yaml`
 2. Filter by `status: active` OR `status: paused`
 3. Display list to user:
    ```
@@ -36,7 +36,7 @@ Resume a paused or interrupted workflow by loading its saved state and delegatin
 
 ### Step 1: Load Context
 
-1. Read `shinchan-docs/{DOC_ID}/WORKFLOW_STATE.yaml`
+1. Read `.shinchan-docs/{DOC_ID}/WORKFLOW_STATE.yaml`
    - If not exists: **Error: "Workflow {DOC_ID} not found. Available workflows: {list active/paused DOC_IDs}"**
 
 2. Check status:
@@ -52,10 +52,10 @@ Resume a paused or interrupted workflow by loading its saved state and delegatin
 
 ### Step 2: Load Workflow Documents
 
-1. **Required**: Read `shinchan-docs/{DOC_ID}/REQUESTS.md`
+1. **Required**: Read `.shinchan-docs/{DOC_ID}/REQUESTS.md`
    - If not exists: **Warning + suggest restarting at requirements stage**
 
-2. **Conditional**: Read `shinchan-docs/{DOC_ID}/PROGRESS.md`
+2. **Conditional**: Read `.shinchan-docs/{DOC_ID}/PROGRESS.md`
    - Only if `current_stage` is `planning`, `execution`, or `completion`
    - Extract current phase details, AC status, pending tasks
 

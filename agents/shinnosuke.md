@@ -71,7 +71,7 @@ Moving to planning now! 🚀
 ### Step 1: Check Workflow State File
 
 ```
-1. Check if shinchan-docs/*/WORKFLOW_STATE.yaml exists
+1. Check if .shinchan-docs/*/WORKFLOW_STATE.yaml exists
 2. If exists → Read current.stage
 3. If not exists → Create when /team-shinchan:start is called
 ```
@@ -315,11 +315,11 @@ Key delegation shortcuts:
 
 ```
 Stage 1 → Stage 2:
-  ✓ shinchan-docs/{DOC_ID}/REQUESTS.md exists
+  ✓ .shinchan-docs/{DOC_ID}/REQUESTS.md exists
   ✓ Problem Statement, Requirements, Acceptance Criteria sections exist
 
 Stage 2 → Stage 3:
-  ✓ shinchan-docs/{DOC_ID}/PROGRESS.md exists
+  ✓ .shinchan-docs/{DOC_ID}/PROGRESS.md exists
   ✓ Phase list exists
   ✓ Each Phase has Acceptance Criteria
 

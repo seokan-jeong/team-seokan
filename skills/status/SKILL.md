@@ -16,7 +16,7 @@ Use /team-shinchan:start to begin a new task.
 
 ## Execution Steps
 
-1. Find the most recently updated WORKFLOW_STATE.yaml in shinchan-docs/
+1. Find the most recently updated WORKFLOW_STATE.yaml in .shinchan-docs/
 2. Read WORKFLOW_STATE.yaml and extract current state
 3. Check existence of workflow documents (REQUESTS.md, PROGRESS.md, etc.)
 4. Display status dashboard

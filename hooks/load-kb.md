@@ -36,7 +36,7 @@ At session start, load KB summary, past learnings, and detect any interrupted wo
 
 ### 3. Detect Interrupted Workflows
 
-1. **Scan**: Check `shinchan-docs/*/WORKFLOW_STATE.yaml` files.
+1. **Scan**: Check `.shinchan-docs/*/WORKFLOW_STATE.yaml` files.
 2. **Filter**: Find workflows with `status: active`.
 3. **Display** (if found):
 

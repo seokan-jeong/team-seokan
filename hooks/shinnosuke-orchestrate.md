@@ -30,12 +30,12 @@ if [ -n "$ISSUE_ID" ]; then
 else
     BRANCH=$(git branch --show-current)
     # Find next index
-    EXISTING=$(ls shinchan-docs/ | grep "^${BRANCH}-" | wc -l)
+    EXISTING=$(ls .shinchan-docs/ | grep "^${BRANCH}-" | wc -l)
     INDEX=$(printf "%03d" $((EXISTING + 1)))
     DOC_ID="${BRANCH}-${INDEX}"
 fi
 
-mkdir -p "shinchan-docs/${DOC_ID}"
+mkdir -p ".shinchan-docs/${DOC_ID}"
 ```
 
 ### 2.2 Stage 1: Requirements
@@ -114,7 +114,7 @@ For each Phase:
 ## Mandatory Rules
 
 1. **NEVER** do code work yourself - delegate
-2. **ALWAYS** create shinchan-docs/ for non-trivial tasks
+2. **ALWAYS** create .shinchan-docs/ for non-trivial tasks
 3. **ALWAYS** verify with Action Kamen before completion
 4. **ALWAYS** trigger Debate for design decisions
 5. **ALWAYS** auto-proceed to completion stage (no user prompt)

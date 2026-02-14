@@ -277,13 +277,13 @@ User Request
 ┌─────────────────────────────────────────────────────────┐
 │ Stage 1: REQUIREMENTS                                   │
 │ Nene + Misae clarify requirements, debate if needed     │
-│ Output: shinchan-docs/{id}/REQUESTS.md                  │
+│ Output: .shinchan-docs/{id}/REQUESTS.md                  │
 └─────────────────────┬───────────────────────────────────┘
                       ▼
 ┌─────────────────────────────────────────────────────────┐
 │ Stage 2: PLANNING                                       │
 │ Nene breaks into phases, Shiro analyzes impact          │
-│ Output: shinchan-docs/{id}/PROGRESS.md                  │
+│ Output: .shinchan-docs/{id}/PROGRESS.md                  │
 └─────────────────────┬───────────────────────────────────┘
                       ▼
 ┌─────────────────────────────────────────────────────────┐
@@ -318,7 +318,7 @@ User Request
 Every task creates a documentation folder:
 
 ```
-shinchan-docs/
+.shinchan-docs/
 └── ISSUE-123/              # or feature-auth-001/
     ├── REQUESTS.md         # What we're building
     ├── PROGRESS.md         # Phase-by-phase progress

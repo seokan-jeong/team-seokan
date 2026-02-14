@@ -10,7 +10,7 @@ description: Start a new task with the integrated workflow
 
 ```bash
 # Scan for active workflows
-# For each shinchan-docs/*/WORKFLOW_STATE.yaml with status: active:
+# For each .shinchan-docs/*/WORKFLOW_STATE.yaml with status: active:
 #   - Set status to "paused", add paused event
 #   - Notify: "⏸️ Paused {doc_id} (was at Stage {stage}, Phase {phase})"
 ```
@@ -22,7 +22,7 @@ description: Start a new task with the integrated workflow
 git branch --show-current
 
 # Check existing folders
-ls shinchan-docs/ 2>/dev/null || echo "No folder exists"
+ls .shinchan-docs/ 2>/dev/null || echo "No folder exists"
 ```
 
 DOC_ID Rules:
@@ -32,12 +32,12 @@ DOC_ID Rules:
 ## 2. Execute Immediately: Create Folder
 
 ```bash
-mkdir -p shinchan-docs/{DOC_ID}
+mkdir -p .shinchan-docs/{DOC_ID}
 ```
 
 ## 3. Execute Immediately: Create WORKFLOW_STATE.yaml
 
-Use Write tool to create `shinchan-docs/{DOC_ID}/WORKFLOW_STATE.yaml`:
+Use Write tool to create `.shinchan-docs/{DOC_ID}/WORKFLOW_STATE.yaml`:
 
 ```yaml
 version: 1
@@ -70,7 +70,7 @@ history:
 🚀 Team-Shinchan Workflow Started
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📁 Document ID: {DOC_ID}
-📂 Folder: shinchan-docs/{DOC_ID}/
+📂 Folder: .shinchan-docs/{DOC_ID}/
 📄 WORKFLOW_STATE.yaml ✅
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📋 Stage 1: Requirements

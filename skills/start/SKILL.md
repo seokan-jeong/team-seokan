@@ -12,7 +12,7 @@ user-invocable: true
 
 ```
 Before creating a new workflow, check for active ones:
-1. Scan shinchan-docs/*/WORKFLOW_STATE.yaml
+1. Scan .shinchan-docs/*/WORKFLOW_STATE.yaml
 2. For each with status: active:
    - Set status to "paused"
    - Add paused event to history:
@@ -29,10 +29,10 @@ Before creating a new workflow, check for active ones:
 ```
 1. Determine DOC_ID:
    - If args contains ISSUE-xxx → DOC_ID = args
-   - Else → git branch + ls shinchan-docs/ → {branch}-{next_index}
+   - Else → git branch + ls .shinchan-docs/ → {branch}-{next_index}
    - If args > 2000 chars → truncate + warn
 
-2. Create folder: mkdir -p shinchan-docs/{DOC_ID}
+2. Create folder: mkdir -p .shinchan-docs/{DOC_ID}
 
 3. Create WORKFLOW_STATE.yaml (Write tool):
 ```
@@ -89,7 +89,7 @@ Task(
   prompt="Starting Stage 1 requirements gathering.
 DOC_ID: {DOC_ID}
 User request: {args or 'None - Start interview'}
-Write REQUESTS.md to shinchan-docs/{DOC_ID}/REQUESTS.md.
+Write REQUESTS.md to .shinchan-docs/{DOC_ID}/REQUESTS.md.
 All 'do this' requests = requirements, NOT implementation.
 Start by asking: 'What problem would you like to solve?'"
 )
