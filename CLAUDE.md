@@ -152,6 +152,8 @@ Rule 6: ALWAYS use Task tool to invoke team-shinchan agents (NEVER work directly
 | `/team-shinchan:requirements` | Misae | sonnet |
 | `/team-shinchan:vision` | Ume | sonnet |
 | `/team-shinchan:bigproject` | Himawari | opus |
+| `/team-shinchan:verify-implementation` | Action Kamen | opus |
+| `/team-shinchan:manage-skills` | Bo | sonnet |
 
 ### ⛔ Absolutely Prohibited
 
@@ -430,6 +432,16 @@ Shinnosuke always delegates to Midori for all debate scenarios, regardless of co
 | `/team-shinchan:deepsearch` | 🐶 Shiro | Codebase search |
 | `/team-shinchan:debate` | 🌻 Midori | Design decisions |
 
+### Verification Skills (Self-Evolving)
+
+| Command | Description | When |
+|---------|-------------|------|
+| `/team-shinchan:verify-implementation` | Run all verify-* skills | Full validation |
+| `/team-shinchan:manage-skills` | Auto-create/update verify skills | After changes |
+
+> These skills implement a self-evolving verification system from kimoring-ai-skills.
+> verify-implementation runs automatically during Completion stage.
+
 ### Memory Skills
 
 | Command | Description | When |
@@ -450,6 +462,7 @@ Shinnosuke always delegates to Midori for all debate scenarios, regardless of co
 - [ ] RETROSPECTIVE.md written
 - [ ] IMPLEMENTATION.md written
 - [ ] Action Kamen verification passed
+- [ ] verify-implementation passed (all verify-* skills)
 - [ ] Build/tests pass
 - [ ] TODO list: 0 pending items
 

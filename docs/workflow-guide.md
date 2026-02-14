@@ -70,12 +70,32 @@ for phase in phases:
 
 ```python
 # Auto-proceed without user confirmation
+
+# 1. Run verify-implementation (auto-triggered by hooks/auto-verify.md)
+verify_result = run_skill("verify-implementation")
+if verify_result.has_failures:
+    fix_issues_or_skip()  # User chooses: fix / review / skip
+
+# 2. Optionally update verification skills
+if has_uncovered_changes:
+    run_skill("manage-skills")  # Creates/updates verify-* skills
+
+# 3. Write documentation
 delegate_to("masumi", "Write RETROSPECTIVE.md")
 delegate_to("masumi", "Write IMPLEMENTATION.md")
 
+# 4. Final review
 final_review = delegate_to("actionkamen", "Final verification")
 if final_review.approved:
     report_completion()
 else:
     fix_and_retry()  # See PART 13 in CLAUDE.md
 ```
+
+### Completion Gate (Updated)
+
+All must pass before workflow completion:
+- [ ] verify-implementation passed (or skipped with override)
+- [ ] RETROSPECTIVE.md written
+- [ ] IMPLEMENTATION.md written
+- [ ] Action Kamen final review passed
