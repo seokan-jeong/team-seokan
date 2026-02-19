@@ -6,6 +6,14 @@ user-invocable: true
 
 # Redirecting to /team-shinchan:start
 
+**Output immediately before executing:**
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+👦 [Shinnosuke] Orchestrating your task~ 🎯
+🖥️ Dashboard: http://localhost:3333
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
 **This skill has been merged into `/team-shinchan:start`.** Both skills now invoke Shinnosuke as orchestrator.
 
 Execute `/team-shinchan:start` with the same arguments:

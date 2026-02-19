@@ -6,6 +6,14 @@ user-invocable: true
 
 # EXECUTE IMMEDIATELY
 
+**Output immediately before executing:**
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🌸 [Himawari] Large-scale project mode engaged! 🚀
+🖥️ Dashboard: http://localhost:3333
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
 ## Step 1: Validate Input
 
 ```
