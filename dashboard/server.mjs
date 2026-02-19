@@ -29,6 +29,74 @@ const DOCS_DIR = path.isAbsolute(DOCS_DIR_NAME)
 // ── stderr 로거 (console.log 금지 - MCP stdio가 stdout 사용) ─────────────────
 const log = (...args) => process.stderr.write('[dashboard] ' + args.join(' ') + '\n');
 
+// ── 포트 파일 경로 (포트 디스커버리용) ──────────────────────────────────────────
+const PORT_FILE_PATH = path.join(DOCS_DIR, '.dashboard-port');
+
+/**
+ * 기존 대시보드 서버 인스턴스가 살아있는지 확인
+ * 포트 파일이 존재하면 해당 포트로 /api/health를 요청하여 확인
+ * @returns {Promise<number|null>} 살아있는 서버의 포트 번호, 없으면 null
+ */
+async function checkExistingServer() {
+  if (!fs.existsSync(PORT_FILE_PATH)) return null;
+
+  let existingPort;
+  try {
+    existingPort = parseInt(fs.readFileSync(PORT_FILE_PATH, 'utf-8').trim(), 10);
+  } catch {
+    return null;
+  }
+
+  if (isNaN(existingPort) || existingPort <= 0 || existingPort > 65535) return null;
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 2000);
+    const res = await fetch(`http://localhost:${existingPort}/api/health`, {
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+    if (res.ok) {
+      return existingPort; // 기존 서버가 살아있음
+    }
+  } catch {
+    // 기존 서버가 죽었거나 응답 없음
+  }
+
+  return null;
+}
+
+/**
+ * 포트 파일에 실제 바인딩된 포트를 기록
+ * @param {number} port - 실제 바인딩된 포트 번호
+ */
+function writePortFile(port) {
+  try {
+    // docs 디렉토리가 없으면 생성
+    if (!fs.existsSync(DOCS_DIR)) {
+      fs.mkdirSync(DOCS_DIR, { recursive: true });
+    }
+    fs.writeFileSync(PORT_FILE_PATH, String(port), 'utf-8');
+    log(`포트 파일 기록: ${PORT_FILE_PATH} (포트: ${port})`);
+  } catch (err) {
+    log(`포트 파일 기록 실패: ${err.message}`);
+  }
+}
+
+/**
+ * 포트 파일 삭제 (서버 종료 시)
+ */
+function removePortFile() {
+  try {
+    if (fs.existsSync(PORT_FILE_PATH)) {
+      fs.unlinkSync(PORT_FILE_PATH);
+      log('포트 파일 삭제 완료');
+    }
+  } catch {
+    // 삭제 실패해도 무시 (이미 없거나 권한 문제)
+  }
+}
+
 // ── 에이전트 정적 데이터 ──────────────────────────────────────────────────────
 const AGENTS = {
   shinnosuke:  { emoji: '👦', name: 'Shinnosuke',   role: 'Orchestrator',     layer: 'Orchestration', model: 'opus' },
@@ -477,6 +545,17 @@ async function handleHttpRequest(req, res) {
       return;
     }
     serveStaticFile(res, filePath);
+    return;
+  }
+
+  // ── GET /api/health → 서버 헬스 체크 ──
+  if (method === 'GET' && url.pathname === '/api/health') {
+    jsonResponse(res, 200, {
+      status: 'ok',
+      port:   state.serverPort,
+      uptime: process.uptime(),
+      url:    `http://localhost:${state.serverPort}`,
+    });
     return;
   }
 
@@ -1284,6 +1363,7 @@ function startHttpServer(port = PORT, maxRetries = 10) {
 
   server.listen(port, '127.0.0.1', () => {
     state.serverPort = port; // 실제 사용 포트 저장
+    writePortFile(port); // 포트 파일 기록 (포트 디스커버리용)
     log(`HTTP 서버 시작: http://localhost:${port}`);
     log(`- 대시보드:      http://localhost:${port}/`);
     log(`- API 상태:      http://localhost:${port}/api/status`);
@@ -1308,6 +1388,9 @@ function startHttpServer(port = PORT, maxRetries = 10) {
  */
 function gracefulShutdown() {
   log('서버 종료 중...');
+
+  // 포트 파일 삭제
+  removePortFile();
 
   // SSE 클라이언트 연결 종료
   for (let i = sseClients.length - 1; i >= 0; i--) {
@@ -1353,6 +1436,25 @@ log('Team-Shinchan Dashboard Server 시작 중...');
 log(`Plugin Root: ${PLUGIN_ROOT}`);
 log(`Docs Dir:    ${DOCS_DIR}`);
 
+// process.on('exit') 에서도 포트 파일 정리 (비정상 종료 대비)
+process.on('exit', () => removePortFile());
+
+// MCP stdio 서버는 항상 시작
 startMcpServer();
-startHttpServer();
-startFileWatcher();
+
+// 기존 인스턴스 감지 후 HTTP 서버 시작 여부 결정
+(async () => {
+  const existingPort = await checkExistingServer();
+
+  if (existingPort) {
+    log(`기존 대시보드 서버 감지 (포트: ${existingPort}). HTTP 서버를 시작하지 않습니다.`);
+    log(`기존 대시보드 URL: http://localhost:${existingPort}`);
+    state.serverPort = existingPort; // 기존 서버 포트를 MCP 응답에 사용
+  } else {
+    // 기존 서버가 없으면 HTTP 서버 시작
+    log('기존 대시보드 서버 없음. HTTP 서버를 시작합니다.');
+    startHttpServer();
+  }
+
+  startFileWatcher();
+})();

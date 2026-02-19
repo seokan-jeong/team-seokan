@@ -8,7 +8,21 @@
 #   HOOK_EVENT      - 이벤트 타입 (hooks.json에서 주입)
 #   DASHBOARD_URL   - 대시보드 서버 URL (기본값: http://localhost:3333)
 
+# ── 포트 디스커버리 ──────────────────────────────────────────────────────────
+# 서버가 실제 바인딩된 포트를 기록한 파일에서 포트를 읽어옴
+# 파일이 없으면 DASHBOARD_URL 환경변수 또는 기본값 3333으로 fallback
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+PORT_FILE="${PLUGIN_ROOT}/.shinchan-docs/.dashboard-port"
+
+if [ -z "${DASHBOARD_URL}" ] && [ -f "$PORT_FILE" ]; then
+  DISCOVERED_PORT=$(cat "$PORT_FILE" 2>/dev/null | tr -d '[:space:]')
+  if [ -n "$DISCOVERED_PORT" ]; then
+    DASHBOARD_URL="http://localhost:${DISCOVERED_PORT}"
+  fi
+fi
 DASHBOARD_URL="${DASHBOARD_URL:-http://localhost:3333}"
+
 HOOK_EVENT="${HOOK_EVENT:-unknown}"
 
 # stdin에서 JSON 읽기
