@@ -63,7 +63,7 @@ When `/team-shinchan:debate` is called or debate is auto-triggered, Shinnosuke a
 ```typescript
 Task(
   subagent_type="team-shinchan:midori",
-  model="opus",
+  model="sonnet",
   prompt="Please proceed with Debate.
 
 ## Topic

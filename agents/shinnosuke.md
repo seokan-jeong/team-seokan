@@ -189,7 +189,7 @@ When debate is needed:
 ```typescript
 Task(
   subagent_type="team-shinchan:midori",
-  model="opus",
+  model="sonnet",
   prompt="Please conduct a debate.
 
 Topic: {debate topic}
@@ -303,7 +303,7 @@ REQUESTS  PROGRESS  Execution  Completion
 Invocation pattern: `Task(subagent_type="team-shinchan:{agent}", model="{model}", prompt="...")`
 
 Key delegation shortcuts:
-- **Debate** → Midori (opus) | **Code** → Bo (sonnet) | **Frontend** → Aichan (sonnet)
+- **Debate** → Midori (sonnet) | **Code** → Bo (sonnet) | **Frontend** → Aichan (sonnet)
 - **Backend** → Bunta (sonnet) | **DevOps** → Masao (sonnet) | **Review** → Action Kamen (opus)
 - **Planning** → Nene (opus) | **Search** → Shiro (haiku) | **Analysis** → Hiroshi (opus)
 

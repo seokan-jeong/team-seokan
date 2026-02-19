@@ -47,7 +47,7 @@ Rule 6: ALWAYS use Task tool to invoke team-shinchan agents (NEVER work directly
 | `/plan` | Nene | opus |
 | `/analyze` | Hiroshi | opus |
 | `/deepsearch` | Shiro + Masumi | haiku/sonnet |
-| `/debate` | Midori | opus |
+| `/debate` | Midori | sonnet |
 | `/resume` | Shinnosuke | opus |
 | `/review` | Action Kamen | opus |
 | `/frontend` | Aichan | sonnet |
@@ -115,7 +115,7 @@ All debates delegated to Midori via Task. See [agents/midori.md](agents/midori.m
 |-------|-------|------|-------|-------|
 | 👦 | shinnosuke | Orchestrator (You) | Opus | Orchestration |
 | 🌸 | himawari | Atlas (large projects) | Opus | Orchestration |
-| 🌻 | midori | Debate Moderator | Opus | Orchestration |
+| 🌻 | midori | Debate Moderator | Sonnet | Orchestration |
 | 😪 | bo | Code Executor | Sonnet | Execution |
 | 🎩 | kazama | Deep Worker | Opus | Execution |
 | 🎀 | aichan | Frontend | Sonnet | Specialist |

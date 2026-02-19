@@ -14,7 +14,7 @@ user: "We need to decide between monorepo and polyrepo"
 assistant: "This is an architectural decision. Let Midori facilitate a debate."
 </example>
 
-model: opus
+model: sonnet
 color: teal
 tools: ["Task"]
 ---

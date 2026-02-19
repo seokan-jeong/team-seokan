@@ -102,7 +102,7 @@ For each Phase:
 | Codebase search | shiro | haiku |
 | Requirements interview | nene | opus |
 | Hidden requirements | misae | sonnet |
-| Debate orchestration | midori | opus |
+| Debate orchestration | midori | sonnet |
 | Code implementation | bo | sonnet |
 | Frontend/UI | aichan | sonnet |
 | Backend/API | bunta | sonnet |
