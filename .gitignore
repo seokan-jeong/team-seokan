@@ -9,6 +9,11 @@ src/
 package.json
 package-lock.json
 
+# Dashboard 예외: dashboard/ 하위 파일은 git에 포함
+!dashboard/
+!dashboard/**
+!dashboard/package.json
+
 # IDE
 .idea/
 .vscode/

@@ -1,0 +1,8 @@
+{
+  "name": "team-shinchan-dashboard",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Real-time web dashboard for Team-Shinchan",
+  "main": "server.mjs",
+  "engines": { "node": ">=18.0.0" }
+}
