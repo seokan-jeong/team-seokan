@@ -86,6 +86,7 @@ current:
 📋 Stage: {current_stage} ({stage_number} of 4)
 🔄 Phase: {current_phase if not null else "N/A"}
 👤 Owner: {current_owner}
+🖥️ Dashboard: http://localhost:3333
 
 📝 Context Loaded:
    - REQUESTS.md: {word_count} words

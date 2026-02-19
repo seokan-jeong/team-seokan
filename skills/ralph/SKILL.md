@@ -6,6 +6,14 @@ user-invocable: true
 
 # EXECUTE IMMEDIATELY
 
+**Output immediately before executing:**
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎩 [Kazama] Persistent mode — won't stop until done! 💪
+🖥️ Dashboard: http://localhost:3333
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
 ## Step 1: Validate Input
 
 ```
