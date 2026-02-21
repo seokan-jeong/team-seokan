@@ -162,7 +162,12 @@ if has_uncovered_changes:
 delegate_to("masumi", "Write RETROSPECTIVE.md")
 delegate_to("masumi", "Write IMPLEMENTATION.md")
 
-# 4. Final review
+# 4. Extract learnings (MANDATORY)
+# Read RETROSPECTIVE.md, extract key patterns/mistakes/insights
+# Append to .shinchan-docs/learnings.md (create with header if missing)
+extract_and_save_learnings(".shinchan-docs/learnings.md")
+
+# 5. Final review
 final_review = delegate_to("actionkamen", "Final verification")
 if final_review.approved:
     report_completion()
@@ -176,4 +181,5 @@ All must pass before workflow completion:
 - [ ] verify-implementation passed (or skipped with override)
 - [ ] RETROSPECTIVE.md written
 - [ ] IMPLEMENTATION.md written
+- [ ] Learnings extracted to .shinchan-docs/learnings.md
 - [ ] Action Kamen final review passed

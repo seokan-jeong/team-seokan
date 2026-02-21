@@ -146,6 +146,10 @@ After completing a phase, update PROGRESS.md with completion status.
 - Report test results in completion summary
 - If tests fail, fix the issue before reporting completion
 
+## Version Bump Protocol
+
+Version bumps must be atomic: update all 4 files together — `plugin.json`, `marketplace.json`, `README.md` badge, and `CHANGELOG.md` heading.
+
 ---
 
 ## Output Format

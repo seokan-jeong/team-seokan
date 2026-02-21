@@ -138,6 +138,7 @@ Use this format for live updates:
 | 모든 변경 라인이 요청에 직접 연결되는가? | Surgical Changes | MEDIUM |
 | 가정이 검증되었는가? | Think Before Coding | MEDIUM |
 | 성공 기준이 정의되고 충족되었는가? | Goal-Driven Execution | MEDIUM |
+| 구현 에이전트가 self-check를 수행했는가? | Self-Check Compliance | MEDIUM |
 
 ### Plan Review
 - Completeness: All aspects covered?

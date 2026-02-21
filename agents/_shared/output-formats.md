@@ -117,6 +117,9 @@ All agents reference this document for consistent output formatting.
 - Alternatives considered: {what else was evaluated}
 - Trade-offs: {what was gained/sacrificed}
 
+## Deviation (if applicable)
+- If execution deviated from the plan, note what changed and why.
+
 ## Details
 {detailed content...}
 

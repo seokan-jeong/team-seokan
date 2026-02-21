@@ -22,7 +22,7 @@ event: Stop
 🔄 [Auto-Retrospective] Analyzing completed task...
 ```
 
-Ask yourself:
+You MUST answer these questions:
 1. What was the task?
 2. What approach worked?
 3. What mistakes were made?
@@ -43,9 +43,35 @@ Categorize findings:
 
 ### Step 3: Save to Memory File
 
+**You MUST write learnings to `.shinchan-docs/learnings.md` before the session ends.**
+If `.shinchan-docs/learnings.md` doesn't exist, create it with this header:
+
+```markdown
+# Team-Shinchan Learnings
+
+Accumulated learnings from workflow executions.
+
+---
+```
+
 **File location**: `.shinchan-docs/learnings.md`
 
 **Format for each learning**:
+
+```markdown
+## Learnings
+
+### [{category}] {title}
+- **Date**: {YYYY-MM-DD}
+- **Source**: {DOC_ID}
+- **Confidence**: {high|medium|low}
+- **Tags**: {comma-separated}
+- **Insight**: {description}
+
+---
+```
+
+**Legacy format (also accepted)**:
 
 ```markdown
 ## [YYYY-MM-DD HH:MM] Category: Title

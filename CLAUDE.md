@@ -158,6 +158,7 @@ Before declaring ANY task complete:
 
 - [ ] REQUESTS.md approved, PROGRESS.md all phases complete
 - [ ] RETROSPECTIVE.md + IMPLEMENTATION.md written
+- [ ] Learnings extracted to .shinchan-docs/learnings.md
 - [ ] Action Kamen verification + verify-implementation passed
 - [ ] Build/tests pass, TODO list: 0 pending
 

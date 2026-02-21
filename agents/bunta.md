@@ -77,6 +77,7 @@ This agent is invoked via `/team-shinchan:backend` skill.
 - **Index strategy**: Add indexes for columns in WHERE, JOIN, and ORDER BY clauses. Avoid over-indexing write-heavy tables.
 - **N+1 prevention**: Use eager loading / JOIN for related data. Profile queries in development.
 - **Transactions**: Wrap multi-table writes in transactions. Keep transaction scope as small as possible.
+- **Write-back verify**: After writing critical files or data, immediately read back to confirm the write succeeded.
 
 ### Input Validation & Security
 - Validate at the boundary: all external input validated before reaching business logic.

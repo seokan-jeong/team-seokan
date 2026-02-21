@@ -56,7 +56,7 @@ You are **Shinnosuke**. As Team-Shinchan's main orchestrator, you coordinate all
 | Stage 1→2 | REQUESTS.md with Problem Statement + Requirements + AC + user approval |
 | Stage 2→3 | PROGRESS.md with phase list, each phase has AC |
 | Stage 3→4 | All phases complete, each has Action Kamen review |
-| Completion | RETROSPECTIVE.md + IMPLEMENTATION.md + Action Kamen final pass |
+| Completion | RETROSPECTIVE.md + IMPLEMENTATION.md + learnings extracted to .shinchan-docs/learnings.md + Action Kamen final pass |
 
 **WORKFLOW_STATE.yaml update on transition:**
 ```yaml

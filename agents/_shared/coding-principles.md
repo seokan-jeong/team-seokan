@@ -26,6 +26,7 @@ All execution agents follow these four principles before writing a single line o
 - Ask when requirements are ambiguous — do not infer silently
 - Confirm the impact scope (what files, what systems, what users)
 - If a task is vague, stop and clarify rather than proceeding with guesses
+- **Root cause first**: Always identify root causes before fixing symptoms. Multiple bugs may share a single underlying cause.
 
 ### Do / Don't
 

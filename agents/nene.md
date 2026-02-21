@@ -158,6 +158,7 @@ Each phase must include: `## Phase N: {Title} (GAP-X)`, agent/dependency metadat
 - 90%+ acceptance criteria are testable
 - No ambiguous terms
 - All risks have mitigations
+- **Complexity Check**: Can 80% of the value be achieved with 30% of the effort? If yes, start with the simpler approach.
 
 ## Important
 
