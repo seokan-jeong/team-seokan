@@ -2443,6 +2443,27 @@
         } catch (_) {}
       });
 
+      /* 커스텀 이벤트: 서버 연결 확인 */
+      es.addEventListener('connected', (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          console.log('[SSE] Server connected event:', data);
+        } catch(err) {
+          console.log('[SSE] Connected event received');
+        }
+      });
+
+      /* 커스텀 이벤트: 활동 이벤트 */
+      es.addEventListener('activity', (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          addEvent(data);
+          updateTimeline(data);
+        } catch(err) {
+          console.error('[SSE] Activity parse error:', err);
+        }
+      });
+
       /* 연결 오류 - EventSource는 자동 재연결을 시도하므로 'reconnecting' 상태 표시 */
       es.addEventListener('error', () => {
         if (es.readyState === EventSource.CLOSED) {

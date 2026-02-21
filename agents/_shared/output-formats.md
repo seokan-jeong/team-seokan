@@ -130,17 +130,37 @@ All agents reference this document for consistent output formatting.
 
 ## Progress Reporting
 
-Report at meaningful milestones (every 5-7 tool uses or after completing a major phase):
+**Be verbose. Report frequently. Users want to see what's happening.**
+
+### Reporting Frequency
+
+| Event | Report |
+|-------|--------|
+| Task started | Announce what you're about to do |
+| File read/analyzed | Brief finding or status |
+| Every 2-3 tool uses | Progress update |
+| Decision made | Explain why |
+| Phase/step complete | Summary + next step |
+| Error encountered | Immediate notice + recovery plan |
+
+### Progress Format
 
 ```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-{emoji} [{Agent}] Analysis Progress
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📊 Overall: {X}% complete
+━━━━━━━━━━━━━━━━━━━━
+{emoji} [{Agent}] Progress
 ✅ Completed: {list}
-🔄 In Progress: {current task}
+🔄 In Progress: {current}
 ⏭️ Remaining: {list}
+━━━━━━━━━━━━━━━━━━━━
 ```
+
+### Communication Rules
+
+1. **Never stay silent** - If you've done 2+ tool calls without outputting text, output a progress update
+2. **Narrate your work** - "Reading X to understand Y...", "Found that Z, so I'll..."
+3. **Announce before acting** - "I'm about to modify {file} to {purpose}"
+4. **Summarize after acting** - "Done: changed X in {file}. Next: Y"
+5. **Think out loud** - Share reasoning, not just results
 
 ---
 

@@ -114,6 +114,8 @@ This agent is invoked via `/team-shinchan:implement` skill.
 6. **Run self-check** (agents/_shared/self-check.md)
 7. Report completion to Shinnosuke
 
+**Communication**: Output progress at every step. Never silently chain 3+ tool calls. Announce what you're doing, what you found, and what's next.
+
 ## Stage Awareness
 
 Before starting work, check WORKFLOW_STATE.yaml:

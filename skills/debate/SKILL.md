@@ -26,35 +26,13 @@ When `/team-shinchan:debate` is called or debate is auto-triggered, Shinnosuke a
 
 ## 🔔 Auto-Trigger Conditions
 
-**Shinnosuke starts Debate immediately when detecting the following situations:**
+| Situation | Trigger |
+|-----------|---------|
+| 2+ approaches, architecture change, pattern break | ✅ |
+| Performance vs readability, security, tech stack | ✅ |
+| Simple CRUD, clear bug fix, user already decided | ❌ |
 
-| Situation | Auto-Debate | Example |
-|------|------------|------|
-| 2+ implementation approaches exist | ✅ | REST vs GraphQL, Monolith vs Microservices |
-| Architecture change | ✅ | DB schema redesign, layer structure change |
-| Breaking existing patterns | ✅ | Proposing different approach from existing conventions |
-| Performance vs Readability tradeoff | ✅ | Optimization vs Maintainability |
-| Security-sensitive decisions | ✅ | Authentication method, data encryption approach |
-| Technology stack selection | ✅ | React vs Vue, PostgreSQL vs MongoDB |
-| Simple CRUD | ❌ | Simple CRUD endpoints |
-| Clear bug fix | ❌ | Obvious bug fix |
-| User explicitly decided | ❌ | User has already decided |
-
-### Auto-Trigger Behavior
-
-1. **Immediately announce Debate start**
-   ```
-   ⚠️ Design decision needed: [detected situation]
-   → Starting Debate automatically
-   ```
-
-2. **Execute same process as manual invocation**
-   - Proceed with Steps 1-3 below
-   - Difference: Add background explanation since user didn't explicitly invoke
-
-3. **Record decision in REQUESTS.md**
-   - Stage 1: Add decision to requirements
-   - Stage 2+: Record in corresponding Phase in PROGRESS.md
+On detection: announce `⚠️ Design decision needed: [situation] → Starting Debate automatically`, then proceed Steps 1-3. Record decision in REQUESTS.md (Stage 1) or PROGRESS.md (Stage 2+).
 
 ---
 
@@ -112,90 +90,37 @@ After delivering results, ask the user:
 - If user disagrees: Revise decision reflecting concerns
 - **Never proceed without user confirmation**
 
-## Panel Selection Criteria
+## Panel Selection
+
+See `agents/midori.md` for full criteria. Quick reference:
 
 | Topic | Panel |
-|------|------|
-| UI/Frontend | Aichan, Hiroshi |
-| API/Backend | Bunta, Hiroshi |
+|-------|-------|
+| Frontend/UI | Aichan, Hiroshi |
+| Backend/API | Bunta, Hiroshi |
 | DevOps/Infra | Masao, Hiroshi |
 | Architecture | Hiroshi, Nene, Misae |
-| Full-stack | Aichan, Bunta, Masao, Hiroshi |
 | Security | Hiroshi, Bunta, Masao |
-| Performance | Hiroshi, Bunta |
-| Testing Strategy | Hiroshi, Nene |
 
----
-
-## 📖 Auto-Trigger Examples
-
-### Example 1: Detecting 2+ Implementation Approaches
+## 📖 Example (Auto-Trigger)
 
 ```
-[Shinnosuke analyzing...]
-Detected: JWT and Session both possible for authentication implementation
-
-⚠️ Design decision needed: Choose authentication method (JWT vs Session)
+[Shinnosuke] Detected: JWT vs Session both viable
+⚠️ Design decision needed: Authentication method
 → Starting Debate automatically
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 💭 Debate Started (auto)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 Topic: Authentication method selection
+📋 Topic: JWT vs Session auth
 👥 Panel: Hiroshi, Bunta
-🎯 Goal: Choose optimal between JWT and Session
-
 [Regular Debate process follows...]
 ```
 
-### Example 2: Detecting Architecture Change
+## ⚙️ Auto-Detection Signals
 
-```
-[Bo proposes...]
-"Instead of adding roles field to User table, I propose creating separate Role table."
-
-[Shinnosuke detects]
-Detected: DB schema change → Architecture impact review needed
-
-⚠️ Design decision needed: Role management approach (single table vs normalization)
-→ Starting Debate automatically
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💭 Debate Started (auto)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 Topic: Role management DB design
-👥 Panel: Hiroshi, Bunta, Nene
-🎯 Goal: Determine optimal schema considering scalability and maintainability
-```
-
-### Example 3: Performance vs Readability Tradeoff
-
-```
-[Action Kamen reviewing...]
-"Current code has good readability but N+1 query issue exists. Optimization increases complexity."
-
-[Shinnosuke detects]
-Detected: Performance optimization vs code readability tradeoff
-
-⚠️ Design decision needed: Determine query optimization level
-→ Starting Debate automatically
-```
-
----
-
-## ⚙️ Shinnosuke's Auto-Detection Logic
-
-**Shinnosuke detects the following signals:**
-
-| Signal | Detection Method |
-|------|----------|
-| 2+ approaches mentioned | Expressions like "A or B", "vs", "method1/method2" |
-| Architecture keywords | "schema change", "layer", "structure", "architecture" |
-| Pattern violations | Action Kamen warns "differs from existing pattern" |
-| Tradeoff mentions | "but", "however", "trade-off", "at the cost of" |
-| Security keywords | "auth", "security", "encryption", "permission" |
-
-**After auto-detection, immediately:**
-1. Announce situation
-2. Start Debate (same as above process)
-3. Document decision
+| Signal | Keywords |
+|--------|----------|
+| 2+ approaches | "A or B", "vs", "method1/method2" |
+| Architecture | "schema change", "layer", "structure" |
+| Pattern violation | Action Kamen: "differs from existing pattern" |
+| Tradeoff | "but", "trade-off", "at the cost of" |
+| Security | "auth", "encryption", "permission" |

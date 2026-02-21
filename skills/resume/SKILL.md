@@ -81,19 +81,9 @@ current:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ▶️ Workflow Resumed: {DOC_ID}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-📋 Stage: {current_stage} ({stage_number} of 4)
-🔄 Phase: {current_phase if not null else "N/A"}
-👤 Owner: {current_owner}
-🖥️ Dashboard: http://localhost:3333
-
-📝 Context Loaded:
-   - REQUESTS.md: {word_count} words
-   - PROGRESS.md: {phases_complete}/{total_phases} phases complete
-
-🎯 Resuming from: {last completed action}
-
+Stage: {current_stage} ({stage_number}/4) | Phase: {current_phase|N/A} | Owner: {current_owner}
+Dashboard: http://localhost:3333
+Resuming from: {last completed action}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -114,130 +104,40 @@ current:
 - If phase indicates infrastructure → Masao
 - Default → Bo
 
-**Agent invocation example:**
+**Agent invocation:**
 ```typescript
-Task(
-  subagent_type="team-shinchan:{agent}",
-  model="{model}",
-  prompt=`
-Resume workflow {DOC_ID}.
-
-Stage: {current_stage}
-Phase: {current_phase}
-
-REQUESTS.md Summary:
-{requirements_summary}
-
-PROGRESS.md Current State:
-{progress_summary}
-
-Continue from: {last_action}
-Next steps: {next_steps}
-`
-)
+Task(subagent_type="team-shinchan:{agent}", model="{model}",
+  prompt="Resume {DOC_ID}. Stage: {stage}, Phase: {phase}.\n{REQUESTS.md summary}\n{PROGRESS.md state}\nContinue from: {last_action}")
 ```
 
 ## Error Handling
 
-### Missing DOC_ID Folder
-```
-Error: Workflow '{DOC_ID}' not found.
+| Error | Recovery |
+|-------|----------|
+| Missing DOC_ID folder | List available active/paused workflows |
+| Corrupted WORKFLOW_STATE.yaml | Default to execution stage, owner: bo, phase: 1 |
+| Missing REQUESTS.md | Suggest `/team-shinchan:start` or manual creation |
 
-Available workflows:
-- main-016 (active, execution stage)
-- ISSUE-123 (paused, planning stage)
+## Rules
 
-Use: /team-shinchan:resume {DOC_ID}
-```
+- Always execute (never just describe), always read WORKFLOW_STATE.yaml first
+- Never skip state update, never invoke agent without loaded context, never continue if status is 'completed'
+- Success: state read + history updated + status active + docs loaded + agent invoked + user informed
 
-### Corrupted WORKFLOW_STATE.yaml
-```
-Warning: WORKFLOW_STATE.yaml is corrupted or unreadable.
+## Example
 
-Attempting recovery:
-- Defaulting to execution stage
-- Owner: bo
-- Phase: 1
-
-Recommendation: Review and manually update WORKFLOW_STATE.yaml
-```
-
-### Missing REQUESTS.md
-```
-Warning: REQUESTS.md not found in {DOC_ID}.
-
-This workflow may be incomplete. Options:
-1. Restart from requirements: /team-shinchan:start
-2. Manually create REQUESTS.md with problem statement
-3. Continue anyway (not recommended)
-```
-
-## Prohibited Actions
-
-- ❌ **Never** describe the resume process without executing it
-- ❌ **Never** skip WORKFLOW_STATE.yaml update
-- ❌ **Never** invoke agent without loading context documents
-- ❌ **Never** assume state - always read WORKFLOW_STATE.yaml first
-- ❌ **Never** continue if status is 'completed'
-
-## Success Criteria
-
-- [x] WORKFLOW_STATE.yaml successfully read
-- [x] history[] updated with 'resumed' event
-- [x] current.status set to 'active'
-- [x] Context documents loaded (REQUESTS.md minimum)
-- [x] Appropriate agent invoked via Task tool
-- [x] User informed of resume status
-
-## Examples
-
-### Example 1: Resume with auto-detection
 ```
 User: /team-shinchan:resume
 
 Shinnosuke:
 Found interrupted workflows:
-- main-016 (Stage: execution, Phase: 2, Owner: bo)
-- ISSUE-123 (Stage: planning, Owner: nene)
-
+- main-016 (execution, Phase: 2, Owner: bo)
+- ISSUE-123 (planning, Owner: nene)
 Which workflow would you like to resume?
 
 User: main-016
 
-Shinnosuke:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ▶️ Workflow Resumed: main-016
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 Stage: execution (3 of 4)
-🔄 Phase: 2
-👤 Owner: bo
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Calling Bo to continue Phase 2 implementation...
-```
-
-### Example 2: Resume specific workflow
-```
-User: /team-shinchan:resume ISSUE-123
-
-Shinnosuke:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-▶️ Workflow Resumed: ISSUE-123
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 Stage: planning (2 of 4)
-🔄 Phase: N/A
-👤 Owner: nene
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Calling Nene to continue planning...
-```
-
-### Example 3: No workflows to resume
-```
-User: /team-shinchan:resume
-
-Shinnosuke:
-No interrupted workflows found.
-
-Use /team-shinchan:start to begin a new task.
+Stage: execution (3/4) | Phase: 2 | Owner: bo
+Calling Bo to continue Phase 2...
 ```
