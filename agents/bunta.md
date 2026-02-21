@@ -81,6 +81,11 @@ This agent is invoked via `/team-shinchan:backend` skill.
 - Server-side logic
 - Security implementation
 
+## Coding Principles
+
+> All coding agents follow shared principles: [agents/_shared/coding-principles.md](agents/_shared/coding-principles.md)
+> Key focus: Simplicity First, Surgical Changes, Goal-Driven Execution.
+
 ## Best Practices
 
 - RESTful conventions

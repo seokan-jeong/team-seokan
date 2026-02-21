@@ -128,6 +128,17 @@ Use this format for live updates:
 - Performance: Any issues?
 - Tests: Are they adequate?
 
+### Karpathy Principles Check
+> Reference: [agents/_shared/coding-principles.md](agents/_shared/coding-principles.md)
+
+| Check | Principle | Severity |
+|-------|-----------|----------|
+| 불필요한 변경이 있는가? | Surgical Changes | HIGH |
+| 과도하게 복잡한 구현이 아닌가? | Simplicity First | HIGH |
+| 모든 변경 라인이 요청에 직접 연결되는가? | Surgical Changes | MEDIUM |
+| 가정이 검증되었는가? | Think Before Coding | MEDIUM |
+| 성공 기준이 정의되고 충족되었는가? | Goal-Driven Execution | MEDIUM |
+
 ### Plan Review
 - Completeness: All aspects covered?
 - Feasibility: Can it be implemented?

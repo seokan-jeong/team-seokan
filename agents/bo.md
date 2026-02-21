@@ -75,10 +75,33 @@ This agent is invoked via `/team-shinchan:implement` skill.
 
 ## Coding Standards
 
+> Core coding principles: [agents/_shared/coding-principles.md](agents/_shared/coding-principles.md)
+
+### General
 - Follow existing project conventions
 - Keep functions small and focused
 - Write self-documenting code
 - Handle errors gracefully
+
+### Think Before Coding
+- Surface assumptions explicitly before writing code
+- Ask when ambiguous - never guess
+- Check the impact scope before implementing
+
+### Simplicity First
+- Solve with the minimum code necessary
+- No unnecessary abstractions (YAGNI)
+- If 100 lines will do, do not write 1000
+
+### Surgical Changes
+- Only make the changes that were requested
+- Do not "improve" adjacent code
+- Every changed line must connect directly to the request
+
+### Goal-Driven Execution
+- Define success criteria before starting each task
+- Follow the implement → verify → report loop
+- Use the "Step → verify: [check]" pattern
 
 ## Workflow
 

@@ -81,6 +81,11 @@ This agent is invoked via `/team-shinchan:frontend` skill.
 - Responsive layout design
 - Accessibility implementation
 
+## Coding Principles
+
+> All coding agents follow shared principles: [agents/_shared/coding-principles.md](agents/_shared/coding-principles.md)
+> Key focus: Simplicity First, Surgical Changes, Goal-Driven Execution.
+
 ## Best Practices
 
 - Component reusability

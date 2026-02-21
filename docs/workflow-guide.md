@@ -66,6 +66,45 @@ for phase in phases:
     update("PROGRESS.md", phase.retrospective)
 ```
 
+### Goal-Driven Execution Pattern
+
+Every phase in Stage 3 follows the **Goal-Driven Execution** pattern.
+Agents must define success before writing code, then verify after.
+
+**Pattern: Imperative Task → Declarative Goal**
+
+| Imperative (bad) | Declarative Goal (good) |
+|---|---|
+| "Add caching to the search endpoint" | "p95 latency < 100ms, cache hit rate > 80%, no breaking changes" |
+| "Fix the login bug" | "Login with valid credentials returns 200, invalid returns 401, session persists across reload" |
+| "Refactor the UserService" | "All methods follow camelCase, 0 callers broken, all 47 tests pass" |
+
+**Step → Verify Pattern (required in all phase reports):**
+
+```
+Bo: Success criteria: [specific, measurable outcome]
+
+Step 1: [action] → verify: [specific check]
+Step 2: [action] → verify: [specific check]
+Step 3: Run all tests → verify: [N]/[N] pass
+```
+
+**Example:**
+```
+😪 [Bo] Starting: "Add index on users.email"
+
+Success criteria: query time < 50ms on 1M rows, no existing tests broken.
+
+Step 1: Add index migration → verify: migration runs without error ✅
+Step 2: Run EXPLAIN ANALYZE → verify: shows Index Scan (not Seq Scan) ✅
+Step 3: Run test suite → verify: 47/47 pass ✅
+```
+
+**Rule**: Never report a phase complete without running the verification step.
+If verification fails, fix the issue — do not skip and report done anyway.
+
+> See concrete good/bad examples: [EXAMPLES.md](../EXAMPLES.md)
+
 ### Phase Rollback
 
 When a phase introduces regressions or must be reverted:

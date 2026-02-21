@@ -490,5 +490,55 @@ tests:
       - type: not-icontains
         value: "edit"
 
+  # Karpathy Principles - Simplicity First
+  - description: "Bo should avoid over-abstraction"
+    prompt: bo-prompt
+    vars:
+      task: "Add a utility function to check if a string is empty. Keep it simple."
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          return (lower.includes("simple") || lower.includes("function") || lower.includes("return")) &&
+                 !lower.includes("factory") && !lower.includes("abstract class");
+
+  # Karpathy Principles - Surgical Changes
+  - description: "Bo should only change what is requested"
+    prompt: bo-prompt
+    vars:
+      task: "Fix the typo in the error message on line 15. Do NOT refactor or improve anything else."
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          return (lower.includes("fix") || lower.includes("typo") || lower.includes("line 15") || lower.includes("error message")) &&
+                 !lower.includes("refactor") && !lower.includes("also improve");
+
+  # Karpathy Principles - Think Before Coding
+  - description: "Bo should surface assumptions before coding"
+    prompt: bo-prompt
+    vars:
+      task: "The user wants 'faster search'. Implement improvements."
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          return lower.includes("assum") || lower.includes("clarif") ||
+                 lower.includes("question") || lower.includes("what kind") ||
+                 lower.includes("which") || lower.includes("before");
+
+  # Karpathy Principles - Goal-Driven Execution
+  - description: "Bo should define success criteria before implementation"
+    prompt: bo-prompt
+    vars:
+      task: "Optimize the database query for the user list endpoint. Define success criteria first."
+    assert:
+      - type: javascript
+        value: |
+          const lower = output.toLowerCase();
+          return lower.includes("success") || lower.includes("criteria") ||
+                 lower.includes("goal") || lower.includes("measure") ||
+                 lower.includes("verify") || lower.includes("before");
+
 # Output configuration
 outputPath: ./test-results/promptfoo-results.json
