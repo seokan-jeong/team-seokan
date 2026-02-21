@@ -2,7 +2,7 @@
 
 All notable changes to Team-Shinchan will be documented in this file.
 
-## [Unreleased]
+## [3.7.0] - 2026-02-22
 
 ### Added
 - **32 Command Files**: Added 16 new command `.md` files to complete coverage of all skills
@@ -11,13 +11,25 @@ All notable changes to Team-Shinchan will be documented in this file.
   - `commands/bigproject.md`, `commands/manage-skills.md`
   - `commands/verify-agents.md`, `commands/verify-budget.md`, `commands/verify-consistency.md`
   - `commands/verify-implementation.md`, `commands/verify-memory.md`, `commands/verify-skills.md`, `commands/verify-workflow.md`
+- **3 New Validators**: `hook-registration.js`, `skill-command-parity.js`, `version-consistency.js` (14 → 17 total)
+- **5 Hook Registrations**: workflow-guard, auto-retrospective, load-kb, shinnosuke-orchestrate, auto-verify added to hooks.json
+
+### Changed
+- **Agent Prompt Quality**: 5 agent files enhanced with domain-specific guidelines
+  - aichan.md: WCAG 2.1 AA checklist, component patterns, performance standards
+  - bunta.md: API design conventions, database rules, security patterns
+  - masao.md: CI/CD principles, Dockerfile best practices, IaC guidelines
+  - misae.md: STRIDE security framework, scalability checklist, requirement elicitation
+  - himawari.md: PROGRESS.md ownership rules, phase lifecycle, checkpoint protocol
+- **install.sh**: Post-install verification and component count summary
 
 ### Fixed
-- README.md version badge updated from 3.3.0 to 3.6.0
+- **Dashboard DOCS_DIR**: Resolved to host project instead of plugin cache (shows actual workflow data)
+- README.md version badge updated from 3.3.0 to 3.7.0
 - README.md debate skill now correctly shows Midori (not Shinnosuke) as moderator
 - README.md Commands table expanded from 14 to 32 commands
 - README.md Skills table expanded to include all 15 specialist skill mappings
-- COVERAGE.md updated to reflect 17 static validators (added hook-registration, skill-command-parity, version-consistency)
+- COVERAGE.md updated to reflect 17 static validators
 
 ## [3.6.0] - 2026-02-22
 
