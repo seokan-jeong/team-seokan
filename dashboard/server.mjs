@@ -22,10 +22,10 @@ const PLUGIN_ROOT = path.resolve(__dirname, '..');
 const PORT = parseInt(process.env.DASHBOARD_PORT || '3333', 10);
 const DOCS_DIR_NAME = process.env.SHINCHAN_DOCS_DIR || '.shinchan-docs';
 
-// SHINCHAN_DOCS_DIR가 절대 경로면 그대로, 아니면 PLUGIN_ROOT 기준으로 설정
+// SHINCHAN_DOCS_DIR가 절대 경로면 그대로, 아니면 cwd(호스트 프로젝트) 기준으로 설정
 const DOCS_DIR = path.isAbsolute(DOCS_DIR_NAME)
   ? DOCS_DIR_NAME
-  : path.join(PLUGIN_ROOT, DOCS_DIR_NAME);
+  : path.join(process.cwd(), DOCS_DIR_NAME);
 
 // ── stderr 로거 (console.log 금지 - MCP stdio가 stdout 사용) ─────────────────
 const log = (...args) => process.stderr.write('[dashboard] ' + args.join(' ') + '\n');
@@ -1547,6 +1547,7 @@ process.on('unhandledRejection', (reason) => {
 // ── 진입점 ─────────────────────────────────────────────────────────────────────
 log('Team-Shinchan Dashboard Server 시작 중...');
 log(`Plugin Root: ${PLUGIN_ROOT}`);
+log(`CWD:         ${process.cwd()}`);
 log(`Docs Dir:    ${DOCS_DIR}`);
 
 // process.on('exit') 에서도 포트 파일 정리 (비정상 종료 대비)
