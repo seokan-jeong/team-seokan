@@ -2,6 +2,26 @@
 
 All notable changes to Team-Shinchan will be documented in this file.
 
+## [3.9.0] - 2026-02-22
+
+### Changed
+- **Plugin Standalone Operation**: Migrated all orchestration rules from CLAUDE.md into plugin files
+  - `shinnosuke-orchestrate.md`: Added Agent Priority, Skill→Agent Mapping (20 skills), Work Classification (Lite/Full)
+  - `shinnosuke.md`: Added CONDUCTOR role declaration, Core Rules (6), Completion Checklist, Document Management
+  - `output-formats.md`: Expanded Agent Team table with Role/Model/Layer columns (15 agents)
+  - `CLAUDE.md`: Reduced from 232→16 lines (repo-specific notes only)
+- **Self-Check Enhancement**: Added 5th principle "Elegance Check" to self-check.md
+- **Quick Fix Path Expansion**: Clear bug fixes (≤3 files, no design decisions) now use Lite Mode
+
+### Added
+- **Correction Capture Hook**: `hooks/correction-capture.md` auto-detects user corrections (KR/EN/JP) and records learnings
+- **Dashboard Session Isolation**: Per-session state management, SSE broadcast filtering, SessionSelector component
+- **Vite Dev Proxy**: `server.proxy` in vite.config.ts for SSE real-time updates in dev mode
+
+### Fixed
+- **SSE Real-time Updates**: Vite dev proxy with `timeout: 0` resolves SSE long-polling disconnects
+- **gracefulShutdown**: Fixed `sseClients[i].res.end()` (was calling `.end()` on wrong object)
+
 ## [3.8.0] - 2026-02-22
 
 ### Added
