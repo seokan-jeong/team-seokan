@@ -8,7 +8,7 @@
 
 **15 AI agents that debate decisions, plan systematically, execute in parallel, and learn from your project.**
 
-[![Version](https://img.shields.io/badge/version-3.8.0-blue.svg)](https://github.com/seokan-jeong/team-shinchan/releases)
+[![Version](https://img.shields.io/badge/version-3.9.0-blue.svg)](https://github.com/seokan-jeong/team-shinchan/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-purple.svg)](https://claude.ai)
 ![GitHub stars](https://img.shields.io/github/stars/seokan-jeong/team-shinchan?style=social)
@@ -40,6 +40,7 @@ No more context-switching between roles. No more forgetting past decisions. No m
 | ❌ No design debate | ✅ Expert panel debates trade-offs before coding |
 | ❌ Ad-hoc task tracking | ✅ Structured workflow with documentation |
 | ❌ Repeat the same context | ✅ Self-learning from retrospectives |
+| ❌ Requires CLAUDE.md setup | ✅ Works standalone — just install the plugin |
 
 ---
 
@@ -108,7 +109,18 @@ User: ulw fix all TypeScript errors
 ✅ Completed in 2 minutes (vs ~10 minutes sequential)
 ```
 
-### 3. Self-Learning Memory
+### 3. Session-Isolated Dashboard
+
+```
+# Multiple Claude Code sessions? Each gets its own dashboard view.
+
+Session A: 🟢 session-abc1 (auth feature)
+Session B: 🟢 session-xyz2 (bug fixes)
+
+Dashboard auto-detects sessions and shows per-session events in real-time.
+```
+
+### 4. Self-Learning Memory
 
 ```
 # Week 1
@@ -304,7 +316,7 @@ User: "Fix the null check in user.ts line 42"
 Done! No REQUESTS.md or PROGRESS.md needed.
 ```
 
-**Criteria** (ALL must be true): single file change, no design decisions, clear unambiguous fix.
+**Criteria** (ALL must be true): ≤3 files affected, no design decisions, clear unambiguous fix.
 
 ---
 
@@ -417,6 +429,16 @@ New Session ────→ Load Learnings ────→ Apply to Work
 
 ---
 
+## What's New in v3.9.0
+
+- **Plugin Standalone Operation** — No `CLAUDE.md` required. Install the plugin in any project and it works out of the box.
+- **Dashboard Session Isolation** — Each Claude Code session gets its own dashboard view with real-time SSE updates.
+- **Correction Capture** — Auto-detects when you correct the AI (Korean/English/Japanese) and records learnings.
+- **Elegance Check** — 5th self-check principle for code quality.
+- **Expanded Quick Fix** — Bug fixes up to 3 files now skip the full workflow.
+
+---
+
 ## FAQ
 
 ### Does this replace Claude Code?
@@ -456,7 +478,7 @@ Team-Shinchan is validated by 3 tiers of automated testing:
 
 | Tier | Tests | What It Checks |
 |------|-------|----------------|
-| Static Validators | 14 | Schema, cross-refs, consistency, API contracts, token budget |
+| Static Validators | 17 | Schema, cross-refs, consistency, API contracts, token budget |
 | Agent Behavior (promptfoo) | 25 | Individual agent role adherence |
 | E2E Workflow | 11 | Full workflow scenarios (5 types) |
 
