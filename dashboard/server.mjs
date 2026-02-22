@@ -287,19 +287,70 @@ function parseWorkflowYaml(content) {
 
 /**
  * PROGRESS.md에서 페이즈 진행률 요약 추출
+ * Phase별 체크박스 완료율 계산 포함
  * @param {string} content - Markdown 파일 내용
- * @returns {{ total: number, completed: number, phases: string[] }}
+ * @returns {{ total: number, completed: number, percentage: number, phases: Array<{ title: string, total: number, completed: number, percentage: number }> }}
  */
 function parseProgressMd(content) {
-  // [x] 또는 [ ] 체크박스 항목 탐색
-  const checkedItems   = (content.match(/^\s*-\s*\[x\]/gim) || []).length;
-  const uncheckedItems = (content.match(/^\s*-\s*\[\s\]/gim) || []).length;
-  const total          = checkedItems + uncheckedItems;
+  const lines = content.split('\n');
 
-  // ## Phase 헤더 추출
-  const phases = (content.match(/^##\s+.+/gm) || []).map((h) => h.replace(/^##\s+/, '').trim());
+  // Phase 구간 분리: "## Phase N: {title}" 헤더 기준
+  // 각 Phase 구간 내 - [x] / - [ ] 개수 집계
+  const phaseSegments = []; // [{ title, lines: [] }]
+  let currentPhase    = null;
+  let globalLines     = [];
 
-  return { total, completed: checkedItems, phases };
+  for (const line of lines) {
+    const phaseMatch = line.match(/^##\s+Phase\s+\d+[:\s]+(.+)/i);
+    if (phaseMatch) {
+      // 새 Phase 시작: 이전 Phase(있으면) 저장, 새 Phase 초기화
+      if (currentPhase) {
+        phaseSegments.push(currentPhase);
+      }
+      currentPhase = { title: phaseMatch[1].trim(), lines: [] };
+    } else if (currentPhase) {
+      currentPhase.lines.push(line);
+    } else {
+      globalLines.push(line);
+    }
+  }
+
+  // 마지막 Phase 저장
+  if (currentPhase) {
+    phaseSegments.push(currentPhase);
+  }
+
+  // Phase별 체크박스 집계
+  const countCheckboxes = (lineArr) => {
+    const text      = lineArr.join('\n');
+    const checked   = (text.match(/^\s*-\s*\[x\]/gim) || []).length;
+    const unchecked = (text.match(/^\s*-\s*\[\s\]/gim) || []).length;
+    return { checked, unchecked };
+  };
+
+  const phases = phaseSegments.map(seg => {
+    const { checked, unchecked } = countCheckboxes(seg.lines);
+    const segTotal = checked + unchecked;
+    return {
+      title:      seg.title,
+      total:      segTotal,
+      completed:  checked,
+      percentage: segTotal > 0 ? Math.round((checked / segTotal) * 100) : 0,
+    };
+  });
+
+  // 전체 집계 (Phase 구간 + 비구간 포함)
+  const allText         = content;
+  const checkedItems    = (allText.match(/^\s*-\s*\[x\]/gim) || []).length;
+  const uncheckedItems  = (allText.match(/^\s*-\s*\[\s\]/gim) || []).length;
+  const total           = checkedItems + uncheckedItems;
+
+  return {
+    total,
+    completed:  checkedItems,
+    percentage: total > 0 ? Math.round((checkedItems / total) * 100) : 0,
+    phases,
+  };
 }
 
 // ── 에이전트 메시지 파싱 ───────────────────────────────────────────────────────
@@ -371,6 +422,7 @@ let watchDebounceTimer = null;
  * .shinchan-docs/ 내 변경 감지 시 호출
  * - WORKFLOW_STATE.yaml → state.workflow 업데이트
  * - PROGRESS.md        → 진행률 업데이트
+ * - .md 파일 변경 시 doc_updated SSE 이벤트 broadcast
  * 500ms 디바운스 적용
  */
 function handleDocsChange(eventType, filename) {
@@ -381,6 +433,19 @@ function handleDocsChange(eventType, filename) {
   clearTimeout(watchDebounceTimer);
   watchDebounceTimer = setTimeout(() => {
     log(`파일 변경 감지: ${filename} (${eventType})`);
+
+    // Step 4.3: .md 파일 변경 시 doc_updated SSE 이벤트 broadcast
+    if (filename.endsWith('.md')) {
+      // 파일명만 추출 (하위 경로에서 basename 추출)
+      const basename = path.basename(filename);
+      broadcast('doc_updated', {
+        filename:  basename,
+        docId:     state.workflow.docId,
+        timestamp: new Date().toISOString(),
+      });
+      log(`doc_updated 이벤트 broadcast: ${basename}`);
+    }
+
     refreshStateFromDocs();
   }, 500);
 }
@@ -469,9 +534,14 @@ function refreshStateFromDocs() {
 
   // SSE 브로드캐스트 (파일 변경 → workflow_status 이벤트)
   broadcast('workflow_status', {
-    workflow:  state.workflow,
-    progress:  latestProgress,
-    timestamp: new Date().toISOString(),
+    workflow:   state.workflow,
+    progress:   latestProgress ? {
+      total:      latestProgress.total,
+      completed:  latestProgress.completed,
+      percentage: latestProgress.percentage,
+      phases:     latestProgress.phases,
+    } : null,
+    timestamp:  new Date().toISOString(),
   });
 
   log(`상태 업데이트 완료: stage=${state.workflow.stage}, phase=${state.workflow.phase}`);
@@ -699,7 +769,9 @@ async function handleHttpRequest(req, res) {
   if (method === 'GET' && url.pathname === '/api/events') {
     const limit  = parseInt(url.searchParams.get('limit') || '50', 10);
     const events = state.events.slice(-Math.min(limit, 1000));
-    jsonResponse(res, 200, { events, total: state.events.length });
+    // 이전 세션 이벤트 여부를 클라이언트가 판단할 수 있도록 hasPreviousSession 필드 포함
+    const hasPreviousSession = events.some(ev => ev.fromPreviousSession === true);
+    jsonResponse(res, 200, { events, total: state.events.length, hasPreviousSession });
     return;
   }
 
@@ -1159,6 +1231,70 @@ async function handleHttpRequest(req, res) {
           break;
         }
 
+        // 파일 변경 이벤트 (create / modify / delete)
+        case 'file_change': {
+          if (body.agent && AGENTS[body.agent]) {
+            state.agents[body.agent] = {
+              ...(state.agents[body.agent] || {}),
+              lastSeen: event.timestamp,
+              active:   true,
+            };
+          }
+          broadcast('activity', {
+            ...event,
+            type: 'file_change',
+          });
+          break;
+        }
+
+        // 플랜 스텝 진행 이벤트
+        case 'plan_step': {
+          if (body.agent && AGENTS[body.agent]) {
+            state.agents[body.agent] = {
+              ...(state.agents[body.agent] || {}),
+              lastSeen: event.timestamp,
+              active:   true,
+            };
+          }
+          broadcast('activity', {
+            ...event,
+            type: 'plan_step',
+          });
+          break;
+        }
+
+        // 검토 결과 이벤트 (pass / fail / warning)
+        case 'review_result': {
+          if (body.agent && AGENTS[body.agent]) {
+            state.agents[body.agent] = {
+              ...(state.agents[body.agent] || {}),
+              lastSeen: event.timestamp,
+              active:   false,
+            };
+          }
+          broadcast('activity', {
+            ...event,
+            type: 'review_result',
+          });
+          break;
+        }
+
+        // 진행률 업데이트 이벤트
+        case 'progress_update': {
+          if (body.agent && AGENTS[body.agent]) {
+            state.agents[body.agent] = {
+              ...(state.agents[body.agent] || {}),
+              lastSeen: event.timestamp,
+              active:   true,
+            };
+          }
+          broadcast('activity', {
+            ...event,
+            type: 'progress_update',
+          });
+          break;
+        }
+
         // 워크플로우 상태 변경
         case 'workflow_update': {
           if (body.workflow) {
@@ -1190,6 +1326,100 @@ async function handleHttpRequest(req, res) {
     } catch (err) {
       log(`이벤트 처리 오류: ${err.message}`);
       jsonResponse(res, 500, { error: '이벤트 처리 중 오류가 발생했습니다', message: err.message });
+    }
+    return;
+  }
+
+  // ── GET /api/docs → 현재 docId의 문서 목록 반환 ──
+  if (method === 'GET' && url.pathname === '/api/docs') {
+    const docId = state.workflow.docId;
+    const DEFAULT_FILES = ['REQUESTS.md', 'PROGRESS.md', 'RETROSPECTIVE.md', 'IMPLEMENTATION.md'];
+
+    if (!docId) {
+      jsonResponse(res, 200, { docs: [], docId: null, message: 'docId가 없습니다' });
+      return;
+    }
+
+    const docDir = path.join(DOCS_DIR, docId);
+    let docs = [];
+
+    try {
+      // 기본 파일 순서 우선 적용
+      for (const name of DEFAULT_FILES) {
+        const filePath = path.join(docDir, name);
+        docs.push({
+          name,
+          path:   filePath,
+          exists: fs.existsSync(filePath),
+        });
+      }
+
+      // 추가 .md 파일 (기본 목록에 없는 것)
+      if (fs.existsSync(docDir)) {
+        const entries = fs.readdirSync(docDir);
+        for (const entry of entries) {
+          if (!entry.endsWith('.md')) continue;
+          if (DEFAULT_FILES.includes(entry)) continue; // 이미 포함됨
+          docs.push({
+            name:   entry,
+            path:   path.join(docDir, entry),
+            exists: true,
+          });
+        }
+      }
+    } catch (err) {
+      log(`문서 목록 조회 오류: ${err.message}`);
+    }
+
+    jsonResponse(res, 200, { docs, docId });
+    return;
+  }
+
+  // ── GET /api/docs/:filename → 문서 내용 반환 ──
+  if (method === 'GET' && url.pathname.startsWith('/api/docs/')) {
+    const filename = url.pathname.slice('/api/docs/'.length);
+
+    // 보안: 경로 순회 방지 (파일명에 '..' 또는 '/' 포함 시 403)
+    if (!filename || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+      jsonResponse(res, 403, { error: 'Forbidden', message: '허용되지 않는 파일명입니다' });
+      return;
+    }
+
+    // .md 파일만 허용
+    if (!filename.endsWith('.md')) {
+      jsonResponse(res, 403, { error: 'Forbidden', message: '.md 파일만 조회할 수 있습니다' });
+      return;
+    }
+
+    const docId = state.workflow.docId;
+    if (!docId) {
+      jsonResponse(res, 404, { error: 'Not Found', message: 'docId가 없습니다' });
+      return;
+    }
+
+    const filePath = path.join(DOCS_DIR, docId, filename);
+
+    // 경로 순회 이중 검증: 실제 경로가 DOCS_DIR 하위인지 확인
+    const resolvedPath = path.resolve(filePath);
+    const resolvedDocsDir = path.resolve(DOCS_DIR);
+    if (!resolvedPath.startsWith(resolvedDocsDir)) {
+      jsonResponse(res, 403, { error: 'Forbidden', message: '접근 금지 경로입니다' });
+      return;
+    }
+
+    if (!fs.existsSync(filePath)) {
+      jsonResponse(res, 404, { error: 'Not Found', message: `${filename} 파일이 없습니다` });
+      return;
+    }
+
+    try {
+      const content      = fs.readFileSync(filePath, 'utf-8');
+      const stat         = fs.statSync(filePath);
+      const lastModified = stat.mtime.toISOString();
+      jsonResponse(res, 200, { filename, content, lastModified });
+    } catch (err) {
+      log(`문서 읽기 오류 (${filename}): ${err.message}`);
+      jsonResponse(res, 500, { error: 'Internal Server Error', message: err.message });
     }
     return;
   }
@@ -1228,12 +1458,21 @@ const MCP_TOOLS = [
     inputSchema: {
       type:       'object',
       properties: {
-        type:    { type: 'string', description: '이벤트 타입 (예: delegation, message, agent_active)' },
-        agent:   { type: 'string', description: '에이전트 ID (예: shinnosuke, bo, bunta)' },
-        content: { type: 'string', description: '이벤트 내용 (선택)' },
-        from:    { type: 'string', description: '위임 출발 에이전트 (delegation 타입 시)' },
-        to:      { type: 'string', description: '위임 도착 에이전트 (delegation 타입 시)' },
-        task:    { type: 'string', description: '위임 태스크 설명 (delegation 타입 시)' },
+        type:       { type: 'string', description: '이벤트 타입 (delegation | message | agent_start | agent_done | tool_use | user_prompt | stop | session_start | session_end | workflow_update | file_change | plan_step | review_result | progress_update)' },
+        agent:      { type: 'string', description: '에이전트 ID (예: shinnosuke, bo, bunta)' },
+        content:    { type: 'string', description: '이벤트 내용 (선택)' },
+        from:       { type: 'string', description: '위임 출발 에이전트 (delegation 타입 시)' },
+        to:         { type: 'string', description: '위임 도착 에이전트 (delegation 타입 시)' },
+        task:       { type: 'string', description: '위임 태스크 설명 (delegation 타입 시)' },
+        file:       { type: 'string', description: '파일 경로 (file_change 타입 시)' },
+        action:     { type: 'string', description: '파일 액션: create | modify | delete (file_change 타입 시)' },
+        step:       { type: 'number', description: '현재 스텝 번호 (plan_step 타입 시)' },
+        total:      { type: 'number', description: '전체 스텝 수 (plan_step 타입 시)' },
+        description:{ type: 'string', description: '스텝 설명 (plan_step 타입 시)' },
+        result:     { type: 'string', description: '검토 결과: pass | fail | warning (review_result 타입 시)' },
+        details:    { type: 'string', description: '검토 상세 내용 (review_result 타입 시)' },
+        percentage: { type: 'number', description: '진행률 0-100 (progress_update 타입 시)' },
+        phase:      { type: 'string', description: '현재 페이즈 이름 (progress_update 타입 시)' },
       },
       required: ['type'],
     },
@@ -1491,16 +1730,187 @@ function startHttpServer(port = PORT, maxRetries = 10) {
   });
 }
 
+// ── 세션 상태 영속화 ──────────────────────────────────────────────────────────
+
+/** 세션 상태 저장 디렉토리 경로 */
+const SESSION_STATE_DIR = path.join(DOCS_DIR, '.dashboard-state');
+
+/**
+ * 오래된 세션 파일을 정리합니다.
+ * 타임스탬프 오름차순으로 정렬하여 maxKeep개 초과분을 삭제합니다.
+ * @param {number} maxKeep - 유지할 최대 세션 파일 수 (기본값: 10)
+ */
+function cleanOldSessions(maxKeep = 10) {
+  try {
+    if (!fs.existsSync(SESSION_STATE_DIR)) return;
+
+    const files = fs.readdirSync(SESSION_STATE_DIR)
+      .filter(f => f.startsWith('session-') && f.endsWith('.json'))
+      .sort(); // 파일명에 타임스탬프가 포함되어 있으므로 알파벳 정렬 = 시간 정렬
+
+    if (files.length <= maxKeep) return;
+
+    const toDelete = files.slice(0, files.length - maxKeep);
+    for (const filename of toDelete) {
+      try {
+        fs.unlinkSync(path.join(SESSION_STATE_DIR, filename));
+        log(`오래된 세션 파일 삭제: ${filename}`);
+      } catch (err) {
+        log(`세션 파일 삭제 실패 (무시): ${filename} - ${err.message}`);
+      }
+    }
+    log(`세션 정리 완료: ${toDelete.length}개 삭제, ${maxKeep}개 유지`);
+  } catch (err) {
+    log(`세션 정리 오류 (무시): ${err.message}`);
+  }
+}
+
+/**
+ * 현재 세션 상태를 JSON 파일로 저장합니다.
+ * 원자적 쓰기(임시 파일 → renameSync) 패턴으로 데이터 손실을 방지합니다.
+ * 저장 후 cleanOldSessions()를 호출하여 세션 파일 수를 관리합니다.
+ */
+function saveSessionState() {
+  try {
+    // 디렉토리가 없으면 자동 생성
+    if (!fs.existsSync(SESSION_STATE_DIR)) {
+      fs.mkdirSync(SESSION_STATE_DIR, { recursive: true });
+    }
+
+    // 저장할 상태 구성 (복원에 필요한 필드만)
+    const sessionData = {
+      savedAt:     new Date().toISOString(),
+      events:      state.events,
+      messages:    state.messages,
+      delegations: state.delegations,
+      workflow:    state.workflow,
+    };
+
+    const timestamp = Date.now();
+    const finalPath = path.join(SESSION_STATE_DIR, `session-${timestamp}.json`);
+    const tempPath  = `${finalPath}.tmp`;
+
+    // 임시 파일에 먼저 쓰기
+    fs.writeFileSync(tempPath, JSON.stringify(sessionData, null, 2), 'utf-8');
+
+    // 원자적으로 최종 경로로 이동
+    fs.renameSync(tempPath, finalPath);
+
+    // 쓰기 후 읽기 검증 (write-back verify)
+    const written = fs.readFileSync(finalPath, 'utf-8');
+    const verified = JSON.parse(written);
+    if (!verified.savedAt) {
+      log(`세션 상태 저장 검증 실패: savedAt 필드 없음`);
+    } else {
+      log(`세션 상태 저장 완료: ${finalPath} (이벤트 ${sessionData.events.length}개, 메시지 ${sessionData.messages.length}개)`);
+    }
+
+    // 오래된 세션 파일 정리
+    cleanOldSessions(10);
+  } catch (err) {
+    log(`세션 상태 저장 실패 (무시): ${err.message}`);
+  }
+}
+
+/**
+ * 가장 최근 세션 파일에서 상태를 복원합니다.
+ * 복원 범위: events, messages, delegations
+ * 파싱 실패 시 빈 상태로 시작합니다 (기존 동작 유지).
+ */
+function restoreSessionState() {
+  try {
+    if (!fs.existsSync(SESSION_STATE_DIR)) {
+      log('세션 상태 디렉토리 없음. 새 세션으로 시작합니다.');
+      return;
+    }
+
+    const files = fs.readdirSync(SESSION_STATE_DIR)
+      .filter(f => f.startsWith('session-') && f.endsWith('.json'))
+      .sort(); // 타임스탬프 오름차순
+
+    if (files.length === 0) {
+      log('복원할 세션 파일 없음. 새 세션으로 시작합니다.');
+      return;
+    }
+
+    // 가장 최근 세션 파일 (배열 마지막)
+    const latestFile = files[files.length - 1];
+    const filePath   = path.join(SESSION_STATE_DIR, latestFile);
+
+    let sessionData;
+    try {
+      const content = fs.readFileSync(filePath, 'utf-8');
+      sessionData   = JSON.parse(content);
+    } catch (parseErr) {
+      log(`세션 파일 파싱 실패 (새 세션으로 시작): ${latestFile} - ${parseErr.message}`);
+      return;
+    }
+
+    // 유효성 검증 후 state에 병합
+    let restoredEvents      = 0;
+    let restoredMessages    = 0;
+    let restoredDelegations = 0;
+
+    if (Array.isArray(sessionData.events) && sessionData.events.length > 0) {
+      // 복원된 이벤트에 이전 세션 마커 추가
+      const markedEvents = sessionData.events.map(ev => ({
+        ...ev,
+        fromPreviousSession: true,
+      }));
+      state.events = markedEvents.slice(-1000); // 최대 1000개 유지
+      restoredEvents = state.events.length;
+    }
+
+    if (Array.isArray(sessionData.messages) && sessionData.messages.length > 0) {
+      state.messages = sessionData.messages.slice(-200); // 최대 200개 유지
+      restoredMessages = state.messages.length;
+    }
+
+    if (Array.isArray(sessionData.delegations) && sessionData.delegations.length > 0) {
+      state.delegations = sessionData.delegations.slice(-100); // 최대 100개 유지
+      restoredDelegations = state.delegations.length;
+    }
+
+    log(`세션 상태 복원 완료: ${latestFile} (이벤트 ${restoredEvents}개, 메시지 ${restoredMessages}개, 위임 ${restoredDelegations}개)`);
+  } catch (err) {
+    log(`세션 상태 복원 실패 (새 세션으로 시작): ${err.message}`);
+  }
+}
+
+// ── 주기적 자동 저장 (5분 간격) ─────────────────────────────────────────────
+/** 자동 저장 타이머 ID (clearInterval 용) */
+let autoSaveTimer = null;
+
+/**
+ * 5분 간격으로 세션 상태를 자동 저장합니다.
+ * 비정상 종료(crash) 시에도 최대 5분 이내의 데이터를 복원할 수 있습니다.
+ */
+function startAutoSave() {
+  const INTERVAL_MS = 5 * 60 * 1000; // 5분
+  autoSaveTimer = setInterval(() => {
+    log('주기적 자동 저장 실행 (5분 간격)');
+    saveSessionState();
+  }, INTERVAL_MS);
+
+  // 타이머가 프로세스 종료를 막지 않도록 unref 처리
+  if (autoSaveTimer.unref) autoSaveTimer.unref();
+  log('자동 저장 스케줄 시작 (5분 간격)');
+}
+
 // ── Graceful Shutdown ──────────────────────────────────────────────────────────
 
 /**
  * 서버를 정상적으로 종료합니다.
+ * - 세션 상태 저장 (이력 영속화)
  * - SSE 클라이언트 연결 종료
  * - HTTP 서버 close
  * 프로세스 종료
  */
 function gracefulShutdown() {
   log('서버 종료 중...');
+
+  // 세션 상태 저장 (포트 파일 삭제보다 먼저)
+  saveSessionState();
 
   // 포트 파일 삭제
   removePortFile();
@@ -1575,6 +1985,12 @@ startMcpServer();
     log('기존 대시보드 서버 없음. HTTP 서버를 시작합니다.');
     startHttpServer();
   }
+
+  // 세션 상태 복원 (파일 감시 시작 전에 실행)
+  restoreSessionState();
+
+  // 자동 저장 스케줄 시작 (5분 간격)
+  startAutoSave();
 
   startFileWatcher();
 })();

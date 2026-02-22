@@ -9,6 +9,7 @@
   "homepage": "https://github.com/seokan-jeong/team-shinchan",
   "repository": "https://github.com/seokan-jeong/team-shinchan",
   "license": "MIT",
+  "hooks": "./hooks/hooks.json",
   "keywords": [
     "claude-code",
     "plugin",

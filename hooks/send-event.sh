@@ -10,15 +10,30 @@
 
 # ── 포트 디스커버리 ──────────────────────────────────────────────────────────
 # 서버가 실제 바인딩된 포트를 기록한 파일에서 포트를 읽어옴
+# server.mjs는 process.cwd() 기준으로 포트 파일을 저장하므로
+# 1) 호스트 프로젝트(PWD) 기준 경로를 먼저 탐색
+# 2) 없으면 PLUGIN_ROOT 기준으로 fallback
 # 파일이 없으면 DASHBOARD_URL 환경변수 또는 기본값 3333으로 fallback
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-PORT_FILE="${PLUGIN_ROOT}/.shinchan-docs/.dashboard-port"
 
-if [ -z "${DASHBOARD_URL}" ] && [ -f "$PORT_FILE" ]; then
-  DISCOVERED_PORT=$(cat "$PORT_FILE" 2>/dev/null | tr -d '[:space:]')
-  if [ -n "$DISCOVERED_PORT" ]; then
-    DASHBOARD_URL="http://localhost:${DISCOVERED_PORT}"
+# 호스트 프로젝트(PWD) 기준 경로 우선 탐색
+HOST_PORT_FILE="${PWD}/.shinchan-docs/.dashboard-port"
+PLUGIN_PORT_FILE="${PLUGIN_ROOT}/.shinchan-docs/.dashboard-port"
+
+if [ -z "${DASHBOARD_URL}" ]; then
+  # 호스트 프로젝트 경로 우선
+  if [ -f "$HOST_PORT_FILE" ]; then
+    PORT_FILE="$HOST_PORT_FILE"
+  elif [ -f "$PLUGIN_PORT_FILE" ]; then
+    PORT_FILE="$PLUGIN_PORT_FILE"
+  fi
+
+  if [ -n "$PORT_FILE" ]; then
+    DISCOVERED_PORT=$(cat "$PORT_FILE" 2>/dev/null | tr -d '[:space:]')
+    if [ -n "$DISCOVERED_PORT" ]; then
+      DASHBOARD_URL="http://localhost:${DISCOVERED_PORT}"
+    fi
   fi
 fi
 DASHBOARD_URL="${DASHBOARD_URL:-http://localhost:3333}"
@@ -79,6 +94,16 @@ if command -v node &>/dev/null; then
               from: 'shinnosuke',
               to: extractAgent(input.tool_input.subagent_type),
               content: (input.tool_input.prompt || '').slice(0, 200),
+            };
+          } else if ((input.tool_name === 'Edit' || input.tool_name === 'Write') && input.tool_input) {
+            // Edit/Write 도구 = file_change 이벤트
+            const filePath = (input.tool_input.file_path || '').slice(0, 300);
+            const action = input.tool_name === 'Write' ? 'create' : 'modify';
+            output = {
+              type: 'file_change',
+              agent: 'unknown',
+              file: filePath,
+              action: action,
             };
           } else {
             output = {
