@@ -9,6 +9,7 @@ All execution agents MUST run this checklist before reporting task completion.
 - [ ] **Simplicity First**: Is this the minimum code needed? Could I remove anything?
 - [ ] **Surgical Changes**: Did I ONLY change what was requested? No extra modifications?
 - [ ] **Goal-Driven Execution**: Did I define success criteria? Did I verify them?
+- [ ] **Elegance Check** (non-trivial changes only): Is there a more elegant approach? (Balance with Surgical Changes — don't over-engineer)
 
 ### Quality Gate
 - [ ] All changed lines trace directly to the task request

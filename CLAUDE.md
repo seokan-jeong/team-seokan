@@ -72,6 +72,8 @@ Rule 6: ALWAYS use Task tool to invoke team-shinchan agents (NEVER work directly
 | Design decisions | None | Required |
 | New feature | No | Yes |
 
+**Bug fix exception**: Clear bug fixes affecting ≤ 3 files with no design decisions → Lite Mode (Bo → Action Kamen).
+
 **Lite Mode**: Bo implements → Action Kamen reviews (MANDATORY) → Done. No docs needed.
 **Full Mode**: 4-stage workflow (requirements → planning → execution → completion).
 

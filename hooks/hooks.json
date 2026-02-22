@@ -110,6 +110,14 @@
             "prompt_file": "${CLAUDE_PLUGIN_ROOT}/hooks/shinnosuke-orchestrate.md"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt_file": "${CLAUDE_PLUGIN_ROOT}/hooks/correction-capture.md"
+          }
+        ]
       }
     ],
     "Stop": [
