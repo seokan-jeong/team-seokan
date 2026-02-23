@@ -50,52 +50,54 @@ function runValidation() {
 
   const claudeContent = fs.readFileSync(CLAUDE_MD, 'utf-8');
 
-  // Check stage rules - either inline in CLAUDE.md or referenced via workflow-guard.md
+  // Check stage rules across CLAUDE.md, agents/shinnosuke.md, and hooks/workflow-guard.md
   console.log('\nChecking stage_rules...');
 
-  if (claudeContent.includes('Stage-Tool Matrix')) {
-    REQUIRED_STAGES.forEach(stage => {
-      const stagePattern = new RegExp(stage, 'i');
-      if (stagePattern.test(claudeContent)) {
-        console.log(`  \x1b[32m✓\x1b[0m ${stage}`);
-      } else {
-        errors.push(`Missing stage_rules for: ${stage}`);
-        console.log(`  \x1b[31m✗\x1b[0m ${stage}`);
-      }
-    });
-  } else if (claudeContent.includes('workflow-guard')) {
-    console.log('  \x1b[32m✓\x1b[0m Stage rules delegated to workflow-guard.md');
-    // Verify workflow-guard.md has all stages
-    const guardPath = path.join(ROOT_DIR, 'hooks/workflow-guard.md');
-    if (fs.existsSync(guardPath)) {
-      const guardContent = fs.readFileSync(guardPath, 'utf-8');
-      REQUIRED_STAGES.forEach(stage => {
-        if (new RegExp(stage, 'i').test(guardContent)) {
-          console.log(`  \x1b[32m✓\x1b[0m ${stage} (in workflow-guard.md)`);
-        } else {
-          errors.push(`Missing stage_rules for: ${stage} in workflow-guard.md`);
-          console.log(`  \x1b[31m✗\x1b[0m ${stage}`);
-        }
-      });
+  const stageSearchFiles = [
+    { rel: 'CLAUDE.md', content: claudeContent },
+    { rel: 'agents/shinnosuke.md', content: '' },
+    { rel: 'hooks/workflow-guard.md', content: '' },
+    { rel: 'hooks/shinnosuke-orchestrate.md', content: '' }
+  ];
+  stageSearchFiles.forEach(f => {
+    if (!f.content) {
+      const p = path.join(ROOT_DIR, f.rel);
+      if (fs.existsSync(p)) f.content = fs.readFileSync(p, 'utf-8');
     }
-  } else {
-    errors.push('No stage rules found in CLAUDE.md or reference to workflow-guard.md');
-    console.log('  \x1b[31m✗\x1b[0m No stage rules found');
-  }
+  });
+  const stagesCombined = stageSearchFiles.map(f => f.content).join('\n');
 
-  // Check Transition Gates - either in CLAUDE.md or in shinnosuke.md/workflow-guide.md
+  REQUIRED_STAGES.forEach(stage => {
+    const stagePattern = new RegExp(stage, 'i');
+    if (stagePattern.test(stagesCombined)) {
+      // Find which file matched for reporting
+      const source = stageSearchFiles.find(f => stagePattern.test(f.content));
+      console.log(`  \x1b[32m✓\x1b[0m ${stage} (in ${source ? source.rel : 'unknown'})`);
+    } else {
+      errors.push(`Missing stage_rules for: ${stage}`);
+      console.log(`  \x1b[31m✗\x1b[0m ${stage}`);
+    }
+  });
+
+  // Check Transition Gates across CLAUDE.md, shinnosuke.md, orchestrate hook, and workflow-guide
   console.log('\nChecking transition_gates...');
 
   const gateLabels = {
-    'requirements_to_planning': /requirements.*→.*planning|requirements.*planning/i,
-    'planning_to_execution': /planning.*→.*execution|planning.*execution/i,
-    'execution_to_completion': /execution.*→.*completion|execution.*completion/i,
-    'completion_to_done': /completion.*→.*done|Final review/i
+    'requirements_to_planning': /requirements.*→.*planning|requirements.*planning|Stage 1→2|Stage 1.*Stage 2|S1→S2|S1.*S2.*REQUESTS/i,
+    'planning_to_execution': /planning.*→.*execution|planning.*execution|Stage 2→3|Stage 2.*Stage 3|S2→S3|S2.*S3.*PROGRESS/i,
+    'execution_to_completion': /execution.*→.*completion|execution.*completion|Stage 3→4|Stage 3.*Stage 4|S3→S4|S3.*S4.*complete/i,
+    'completion_to_done': /completion.*→.*done|Final review|Completion.*RETROSPECTIVE|Completion Gate|final.*review.*passed|Done:.*RETROSPECTIVE/i
   };
 
-  // Check across CLAUDE.md and shinnosuke.md
-  const shinnosukePath = path.join(ROOT_DIR, 'agents/shinnosuke.md');
-  const combinedContent = claudeContent + '\n' + (fs.existsSync(shinnosukePath) ? fs.readFileSync(shinnosukePath, 'utf-8') : '');
+  // Combine content from all relevant files
+  const gateSearchFiles = [
+    'CLAUDE.md', 'agents/shinnosuke.md', 'hooks/shinnosuke-orchestrate.md', 'docs/workflow-guide.md'
+  ];
+  let combinedContent = claudeContent;
+  gateSearchFiles.slice(1).forEach(rel => {
+    const p = path.join(ROOT_DIR, rel);
+    if (fs.existsSync(p)) combinedContent += '\n' + fs.readFileSync(p, 'utf-8');
+  });
 
   REQUIRED_GATES.forEach(gate => {
     const pattern = gateLabels[gate];

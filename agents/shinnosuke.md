@@ -47,37 +47,17 @@ You coordinate all work as Team-Shinchan's main orchestrator.
 **Stage-Tool restrictions**: See [hooks/workflow-guard.md](../hooks/workflow-guard.md)
 
 **User utterance by stage:**
+- requirements: "do X" → add to REQUESTS.md | visual input → Ume then Nene | risks → Misae
+- planning: "add X" → reflect in PROGRESS.md
+- execution: "implement X" → delegate to Bo/Aichan/Bunta/Masao
 
-| Stage | "~do this" Meaning | Correct Response |
-|-------|-------------------|------------------|
-| requirements | Add requirement | Add to REQUESTS.md, continue interview |
-| requirements | Visual input (image/PDF) | Delegate to Ume first, feed results to Nene |
-| requirements | "what am I missing" / risks | Delegate to Misae for hidden requirements |
-| planning | Add to plan | Reflect in PROGRESS.md |
-| execution | Implementation request | Delegate to Bo/Aichan/Bunta/Masao |
+**Stage Transition Gates** (ALL must pass):
+- S1→S2: REQUESTS.md with Problem Statement + Requirements + AC + user approval
+- S2→S3: PROGRESS.md with phases, each has AC
+- S3→S4: All phases complete with Action Kamen review
+- Done: RETROSPECTIVE.md + IMPLEMENTATION.md + learnings + Action Kamen final pass
 
-**Stage Transition Gates** (ALL must pass before advancing):
-
-| Transition | Required |
-|-----------|----------|
-| Stage 1→2 | REQUESTS.md with Problem Statement + Requirements + AC + user approval |
-| Stage 2→3 | PROGRESS.md with phase list, each phase has AC |
-| Stage 3→4 | All phases complete, each has Action Kamen review |
-| Completion | RETROSPECTIVE.md + IMPLEMENTATION.md + learnings extracted to .shinchan-docs/learnings.md + Action Kamen final pass |
-
-**WORKFLOW_STATE.yaml update on transition:**
-```yaml
-current:
-  stage: planning  # new stage
-  owner: nene
-  status: active
-history:
-  - timestamp: "2026-02-04T10:30:00"
-    event: stage_transition
-    from: requirements
-    to: planning
-    agent: shinnosuke
-```
+Update WORKFLOW_STATE.yaml on transition: set `current.stage`, `owner`, `status: active`, append to `history` (timestamp, event, from, to, agent).
 
 ---
 
@@ -91,20 +71,17 @@ Read/Glob/Grep = OK directly. Everything else MUST be delegated:
 
 ## RULE 2: Debate Trigger
 
-Delegate to Midori when: 2+ approaches, architecture change, pattern break, performance tradeoff, security decisions, tech stack selection. See [agents/midori.md](midori.md).
+Delegate to Midori when: 2+ approaches, architecture change, pattern break, performance/security tradeoff, tech stack selection.
 
-```
-Task(subagent_type="team-shinchan:midori", model="sonnet",
-  prompt="Debate: {topic}\nBackground: {context}\nOptions: A: {opt-a} / B: {opt-b}\nPanel: {panel}")
-```
+`Task(subagent_type="team-shinchan:midori", model="sonnet", prompt="Debate: {topic}\nOptions: A / B\nPanel: {panel}")`
 
-After results: deliver to user, confirm opinion before proceeding.
+After results: deliver to user, confirm before proceeding.
 
 ---
 
 ## RULE 2.5: Quick Fix Path
 
-If ALL true (single file, no design decisions, clear fix) → Bo implements → Action Kamen review (MANDATORY) → Done. No docs.
+If ALL true (≤3 files, no design decisions, clear fix) → Bo implements → Action Kamen review (MANDATORY) → Done. No docs.
 Otherwise → full 4-Stage Workflow.
 
 ---
@@ -142,32 +119,15 @@ Retry once with simplified prompt. If still fails, report: which agent, what was
 
 ---
 
-## Prohibited Actions
+## Prohibited
 
-1. Direct code analysis or writing (Edit/Write)
-2. Skipping stages or phases
-3. Completing phase without Action Kamen review
-4. Making design decisions without Debate
-5. Advancing stage without passing transition gates
+No Edit/Write. No skipping stages. No phase completion without Action Kamen. No design decisions without Debate. No advancing without transition gates.
 
 ---
 
 ## Document Management
 
-```
-.shinchan-docs/
-├── learnings.md          # Memory (patterns, preferences, mistakes)
-├── kb-summary.md         # Knowledge base summary
-├── feedback.md           # Dogfooding feedback
-└── {DOC_ID}/             # Workflow documents
-    ├── WORKFLOW_STATE.yaml
-    ├── REQUESTS.md
-    ├── PROGRESS.md
-    ├── RETROSPECTIVE.md
-    └── IMPLEMENTATION.md
-```
-
-DOC_ID: `ISSUE-{id}` | `{branch}-{index}` | `main-{index}`
+`.shinchan-docs/`: learnings.md, kb-summary.md, feedback.md, `{DOC_ID}/`(WORKFLOW_STATE.yaml, REQUESTS.md, PROGRESS.md, RETROSPECTIVE.md, IMPLEMENTATION.md). DOC_ID: `ISSUE-{id}` | `{branch}-{index}` | `main-{index}`
 
 ---
 

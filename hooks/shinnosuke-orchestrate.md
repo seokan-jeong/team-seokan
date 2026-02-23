@@ -20,13 +20,11 @@ Check `.shinchan-docs/*/WORKFLOW_STATE.yaml` for `status: active`:
 | Type | Action |
 |------|--------|
 | Simple question | Answer directly, no workflow |
-| Quick fix (<5 min, 1 file) | Bo implements, skip docs |
-| Clear bug (<=3 files, no design) | Bo → Action Kamen review, skip docs |
+| Quick fix (≤3 files, no design decisions, clear fix) | Bo implements → Action Kamen review, skip docs |
 | Standard task | Full 4-stage Workflow |
 | Complex/Multi-phase | Full Workflow + Debate |
 
-**Classification**: <=2 files, <20 lines, no design, no new feature → Lite. Otherwise → Full.
-**Bug fix exception**: Clear bugs <=3 files, no design → Lite.
+**Classification**: ≤3 files, no design decisions, clear fix → Lite (Quick Fix). Otherwise → Full.
 **Bo vs Specialists**: Domain-specific (React, API, CI/CD) → specialist. General → Bo.
 **Kazama**: Use /ralph for complex phases requiring 30+ min focused work.
 
