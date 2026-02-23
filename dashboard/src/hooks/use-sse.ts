@@ -326,8 +326,10 @@ export function useSSE(): void {
         const phaseTitle = (workflow?.phase_title ?? data.phase_title) as string | undefined
         const progressData = (data.progress ?? null) as import('../lib/types').Progress | null
 
+        const docId = (workflow?.docId ?? workflow?.doc_id ?? data.docId ?? data.doc_id) as string | undefined
+
         if (stage) {
-          updateWorkflow(stage, phase ?? null, phaseTitle ?? null, progressData)
+          updateWorkflow(stage, phase ?? null, phaseTitle ?? null, progressData, docId ?? null)
         } else if (progressData) {
           // no stage but progress available: update progress only
           const { currentPhase, currentPhaseTitle } = useDashboardStore.getState()
@@ -336,6 +338,7 @@ export function useSSE(): void {
             currentPhase,
             currentPhaseTitle,
             progressData,
+            docId ?? null,
           )
         }
 
@@ -359,8 +362,9 @@ export function useSSE(): void {
           const workflow = data.workflow as Record<string, unknown>
           const stage = workflow.stage as string | undefined
           const phase = workflow.phase as string | undefined
+          const docId = (workflow.docId ?? workflow.doc_id) as string | undefined
           if (stage) {
-            updateWorkflow(stage, phase ?? null)
+            updateWorkflow(stage, phase ?? null, null, null, docId ?? null)
           }
         }
       } catch { /* ignore */ }

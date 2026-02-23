@@ -2,11 +2,11 @@
  * LayerGroup.tsx
  *
  * Collapsible group of agent cards grouped by layer.
- * Mirrors app.js renderSidebar() layer-group HTML (lines 154-183).
- * CSS: styles.css .layer-group, .layer-label (lines 163-177).
+ * Shows active (working) agent count badge next to layer label.
  */
 import { useState } from 'react'
 import type { AgentId } from '../../lib/constants'
+import { useDashboardStore } from '../../stores/dashboard-store'
 import { AgentCard } from './AgentCard'
 
 interface LayerGroupProps {
@@ -16,8 +16,14 @@ interface LayerGroupProps {
 
 export function LayerGroup({ layer, agentIds }: LayerGroupProps) {
   const [collapsed, setCollapsed] = useState(false)
+  const agentStatuses = useDashboardStore((s) => s.agentStatuses)
 
   if (agentIds.length === 0) return null
+
+  // Count working agents in this layer
+  const activeInLayer = agentIds.filter(
+    (id) => agentStatuses[id] === 'working'
+  ).length
 
   return (
     <div className="layer-group" role="group" aria-label={`${layer} layer`}>
@@ -47,7 +53,12 @@ export function LayerGroup({ layer, agentIds }: LayerGroupProps) {
         aria-expanded={!collapsed}
         aria-label={`${layer} layer group`}
       >
-        <span>{layer}</span>
+        <span>
+          {layer}
+          {activeInLayer > 0 && (
+            <span className="layer-active-badge">{activeInLayer}</span>
+          )}
+        </span>
         <span style={{ fontSize: '9px', opacity: 0.6 }}>{collapsed ? '▶' : '▼'}</span>
       </button>
 

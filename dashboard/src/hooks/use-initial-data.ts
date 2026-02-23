@@ -53,8 +53,12 @@ export function useInitialData(): void {
             | undefined
           const progressData = (data.progress ?? null) as Progress | null
 
+          const docId = (workflow?.docId ?? workflow?.doc_id ?? data.docId ?? data.doc_id) as
+            | string
+            | undefined
+
           if (stage) {
-            updateWorkflow(stage, phase ?? null, phaseTitle ?? null, progressData)
+            updateWorkflow(stage, phase ?? null, phaseTitle ?? null, progressData, docId ?? null)
           }
 
           const session = data.session as { startedAt?: string } | undefined
@@ -149,6 +153,62 @@ export function useInitialData(): void {
                   to: ev.to,
                   task: ev.task,
                   fromPreviousSession: true,
+                })
+              }
+            }
+          }
+        }
+      } catch {
+        // Server not connected — ignore (static mode)
+      }
+
+      if (cancelled) return
+
+      // ── 4. GET /api/debate — 세션별 debate state 복원 ──────────────────
+      try {
+        const res = await fetch(`/api/debate${sessionParam}`)
+        if (!cancelled && res.ok) {
+          const data = (await res.json()) as {
+            debate?: {
+              active?: boolean
+              topic?: string | null
+              opinions?: Array<{
+                agent?: string
+                opinion?: string
+                round?: number
+              }>
+              conclusion?: string | null
+            }
+          }
+
+          if (data.debate) {
+            const { handleDebateEvent } = useDashboardStore.getState()
+            const debate = data.debate
+
+            if (debate.active || (debate.conclusion && debate.topic)) {
+              // debate start
+              handleDebateEvent({
+                subtype: 'start',
+                topic: debate.topic ?? '토론 주제',
+              })
+
+              // opinions 복원
+              if (Array.isArray(debate.opinions)) {
+                for (const op of debate.opinions) {
+                  handleDebateEvent({
+                    subtype: 'opinion',
+                    agent: op.agent ?? '',
+                    opinion: op.opinion ?? '',
+                    round: op.round ?? 1,
+                  })
+                }
+              }
+
+              // conclusion 복원
+              if (debate.conclusion) {
+                handleDebateEvent({
+                  subtype: 'conclusion',
+                  conclusion: debate.conclusion,
                 })
               }
             }

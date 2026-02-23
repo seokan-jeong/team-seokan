@@ -1,14 +1,12 @@
 /**
  * Header.tsx
  *
- * Top bar with brand identity and connection status badge.
- * Mirrors app.js setConnected() DOM side (lines 1348-1383) and
- * index.html <header> structure (lines 20-33).
- *
- * The store now preserves the full tri-state: true | false | 'reconnecting'.
- * ConnectionBadge maps each state to the appropriate CSS modifier class.
+ * Top bar with brand identity, current task context, and connection status.
+ * CurrentTask indicator shows docId + stage + active agent count between
+ * brand and controls. Hidden below 768px.
  */
 import { useDashboardStore } from '../../stores/dashboard-store'
+import { STAGES } from '../../lib/constants'
 import { SessionSelector } from '../session/SessionSelector'
 
 // ── ConnectionBadge ──────────────────────────────────────────────────────────
@@ -44,6 +42,42 @@ function ConnectionBadge({ connected }: BadgeProps) {
   )
 }
 
+// ── CurrentTask ──────────────────────────────────────────────────────────────
+
+function CurrentTask() {
+  const workflowDocId = useDashboardStore((s) => s.workflowDocId)
+  const currentStage = useDashboardStore((s) => s.currentStage)
+  const agentStatuses = useDashboardStore((s) => s.agentStatuses)
+
+  const activeCount = Object.values(agentStatuses).filter(
+    (s) => s === 'working'
+  ).length
+
+  const stageIdx = currentStage
+    ? STAGES.findIndex((s) => s.id === currentStage)
+    : -1
+  const stageName = stageIdx >= 0 ? STAGES[stageIdx].label : null
+
+  // Nothing to show if no workflow context
+  if (!workflowDocId && !currentStage && activeCount === 0) return null
+
+  return (
+    <div className="header-task">
+      {workflowDocId && (
+        <span className="header-docid" title={workflowDocId}>
+          {workflowDocId.length > 12 ? workflowDocId.slice(0, 12) + '...' : workflowDocId}
+        </span>
+      )}
+      {stageName && (
+        <span className="header-stage">{stageName}</span>
+      )}
+      {activeCount > 0 && (
+        <span className="header-active-count">{activeCount} active</span>
+      )}
+    </div>
+  )
+}
+
 // ── Header ───────────────────────────────────────────────────────────────────
 
 export function Header() {
@@ -58,6 +92,7 @@ export function Header() {
           <div className="subtitle">Multi-Agent Workflow Monitor</div>
         </div>
       </div>
+      <CurrentTask />
       <div className="header-controls">
         <SessionSelector />
         <ConnectionBadge connected={connected} />

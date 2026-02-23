@@ -1,9 +1,9 @@
 /**
  * SessionSelector.tsx
  *
- * Dropdown component for selecting active sessions.
- * Fetches session list from GET /api/sessions periodically
- * and displays active/ended sessions with status indicators.
+ * Dropdown for selecting active sessions.
+ * Wraps in a div with active-session indicator (green left border)
+ * and shows session count badge.
  */
 import { useEffect } from 'react'
 import { useDashboardStore } from '../../stores/dashboard-store'
@@ -21,21 +21,28 @@ export function SessionSelector() {
     return () => clearInterval(interval)
   }, [fetchSessions])
 
+  const hasActiveSessions = availableSessions.some((s) => s.active)
+
   return (
-    <div className="session-selector">
-      <select
-        value={currentSessionId || ''}
-        onChange={(e) => setCurrentSessionId(e.target.value || null)}
-        className="session-select"
-      >
-        <option value="">All Sessions</option>
-        {availableSessions.map((s) => (
-          <option key={s.sessionId} value={s.sessionId}>
-            {s.active ? '\u{1F7E2}' : '\u26AA'} {s.sessionId.length > 24 ? s.sessionId.slice(0, 24) + '…' : s.sessionId}
-            {s.eventCount > 0 ? ` (${s.eventCount})` : ''}
-          </option>
-        ))}
-      </select>
+    <div className={`session-selector-wrapper${hasActiveSessions ? ' active-session' : ''}`}>
+      <div className="session-selector">
+        <select
+          value={currentSessionId || ''}
+          onChange={(e) => setCurrentSessionId(e.target.value || null)}
+          className="session-select"
+        >
+          <option value="">All Sessions</option>
+          {availableSessions.map((s) => (
+            <option key={s.sessionId} value={s.sessionId}>
+              {s.active ? '\u{1F7E2}' : '\u26AA'} {s.sessionId.length > 24 ? s.sessionId.slice(0, 24) + '…' : s.sessionId}
+              {s.eventCount > 0 ? ` (${s.eventCount})` : ''}
+            </option>
+          ))}
+        </select>
+        {availableSessions.length > 0 && (
+          <span className="session-count-badge">{availableSessions.length}</span>
+        )}
+      </div>
     </div>
   )
 }

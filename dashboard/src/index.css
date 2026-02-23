@@ -1492,3 +1492,174 @@
 }
 
 .debate-conclusion-text { font-size: 13px; color: var(--foreground); line-height: 1.6; }
+
+/* ── Agent Model Badge ───────────────────────────────────────────────── */
+
+.agent-model-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  font-size: 8px;
+  font-weight: 800;
+  line-height: 1;
+  margin-left: 4px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.model-opus   { background: rgba(168, 85, 247, 0.25); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
+.model-sonnet { background: rgba(59, 130, 246, 0.25); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+.model-haiku  { background: rgba(20, 184, 166, 0.25); color: #5eead4; border: 1px solid rgba(20, 184, 166, 0.4); }
+
+/* ── Agent Card: delegating / receiving status styles ─────────────── */
+
+.agent-card[data-status="delegating"] .agent-status {
+  background: var(--warning);
+  box-shadow: 0 0 6px rgba(210, 153, 34, 0.5);
+}
+
+.agent-card[data-status="delegating"] { background: rgba(210, 153, 34, 0.05); }
+
+.agent-card[data-status="receiving"] .agent-status {
+  background: var(--primary);
+  box-shadow: 0 0 6px rgba(88, 166, 255, 0.5);
+}
+
+.agent-card[data-status="receiving"] { background: rgba(88, 166, 255, 0.05); }
+
+/* ── Metric Model Colors ─────────────────────────────────────────── */
+
+.metric-model-opus   { color: #c084fc; margin-right: 4px; }
+.metric-model-sonnet { color: #60a5fa; margin-right: 4px; }
+.metric-model-haiku  { color: #5eead4; margin-right: 4px; }
+
+/* ── Header CurrentTask ──────────────────────────────────────────── */
+
+.header-task {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.header-docid {
+  background: rgba(88, 166, 255, 0.12);
+  border: 1px solid rgba(88, 166, 255, 0.3);
+  color: var(--primary);
+  border-radius: 10px;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header-stage {
+  color: var(--foreground);
+  font-weight: 600;
+  font-size: 11px;
+}
+
+.header-active-count {
+  color: var(--success);
+  font-weight: 600;
+  font-size: 11px;
+}
+
+@media (max-width: 768px) {
+  .header-task { display: none; }
+}
+
+/* ── Session Selector Wrapper ────────────────────────────────────── */
+
+.session-selector-wrapper {
+  display: flex;
+  align-items: center;
+  border-left: 3px solid transparent;
+  padding-left: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.session-selector-wrapper.active-session {
+  border-left-color: var(--success);
+}
+
+.session-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  background: rgba(88, 166, 255, 0.15);
+  border: 1px solid rgba(88, 166, 255, 0.3);
+  color: var(--primary);
+  font-size: 9px;
+  font-weight: 700;
+  margin-left: 6px;
+  padding: 0 4px;
+}
+
+/* ── Layer Active Badge ──────────────────────────────────────────── */
+
+.layer-active-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  background: rgba(63, 185, 80, 0.2);
+  border: 1px solid rgba(63, 185, 80, 0.4);
+  color: var(--success);
+  font-size: 9px;
+  font-weight: 700;
+  margin-left: 6px;
+  padding: 0 3px;
+}
+
+/* ── Footer: docId, stage, SSE dot ───────────────────────────────── */
+
+.footer-docid {
+  background: rgba(88, 166, 255, 0.1);
+  border: 1px solid rgba(88, 166, 255, 0.25);
+  color: var(--primary);
+  border-radius: 8px;
+  padding: 1px 7px;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.footer-stage {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1px 7px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.footer-sse-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.3s ease;
+}
+
+.footer-sse-dot.connected    { background: var(--success); box-shadow: 0 0 4px var(--success); }
+.footer-sse-dot.reconnecting { background: var(--warning); box-shadow: 0 0 4px var(--warning); animation: pulse-dot 1s infinite; }
+.footer-sse-dot.disconnected { background: var(--error);   box-shadow: 0 0 4px var(--error); }

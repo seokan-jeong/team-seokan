@@ -2,11 +2,12 @@
  * Footer.tsx
  *
  * Status bar at the bottom of the dashboard.
- * Mirrors app.js startClock() (lines 119-128) and updateFooterEndpoint()
- * (lines 131-134) and index.html <footer> (lines 183-207).
- * CSS: styles.css .footer (lines 918-941).
+ * Left: docId badge + Stage indicator + SSE micro-dot
+ * Right: version + clock
  */
 import { useEffect, useState } from 'react'
+import { useDashboardStore } from '../../stores/dashboard-store'
+import { STAGES } from '../../lib/constants'
 
 // ── Clock ────────────────────────────────────────────────────────────────────
 
@@ -30,26 +31,48 @@ function useClock(): string {
 
 export function Footer() {
   const time = useClock()
+  const connected = useDashboardStore((s) => s.connected)
+  const workflowDocId = useDashboardStore((s) => s.workflowDocId)
+  const currentStage = useDashboardStore((s) => s.currentStage)
+
+  // Find current stage index for "S2/4" display
+  const stageIdx = currentStage
+    ? STAGES.findIndex((s) => s.id === currentStage)
+    : -1
+  const stageText = stageIdx >= 0
+    ? `S${stageIdx + 1}/${STAGES.length}`
+    : null
+
+  // SSE connection dot color
+  const sseDotClass = connected === true
+    ? 'footer-sse-dot connected'
+    : connected === 'reconnecting'
+      ? 'footer-sse-dot reconnecting'
+      : 'footer-sse-dot disconnected'
 
   return (
     <footer className="footer">
       <div className="footer-left">
+        {workflowDocId && (
+          <div className="footer-item">
+            <span className="footer-docid" title={workflowDocId}>
+              {workflowDocId.length > 16 ? workflowDocId.slice(0, 16) + '...' : workflowDocId}
+            </span>
+          </div>
+        )}
+        {stageText && (
+          <div className="footer-item">
+            <span className="footer-stage">{stageText}</span>
+          </div>
+        )}
         <div className="footer-item">
-          <span>Endpoint</span>
-          <span>/api/events/stream</span>
-        </div>
-        <div className="footer-item">
-          <span>Stream</span>
+          <span className={sseDotClass} />
           <span>SSE</span>
         </div>
       </div>
       <div className="footer-right">
         <div className="footer-item">
-          <span>Agents</span>
-          <span>15</span>
-        </div>
-        <div className="footer-item">
-          <span>v1.0.0</span>
+          <span>v3.9.0</span>
         </div>
         <div className="footer-item">
           <span>{time}</span>

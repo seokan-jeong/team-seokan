@@ -50,6 +50,7 @@ export interface DashboardState {
   currentPhase: string | null            // "1/4" form
   currentPhaseTitle: string | null
   progressData: Progress | null
+  workflowDocId: string | null
 
   // Agents
   agentStatuses: Record<string, AgentStatus>
@@ -106,6 +107,7 @@ export interface DashboardState {
     phase?: string | null,
     phaseTitle?: string | null,
     progressData?: Progress | null,
+    docId?: string | null,
   ) => void
 
   /** Mirror of app.js updateDelegationFlow() — state-mutation portion only */
@@ -159,6 +161,7 @@ export const useDashboardStore = create<DashboardState>((set) => ({
   currentPhase: null,
   currentPhaseTitle: null,
   progressData: null,
+  workflowDocId: null,
   agentStatuses: {},
   activeAgentId: null,
   events: [],
@@ -280,12 +283,13 @@ export const useDashboardStore = create<DashboardState>((set) => ({
   // ── updateWorkflow ───────────────────────────────────────────────────────
   // app.js lines 287-306
 
-  updateWorkflow: (stageId, phase, phaseTitle, progressData) => {
+  updateWorkflow: (stageId, phase, phaseTitle, progressData, docId) => {
     set((state) => ({
       currentStage: (stageId as StageId) || null,
       currentPhase: phase ?? null,
       currentPhaseTitle: phaseTitle ?? null,
       progressData: progressData !== undefined ? progressData : state.progressData,
+      workflowDocId: docId !== undefined ? docId ?? null : state.workflowDocId,
     }))
   },
 
@@ -382,6 +386,7 @@ export const useDashboardStore = create<DashboardState>((set) => ({
       currentRoundIdx: -1,
       events: [],
       chatMessages: [],
+      workflowDocId: null,
     })
   },
 
