@@ -8,6 +8,15 @@ event: PreToolUse
 
 **This hook runs BEFORE every tool use to enforce workflow stage rules.**
 
+## ABSOLUTE RULE
+
+```
+If current.stage is "requirements" or "planning":
+-> Edit, Write(*), Bash, TodoWrite = IMMEDIATELY BLOCK. NO EXCEPTIONS.
+-> Even if the user asks. Even if you think it's needed. BLOCK IT.
+-> (*) Exception: Write is allowed ONLY for .shinchan-docs/*/WORKFLOW_STATE.yaml in Stage 1.
+```
+
 ## Check Logic
 
 ```
@@ -39,12 +48,9 @@ event: PreToolUse
 ## Block Message Format
 
 ```
-[Workflow Guard] Action Blocked
-Stage: {stage} | Tool: {tool_name}
-{tool_name} is not allowed in {stage} stage.
-
-Allowed: {allowed_tools_for_stage}
-To advance: {advancement_conditions}
+BLOCKED. Stage: {stage}. Tool: {tool_name} is FORBIDDEN.
+You are in {stage} stage. Return to: {stage-appropriate-action}.
+Do NOT attempt to use {tool_name} again.
 ```
 
 | Stage | Allowed Tools | Advancement Conditions |
@@ -66,6 +72,11 @@ In Stage 1, user requests like "Please do ~", "Add this feature" must be added t
 In Stage 1 (requirements), ALL user requests → add to REQUESTS.md.
 Do NOT implement until Stage 3 (execution).
 ```
+
+### Stage 1 - WORKFLOW_STATE.yaml Write Exception
+
+In Stage 1, Write is allowed ONLY for `.shinchan-docs/*/WORKFLOW_STATE.yaml`.
+All other Write targets remain BLOCKED. This exception exists for interview state persistence.
 
 ### Completion Stage - Write Path Filtering
 

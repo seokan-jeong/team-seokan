@@ -59,6 +59,19 @@ Resume a paused or interrupted workflow by loading its saved state and delegatin
    - Only if `current_stage` is `planning`, `execution`, or `completion`
    - Extract current phase details, AC status, pending tasks
 
+### Step 2.5: Load Interview State (Stage 1 only)
+
+If `current_stage` is `requirements` AND `current.interview` exists in WORKFLOW_STATE.yaml:
+1. Extract `interview.step`, `interview.collected_count`, `interview.last_question`
+2. Include in Nene delegation prompt:
+   ```
+   인터뷰를 이어서 진행합니다.
+   현재 인터뷰 단계: {step}/4 ({step_name})
+   수집된 요구사항: {collected_count}개
+   마지막 질문: {last_question}
+   다음 질문부터 시작하세요.
+   ```
+
 ### Step 3: Update State
 
 Update `WORKFLOW_STATE.yaml`:
@@ -93,7 +106,7 @@ Resuming from: {last completed action}
 
 | Stage | Agent | Model | Prompt Includes |
 |-------|-------|-------|-----------------|
-| **requirements** | Nene | Opus | REQUESTS.md + "Continue requirements gathering from where left off" |
+| **requirements** | Nene | Opus | REQUESTS.md + interview state + "Continue interview from step {step}" |
 | **planning** | Nene | Opus | REQUESTS.md + PROGRESS.md + "Continue planning from current phase" |
 | **execution** | Bo/Specialist | Sonnet | REQUESTS.md + PROGRESS.md + current phase tasks |
 | **completion** | Masumi + Action Kamen | Sonnet + Opus | All docs + "Generate retrospective and implementation docs" |
