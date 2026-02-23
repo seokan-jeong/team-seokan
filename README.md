@@ -8,7 +8,7 @@
 
 **15 AI agents that debate decisions, plan systematically, execute in parallel, and learn from your project.**
 
-[![Version](https://img.shields.io/badge/version-3.9.0-blue.svg)](https://github.com/seokan-jeong/team-shinchan/releases)
+[![Version](https://img.shields.io/badge/version-3.10.0-blue.svg)](https://github.com/seokan-jeong/team-shinchan/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-purple.svg)](https://claude.ai)
 ![GitHub stars](https://img.shields.io/github/stars/seokan-jeong/team-shinchan?style=social)
@@ -429,13 +429,14 @@ New Session ────→ Load Learnings ────→ Apply to Work
 
 ---
 
-## What's New in v3.9.0
+## What's New in v3.10.0
 
-- **Plugin Standalone Operation** — No `CLAUDE.md` required. Install the plugin in any project and it works out of the box.
-- **Dashboard Session Isolation** — Each Claude Code session gets its own dashboard view with real-time SSE updates.
-- **Correction Capture** — Auto-detects when you correct the AI (Korean/English/Japanese) and records learnings.
-- **Elegance Check** — 5th self-check principle for code quality.
-- **Expanded Quick Fix** — Bug fixes up to 3 files now skip the full workflow.
+- **Plugin Portability Complete** — 27 issues fixed so the plugin works 100% when installed in any external project.
+- **Validator Paths Fixed** — All verify-* skills now use `${CLAUDE_PLUGIN_ROOT}` for correct execution from any host project.
+- **Dashboard File Events** — Edit/Write changes now appear in the real-time dashboard (previously only Task delegations were shown).
+- **Enhanced Dashboard** — 7 real-time metrics, SSE auto-reconnect, phase-level progress bars.
+- **Agent Quality** — Midori can now record debate decisions, Kazama has safety guardrails, help shows all 32 skills.
+- **Token Optimization** — Reduced overhead across hooks, agents, and shared resources.
 
 ---
 

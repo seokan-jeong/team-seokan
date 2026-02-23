@@ -2,6 +2,34 @@
 
 All notable changes to Team-Shinchan will be documented in this file.
 
+## [3.10.0] - 2026-02-23
+
+### Fixed (Critical — Plugin Portability)
+- **Validator Paths**: All verify-* skills now use `cd "${CLAUDE_PLUGIN_ROOT}" && node tests/validate/...` so validators run correctly from any host project
+- **Midori Write Tool**: Added `Write` to Midori's tool list — debate decisions can now be recorded
+- **Debate Decisions Storage**: Moved from `agents/_shared/debate-decisions.md` (plugin dir) to `.shinchan-docs/debate-decisions.md` (project-local)
+- **Nene Task Mismatch**: Removed `Task` from IMMUTABLE RULES (not in tools list), fixed misleading "READ-ONLY" label
+- **Help Skill Completeness**: Expanded from 14 to all 32 skills, added Midori to agent table
+- **Resume Command**: Fixed broken YAML frontmatter (was wrapped in code block, preventing parsing)
+- **Research Skill**: Added missing input validation (was the only task-dispatching skill without it)
+
+### Fixed (High Priority)
+- **Path Consistency**: Unified `.team-shinchan/` → `.shinchan-docs/` across README, DOGFOODING
+- **Dead References**: Removed `PART 13 in CLAUDE.md` references in workflow-guide (CLAUDE.md reduced to 16 lines)
+- **Outdated Troubleshooting**: Removed CLAUDE.md loading advice from getting-started.md (no longer required)
+- **Dashboard File Events**: Registered `send-event.sh` for PostToolUse Edit/Write — file changes now appear in dashboard
+
+### Changed
+- **Dashboard Metrics**: 7 real-time metrics (completed, active, pending, phases, elapsed, tokens, version)
+- **SSE Reconnect**: Health check + auto-recovery for dashboard stability
+- **Token Optimization**: Reduced overhead across hooks, agents, shared resources, and skills
+- **Workflow Connectivity**: Improved skill-to-skill stage transitions
+
+### Added
+- **Kazama Guardrails**: Bash Restrictions + Testing Protocol sections (matching other execution agents)
+- **Agent Examples**: Second `<example>` blocks for Himawari, Misae, Shinnosuke (routing accuracy)
+- **Validator Count Sync**: TEST_SUMMARY.md (13→17), manage-skills (14→17 validators)
+
 ## [3.9.0] - 2026-02-22
 
 ### Changed

@@ -865,7 +865,7 @@ async function handleHttpRequest(req, res) {
     const uptimeSeconds = process.uptime();
     const healthResponse = {
       status: 'ok',
-      version: '3.9.0',
+      version: '3.10.0',
       port:   state.serverPort,
       uptime: uptimeSeconds,
       url:    `http://localhost:${state.serverPort}`,
@@ -893,7 +893,7 @@ async function handleHttpRequest(req, res) {
       server: {
         port:       state.serverPort,
         uptime:     process.uptime(),
-        version:    '3.9.0',
+        version:    '3.10.0',
         startedAt:  state.serverStartedAt,
         eventCount: state.events.length,
         sseClients: sseClients.length,
@@ -1924,7 +1924,7 @@ function handleMcpRequest(request) {
         capabilities:    { tools: {} },
         serverInfo:      {
           name:    'team-shinchan-dashboard',
-          version: '3.9.0',
+          version: '3.10.0',
         },
       });
 
