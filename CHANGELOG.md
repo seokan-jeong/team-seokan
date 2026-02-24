@@ -2,6 +2,20 @@
 
 All notable changes to Team-Shinchan will be documented in this file.
 
+## [3.11.0] - 2026-02-24
+
+### Added
+- **Agent Memory**: Persistent cross-session memory for 5 agents — actionkamen(`project`), hiroshi(`project`), kazama(`project`), bo(`local`), masumi(`user`)
+- **Skills Preloading**: 7 agents now auto-load domain knowledge via `skills:` frontmatter (bo, aichan, bunta, masao, actionkamen, hiroshi, kazama)
+- **maxTurns Guard**: Execution turn limits for 11 agents (10~50 based on role complexity) to prevent runaway loops
+- **permissionMode**: Role-based permission modes — `plan` for read-only agents, `acceptEdits` for code editors
+- **Worktree Isolation**: Kazama runs in isolated git worktree for safe large-scale refactoring
+- **Self-Evolving Agents**: Action Kamen and Hiroshi now have Learnings sections that accumulate insights across sessions
+
+### Changed
+- All agent frontmatter now leverages Claude Code v2.1.x features (memory, skills, maxTurns, permissionMode, isolation)
+- Memory usage instructions added to agent prompts for actionkamen, hiroshi, kazama, bo, masumi
+
 ## [3.10.0] - 2026-02-23
 
 ### Fixed (Critical — Plugin Portability)
