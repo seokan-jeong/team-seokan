@@ -6,9 +6,9 @@
 
 ### The Agent Harness for Claude Code
 
-**Guardrails, Observability, and Quality Gates for AI-Powered Development**
+**Guardrails, Observability, Ontology, and Quality Gates for AI-Powered Development**
 
-15 specialist agents with structured workflows, budget controls, analytics, eval, and self-learning.
+15 specialist agents with structured workflows, project ontology, budget controls, analytics, and self-learning.
 
 [![Version](https://img.shields.io/badge/version-4.1.0-blue.svg)](https://github.com/seokan-jeong/team-shinchan/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -29,11 +29,12 @@ Team-Shinchan turns Claude Code into a **harnessed multi-agent system** where 15
 
 | Without a Harness | With Team-Shinchan |
 |---|---|
+| Agent starts blind, re-reads the whole codebase | Project Ontology auto-builds a knowledge graph on first session |
 | Agents skip stages, jump to code | Workflow Guard enforces stage-tool matrix |
 | No visibility into agent behavior | Analytics with trace IDs track every action |
 | Unlimited token burn | Budget Guard caps spend per session |
 | No quality signal on the harness itself | Harness Lint checks plugin integrity |
-| Past decisions forgotten | Memory + session bridging persist context |
+| Past decisions forgotten | Memory + Ontology + session bridging persist context |
 | Code reviewed ad-hoc (or not at all) | Action Kamen reviews every phase (mandatory) |
 
 ---
@@ -93,15 +94,34 @@ Durable state across sessions and workflows.
 
 ---
 
-## v4.0.0 Highlights
+## What's New in v4.1.0
 
-- **Analytics and Trace IDs** -- `src/analytics.js` tracks agent events with unique trace IDs for end-to-end observability
-- **Budget Guard** -- `budget-guard.md` hook enforces token budget limits per session with 80%/100% thresholds
-- **Harness Lint** -- `src/harness-lint.js` static analysis validates plugin structure integrity (orphans, broken refs, stale configs)
-- **Eval System** -- `src/eval-schema.js` + `src/regression-detect.js` for schema validation and regression detection
-- **AGENTS.md** -- auto-generated agent map with `src/gen-agents-map.js` and `agents-map` validator
-- **Layer Enforcement** -- `agents/_shared/layer-map.json` + `layer-enforcement` validator
-- **Repositioning** -- from "AI development team" to "Agent Harness" with Harness Engineering principles
+### Project Ontology -- Auto-Build Knowledge Graph
+
+Agents now **understand your project from the first session**. No setup required.
+
+```
+[Session Start]
+  └── No ontology? → auto-scan codebase → build knowledge graph
+  └── Ontology exists? → git diff → incremental update
+  └── Agents query the graph for smarter routing, planning, and review
+```
+
+- **`src/ontology-engine.js`** -- CRUD + query + merge + impact analysis + health score + Mermaid diagrams
+- **`src/ontology-scanner.js`** -- regex-based scanner detects Modules, Components, APIs, DataModels, DomainConcepts, Configs, TestSuites
+- **`hooks/ontology-auto-build.md`** -- SessionStart hook builds/updates automatically
+- **`/team-shinchan:ontology`** -- manual query, add, scan, diagram
+- **`/team-shinchan:impact-analysis`** -- cascade dependency analysis with risk levels (HIGH/MEDIUM/LOW)
+- **6 agents enhanced** -- Shinnosuke (routing), Nene (planning), Action Kamen (compliance), Misae (risk), Shiro (exploration), Midori (decisions)
+
+### v4.0.0 Harness Foundation
+
+- **Analytics and Trace IDs** -- `src/analytics.js` tracks agent events with unique trace IDs
+- **Budget Guard** -- token budget enforcement with 80%/100% thresholds
+- **Harness Lint** -- static analysis validates plugin structure integrity
+- **Eval System** -- schema validation and regression detection
+- **AGENTS.md** -- auto-generated agent map with layer enforcement
+- **Layer Enforcement** -- 5-layer architecture (Orchestration → Execution → Specialist → Advisory → Utility)
 
 ---
 
@@ -196,7 +216,7 @@ If you see the help menu, you are ready to go.
 
 ## Commands
 
-38 commands across workflow, specialist, and utility categories:
+40 commands across workflow, specialist, and utility categories:
 
 ### Workflow Commands
 | Command | Description |
@@ -241,9 +261,11 @@ If you see the help menu, you are ready to go.
 | `/team-shinchan:verify-memory` | Verify memory system |
 | `/team-shinchan:verify-budget` | Verify token budget |
 
-### Harness (New in v4.0.0)
+### Harness and Ontology
 | Command | Description |
 |---------|-------------|
+| `/team-shinchan:ontology` | Query, manage, and visualize project ontology |
+| `/team-shinchan:impact-analysis` | Cascade dependency analysis with risk assessment |
 | `/team-shinchan:analytics` | View agent analytics and trace data |
 | `/team-shinchan:budget` | Check token budget status |
 | `/team-shinchan:lint-harness` | Lint the harness for structural issues |
@@ -314,6 +336,8 @@ No commands needed -- just say:
 | `/review` | Action Kamen -> Code review |
 | `/requirements` | Misae -> Requirements analysis |
 | `/bigproject` | Himawari -> Large project orchestration |
+| `/ontology` | Ontology engine -> Knowledge graph |
+| `/impact-analysis` | Ontology engine -> Dependency cascade |
 
 **You run the skill, agents do the work.**
 
@@ -324,12 +348,12 @@ No commands needed -- just say:
 | Component | Count | Location |
 |-----------|-------|----------|
 | Agents | 15 | `agents/` |
-| Skills | 38 | `skills/` |
-| Commands | 38 | `commands/` |
-| Hooks | 12 | `hooks/` |
+| Skills | 40 | `skills/` |
+| Commands | 40 | `commands/` |
+| Hooks | 13 | `hooks/` |
 | Validators | 19 | `tests/validate/` |
 | Rules | 4 categories (54 rules) | `rules/` |
-| Src Scripts | 5 | `src/` |
+| Src Scripts | 7 | `src/` |
 
 ---
 
@@ -339,7 +363,7 @@ Team-Shinchan is validated by 3 tiers of automated testing:
 
 | Tier | Tests | What It Checks |
 |------|-------|----------------|
-| Static Validators | 19 | Schema, cross-refs, consistency, API contracts, token budget, layer enforcement, agents-map |
+| Static Validators | 19 | Schema, cross-refs, consistency, API contracts, token budget, layer enforcement, agents-map, ontology integrity |
 | Agent Behavior (promptfoo) | 25 | Individual agent role adherence |
 | E2E Workflow | 11 | Full workflow scenarios (5 types) |
 
