@@ -4,7 +4,7 @@
 #
 # Stdin: {"tool_name":"Task","tool_input":{"subagent_type":"team-shinchan:bo",...}}
 # Stdout: {"decision":"block","reason":"..."} or empty (allow)
-set -euo pipefail
+set -eo pipefail
 
 INPUT=$(cat)
 if [ -z "$INPUT" ]; then

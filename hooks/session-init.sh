@@ -4,7 +4,7 @@
 #
 # This runs as a command hook so it ALWAYS executes.
 # Output is injected into LLM context.
-set -euo pipefail
+set -eo pipefail
 
 PLUGIN_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT_ROOT="${PWD}"

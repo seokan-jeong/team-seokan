@@ -10,7 +10,7 @@
 
 15 specialist agents with structured workflows, project ontology, budget controls, analytics, and self-learning.
 
-[![Version](https://img.shields.io/badge/version-4.2.2-blue.svg)](https://github.com/seokan-jeong/team-shinchan/releases)
+[![Version](https://img.shields.io/badge/version-4.3.0-blue.svg)](https://github.com/seokan-jeong/team-shinchan/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-purple.svg)](https://claude.ai)
 ![GitHub stars](https://img.shields.io/github/stars/seokan-jeong/team-shinchan?style=social)
@@ -68,7 +68,7 @@ Automated checks that prevent bad outcomes.
 
 - **Security Hook** -- blocks secrets, destructive git, sensitive files, large files
 - **Budget Guard** -- token budget enforcement with alerts at 80% and hard stop at 100%
-- **Deny List** -- 12 pattern rules blocking dangerous operations
+- **Deny List** -- 15 pattern rules blocking dangerous operations
 - **Self-Check** -- completion checklist all execution agents must pass
 - **Action Kamen** -- mandatory code review at every phase boundary
 
@@ -234,7 +234,7 @@ If you see the help menu, you are ready to go.
 
 ## Commands
 
-40 commands across workflow, specialist, and utility categories:
+41 commands across workflow, specialist, and utility categories:
 
 ### Workflow Commands
 | Command | Description |
@@ -366,9 +366,9 @@ No commands needed -- just say:
 | Component | Count | Location |
 |-----------|-------|----------|
 | Agents | 15 | `agents/` |
-| Skills | 40 | `skills/` |
-| Commands | 40 | `commands/` |
-| Hooks | 34 (21 command + 13 prompt) | `hooks/` |
+| Skills | 41 | `skills/` |
+| Commands | 41 | `commands/` |
+| Hooks | 36 (22 command + 14 prompt) | `hooks/` |
 | Validators | 21 | `tests/validate/` |
 | Rules | 4 categories (54 rules) | `rules/` |
 | Src Scripts | 9 | `src/` |

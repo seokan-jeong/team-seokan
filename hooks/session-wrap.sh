@@ -4,7 +4,7 @@
 # The summary file and ontology refresh are handled; LLM retrospective remains prompt-based.
 #
 # This is the CRITICAL part: budget accumulation MUST happen deterministically.
-set -euo pipefail
+set -eo pipefail
 
 PLUGIN_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT_ROOT="${PWD}"

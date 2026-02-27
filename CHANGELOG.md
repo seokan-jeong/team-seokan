@@ -2,6 +2,26 @@
 
 All notable changes to Team-Shinchan will be documented in this file.
 
+## [4.3.0] - 2026-02-28
+
+### Added
+- **Node.js hook runner** (`scripts/run.cjs`): Cross-platform wrapper for reliable hook execution in marketplace installs — mirrors oh-my-claudecode pattern
+- **Commit lint hook** (`hooks/commit-lint.sh`): Enforces Git R-1 conventional commit format (`type(scope): description`, 72-char limit)
+- **Branch naming rule** (`hooks/deny-list.json`): Enforces Git R-4 branch naming convention (`{type}/{description}`)
+- **Version consistency hook** (`hooks/version-check.md`): PostToolUse prompt hook enforces Git R-13 version consistency across plugin.json, marketplace.json, README.md
+- **Dependency pinning check** (`hooks/security-check.sh`): Blocks `"*"` and `"latest"` in package.json (Security R-9)
+- **Setup skill** (`/team-shinchan:setup`): First-time installation onboarding and health check
+- **Agent memory expansion**: 5 additional agents now have persistent project memory — shinnosuke, nene, misae, masao, himawari (total: 10/15)
+
+### Changed
+- All hook commands now use Node.js wrapper (`node run.cjs <script>`) for reliable marketplace execution
+- Shell scripts use `set -eo pipefail` instead of `set -euo pipefail` across all 12 hooks
+- Removed explicit `"hooks"` field from plugin.json — relies on auto-discovery of `hooks/hooks.json`
+- Rules auto-enforcement expanded from 9/54 to 13/54
+
+### Fixed
+- Hooks not executing in marketplace installs due to direct shell invocation differences
+
 ## [4.2.2] - 2026-02-28
 
 ### Bug Fixes

@@ -1,7 +1,7 @@
 {
   "name": "team-shinchan",
   "description": "The Agent Harness for Claude Code — Guardrails, Observability, and Quality Gates for AI-Powered Development. 15 specialist agents with structured workflows, budget controls, analytics, and self-learning.",
-  "version": "4.2.2",
+  "version": "4.3.0",
   "author": {
     "name": "seokan",
     "url": "https://github.com/seokan-jeong"
@@ -9,7 +9,6 @@
   "homepage": "https://github.com/seokan-jeong/team-shinchan",
   "repository": "https://github.com/seokan-jeong/team-shinchan",
   "license": "MIT",
-  "hooks": "./hooks/hooks.json",
   "keywords": [
     "claude-code",
     "plugin",

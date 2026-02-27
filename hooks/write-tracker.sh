@@ -9,7 +9,7 @@
 #
 # Output: ${PWD}/.shinchan-docs/work-tracker.jsonl (one JSON object per line)
 
-set -euo pipefail
+set -eo pipefail
 
 HOOK_EVENT="${HOOK_EVENT:-unknown}"
 

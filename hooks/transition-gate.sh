@@ -5,7 +5,7 @@
 #
 # Stdin: {"tool_name":"...","tool_input":{...}}
 # Stdout: {"decision":"block","reason":"..."} or empty (allow)
-set -euo pipefail
+set -eo pipefail
 
 INPUT=$(cat)
 if [ -z "$INPUT" ]; then

@@ -19,6 +19,7 @@ color: purple
 tools: ["Read", "Write", "Glob", "Grep", "AskUserQuestion"]
 maxTurns: 20
 permissionMode: plan
+memory: project
 ---
 
 # Nene - Team-Shinchan Strategic Planner

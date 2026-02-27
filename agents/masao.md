@@ -21,6 +21,7 @@ skills:
   - devops
 maxTurns: 25
 permissionMode: acceptEdits
+memory: project
 ---
 
 # Masao - Team-Shinchan DevOps Specialist

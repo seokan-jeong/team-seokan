@@ -68,5 +68,10 @@
     "tool": "Bash",
     "pattern": "\\beval\\(",
     "reason": "Security R-10: No eval() with untrusted input — use safe alternatives"
+  },
+  {
+    "tool": "Bash",
+    "pattern": "git checkout -b (?!(feat|fix|chore|docs|refactor|test|perf|ci|hotfix|release)/)",
+    "reason": "Git R-4: Branch name must follow {type}/{description} format (e.g., feat/add-auth, fix/null-pointer). Valid types: feat, fix, chore, docs, refactor, test, perf, ci, hotfix, release"
   }
 ]

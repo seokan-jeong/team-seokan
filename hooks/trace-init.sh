@@ -2,7 +2,7 @@
 # Team-Shinchan Trace Init — Command Hook (UserPromptSubmit)
 # Generates a unique trace ID per user prompt for event correlation.
 # Replaces the prompt-based trace-init.md with deterministic execution.
-set -euo pipefail
+set -eo pipefail
 
 DOCS_DIR="${PWD}/.shinchan-docs"
 mkdir -p "$DOCS_DIR"

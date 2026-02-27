@@ -17,6 +17,7 @@ assistant: "I'll have Misae identify hidden requirements and edge cases for the 
 model: sonnet
 maxTurns: 20
 permissionMode: plan
+memory: project
 color: brown
 tools: ["Read", "Glob", "Grep", "Bash"]
 ---

@@ -4,7 +4,7 @@
 #
 # Stdin: {"tool_name":"...","tool_input":{...}}
 # Stdout: {"decision":"block","reason":"..."} or empty (allow)
-set -euo pipefail
+set -eo pipefail
 
 INPUT=$(cat)
 if [ -z "$INPUT" ]; then
@@ -94,6 +94,18 @@ process.stdin.on('end', () => {
       } catch(e) {
         // File doesn't exist or can't stat — skip
       }
+    }
+  }
+
+  // ── Rule 5: Dependency Version Pinning (Security R-9) ──
+  if ((toolName === 'Write' || toolName === 'Edit') && /package\.json$/.test(filePath)) {
+    const content = toolInput.content || toolInput.new_string || '';
+    if (/\"\\*\"/.test(content) || /\"latest\"/.test(content)) {
+      console.log(JSON.stringify({
+        decision: 'block',
+        reason: 'SECURITY BLOCK: Unpinned dependency version detected (\"*\" or \"latest\") in package.json. Pin all dependencies to exact versions (e.g., \"1.2.3\") for reproducible builds.'
+      }));
+      return;
     }
   }
 
