@@ -3,7 +3,8 @@
 # Automatically builds or updates the project ontology and displays a health report.
 #
 # This runs as a command hook so it ALWAYS executes — not dependent on LLM following instructions.
-set -euo pipefail
+
+set -eo pipefail
 
 PLUGIN_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT_ROOT="${PWD}"
