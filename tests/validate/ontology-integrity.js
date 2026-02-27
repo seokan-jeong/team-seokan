@@ -149,12 +149,13 @@ function runValidation() {
   console.log('\nChecking relation types...');
   let invalidRelationTypes = 0;
   relations.forEach((rel, idx) => {
-    if (!rel.type) {
-      errors.push(`Relation [${idx}] missing "type" field`);
+    const relType = rel.relation || rel.type;
+    if (!relType) {
+      errors.push(`Relation [${idx}] missing "relation" field`);
       invalidRelationTypes++;
-    } else if (!VALID_RELATION_TYPES.includes(rel.type)) {
-      errors.push(`Relation [${idx}]: invalid type "${rel.type}"`);
-      console.log(`  \x1b[31m✗\x1b[0m Relation [${idx}] has invalid type: ${rel.type}`);
+    } else if (!VALID_RELATION_TYPES.includes(relType)) {
+      errors.push(`Relation [${idx}]: invalid relation type "${relType}"`);
+      console.log(`  \x1b[31m✗\x1b[0m Relation [${idx}] has invalid type: ${relType}`);
       invalidRelationTypes++;
     }
   });

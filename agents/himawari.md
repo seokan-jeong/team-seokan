@@ -15,6 +15,8 @@ assistant: "This spans 3+ domains and 20+ files — I'll use Himawari to orchest
 </example>
 
 model: opus
+maxTurns: 30
+permissionMode: plan
 color: pink
 tools: ["Read", "Glob", "Grep", "Bash", "Task", "TodoWrite"]
 ---

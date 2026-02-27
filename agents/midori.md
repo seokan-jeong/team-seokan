@@ -18,6 +18,7 @@ model: sonnet
 color: teal
 tools: ["Read", "Write", "Glob", "Task"]
 maxTurns: 25
+permissionMode: plan
 ---
 
 # Midori - Debate Moderator

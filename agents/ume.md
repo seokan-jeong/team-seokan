@@ -15,6 +15,8 @@ assistant: "Let me have Ume analyze this PDF document."
 </example>
 
 model: sonnet
+maxTurns: 15
+permissionMode: plan
 color: plum
 tools: ["Read", "Glob", "Grep", "WebFetch"]
 ---

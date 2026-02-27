@@ -64,12 +64,14 @@ process.stdin.on('end', () => {
   let yamlContent;
   try { yamlContent = fs.readFileSync(process.env.ACTIVE_YAML, 'utf-8'); } catch(e) { process.exit(0); }
 
-  // Parse budget section
-  const totalMatch = yamlContent.match(/budget:[\\s\\S]*?total:\\s*(\\d+)/);
-  const phaseMatch = yamlContent.match(/budget:[\\s\\S]*?phase:\\s*(\\d+)/);
-  const usedTotalMatch = yamlContent.match(/budget:[\\s\\S]*?used_total:\\s*(\\d+)/);
-  const usedPhaseMatch = yamlContent.match(/budget:[\\s\\S]*?used_phase:\\s*(\\d+)/);
-  const hardLimitMatch = yamlContent.match(/budget:[\\s\\S]*?hard_limit:\\s*(true|false)/);
+  // Parse budget section (skip commented lines starting with #)
+  const lines = yamlContent.split('\\n').filter(l => !l.trim().startsWith('#'));
+  const cleanYaml = lines.join('\\n');
+  const totalMatch = cleanYaml.match(/budget:[\\s\\S]*?total:\\s*(\\d+)/);
+  const phaseMatch = cleanYaml.match(/budget:[\\s\\S]*?phase:\\s*(\\d+)/);
+  const usedTotalMatch = cleanYaml.match(/budget:[\\s\\S]*?used_total:\\s*(\\d+)/);
+  const usedPhaseMatch = cleanYaml.match(/budget:[\\s\\S]*?used_phase:\\s*(\\d+)/);
+  const hardLimitMatch = cleanYaml.match(/budget:[\\s\\S]*?hard_limit:\\s*(true|false)/);
 
   if (!totalMatch || !phaseMatch) {
     process.exit(0); // No budget configured

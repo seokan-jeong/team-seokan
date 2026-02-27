@@ -366,12 +366,12 @@ No commands needed -- just say:
 | Component | Count | Location |
 |-----------|-------|----------|
 | Agents | 15 | `agents/` |
-| Skills | 40 | `skills/` |
+| Skills | 41 | `skills/` |
 | Commands | 40 | `commands/` |
-| Hooks | 13 | `hooks/` |
-| Validators | 19 | `tests/validate/` |
+| Hooks | 34 (21 command + 13 prompt) | `hooks/` |
+| Validators | 21 | `tests/validate/` |
 | Rules | 4 categories (54 rules) | `rules/` |
-| Src Scripts | 7 | `src/` |
+| Src Scripts | 9 | `src/` |
 
 ---
 
@@ -381,7 +381,7 @@ Team-Shinchan is validated by 3 tiers of automated testing:
 
 | Tier | Tests | What It Checks |
 |------|-------|----------------|
-| Static Validators | 19 | Schema, cross-refs, consistency, API contracts, token budget, layer enforcement, agents-map, ontology integrity |
+| Static Validators | 21 | Schema, cross-refs, consistency, API contracts, token budget, layer enforcement, agents-map, ontology integrity |
 | Agent Behavior (promptfoo) | 25 | Individual agent role adherence |
 | E2E Workflow | 11 | Full workflow scenarios (5 types) |
 

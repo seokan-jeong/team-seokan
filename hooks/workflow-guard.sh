@@ -65,13 +65,26 @@ process.stdin.on('end', () => {
   const stage = stageMatch[1].trim().replace(/[\"']/g, '');
 
   // Stage-Tool Matrix
-  // requirements/planning: BLOCK Edit, Write, Bash, TodoWrite
+  // requirements/planning: BLOCK Edit, Write, TodoWrite; Bash only for read-only commands
   // execution: ALLOW all
-  // completion: BLOCK Edit, Bash, TodoWrite; Write only for docs
-  const blockedInReqPlan = ['Edit', 'Write', 'Bash', 'TodoWrite'];
-  const blockedInCompletion = ['Edit', 'Bash', 'TodoWrite'];
+  // completion: BLOCK Edit, TodoWrite; Bash only for read-only; Write only for docs
+  const blockedInReqPlan = ['Edit', 'Write', 'TodoWrite'];
+  const blockedInCompletion = ['Edit', 'TodoWrite'];
 
   if (stage === 'requirements' || stage === 'planning') {
+    // Bash: block destructive commands, allow read-only
+    if (toolName === 'Bash') {
+      const cmd = toolInput.command || '';
+      const destructive = /\\b(rm|mv|cp|mkdir|chmod|chown|git\\s+(commit|push|add|reset|merge|rebase|checkout)|echo\\s.*>|sed\\s+-i|npm\\s+(install|publish|run\\s+build)|npx|yarn\\s+add)\\b/;
+      if (destructive.test(cmd)) {
+        console.log(JSON.stringify({
+          decision: 'block',
+          reason: 'WORKFLOW GUARD: Stage \"' + stage + '\" does not allow destructive Bash commands. Only read-only commands (git log, git status, ls, cat, etc.) are permitted.'
+        }));
+        return;
+      }
+      process.exit(0); // Read-only Bash is allowed
+    }
     if (blockedInReqPlan.includes(toolName)) {
       // Exception: Write to WORKFLOW_STATE.yaml is allowed in requirements
       if (toolName === 'Write' && stage === 'requirements' && filePath.includes('WORKFLOW_STATE.yaml')) {
@@ -90,6 +103,19 @@ process.stdin.on('end', () => {
   }
 
   if (stage === 'completion') {
+    // Bash in completion: block destructive, allow read-only
+    if (toolName === 'Bash') {
+      const cmd = toolInput.command || '';
+      const destructive = /\\b(rm|mv|cp|mkdir|chmod|chown|git\\s+(commit|push|add|reset|merge|rebase|checkout)|echo\\s.*>|sed\\s+-i|npm\\s+(install|publish|run\\s+build)|npx|yarn\\s+add)\\b/;
+      if (destructive.test(cmd)) {
+        console.log(JSON.stringify({
+          decision: 'block',
+          reason: 'WORKFLOW GUARD: Stage \"completion\" does not allow destructive Bash commands. Only read-only commands are permitted.'
+        }));
+        return;
+      }
+      process.exit(0);
+    }
     if (blockedInCompletion.includes(toolName)) {
       console.log(JSON.stringify({
         decision: 'block',

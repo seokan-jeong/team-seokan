@@ -31,15 +31,27 @@ process.stdin.on('end', () => {
   const toolName = input.tool_name || '';
   const toolInput = input.tool_input || {};
   const filePath = toolInput.file_path || '';
-  const newContent = toolInput.content || toolInput.new_string || '';
 
   // Only intercept Write/Edit to WORKFLOW_STATE.yaml
   if (!filePath.includes('WORKFLOW_STATE.yaml')) {
     process.exit(0);
   }
 
+  // For Write: check content; for Edit: check both old_string and new_string
+  const newContent = toolInput.content || toolInput.new_string || '';
+
   // Detect stage change in new content
-  const stageMatch = newContent.match(/stage:\\s*([\\w]+)/);
+  let stageMatch = newContent.match(/stage:\\s*([\\w]+)/);
+
+  // For Edit: if new_string is just the stage name (partial replace), check old_string for context
+  if (!stageMatch && toolName === 'Edit' && toolInput.old_string && toolInput.new_string) {
+    const oldHasStage = /stage:\\s*\\w+/.test(toolInput.old_string) || /^\\s*(requirements|planning|execution|completion)\\s*$/.test(toolInput.old_string);
+    const newIsStage = /^\\s*(requirements|planning|execution|completion)\\s*$/.test(toolInput.new_string.trim());
+    if (oldHasStage && newIsStage) {
+      stageMatch = [null, toolInput.new_string.trim()];
+    }
+  }
+
   if (!stageMatch) {
     process.exit(0); // No stage change detected
   }

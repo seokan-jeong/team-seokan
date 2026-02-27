@@ -15,6 +15,8 @@ assistant: "This requires backend, database, and testing coordination — I'll u
 </example>
 
 model: opus
+maxTurns: 40
+permissionMode: plan
 color: yellow
 tools: ["Read", "Glob", "Grep", "Bash", "Task", "TodoWrite"]
 ---

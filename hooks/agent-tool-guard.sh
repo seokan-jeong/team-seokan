@@ -79,9 +79,12 @@ process.stdin.on('end', () => {
 
     for (const { pat, desc } of destructivePatterns) {
       if (pat.test(command)) {
-        // Exception: actionkamen can run test/lint commands even with mkdir
-        if (currentAgent === 'actionkamen' && /\\b(npm\\s+test|npm\\s+run\\s+lint|npx|jest|vitest|mocha)\\b/.test(command)) {
-          process.exit(0);
+        // Exception: actionkamen can run test/lint commands (only if the entire command is a test)
+        if (currentAgent === 'actionkamen') {
+          const trimCmd = command.trim();
+          if (/^(npm\\s+test|npm\\s+run\\s+(lint|test|check)|npx\\s+(jest|vitest|mocha|eslint)|jest|vitest|mocha)(\\s|$)/.test(trimCmd) && !/[;&|]/.test(trimCmd)) {
+            process.exit(0);
+          }
         }
         console.log(JSON.stringify({
           decision: 'block',
