@@ -366,7 +366,7 @@ No commands needed -- just say:
 | Component | Count | Location |
 |-----------|-------|----------|
 | Agents | 15 | `agents/` |
-| Skills | 41 | `skills/` |
+| Skills | 40 | `skills/` |
 | Commands | 40 | `commands/` |
 | Hooks | 34 (21 command + 13 prompt) | `hooks/` |
 | Validators | 21 | `tests/validate/` |
