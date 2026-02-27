@@ -10,7 +10,7 @@
 
 15 specialist agents with structured workflows, project ontology, budget controls, analytics, and self-learning.
 
-[![Version](https://img.shields.io/badge/version-4.1.1-blue.svg)](https://github.com/seokan-jeong/team-shinchan/releases)
+[![Version](https://img.shields.io/badge/version-4.2.0-blue.svg)](https://github.com/seokan-jeong/team-shinchan/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-purple.svg)](https://claude.ai)
 ![GitHub stars](https://img.shields.io/github/stars/seokan-jeong/team-shinchan?style=social)
@@ -94,15 +94,23 @@ Durable state across sessions and workflows.
 
 ---
 
-## What's New in v4.1.1
+## What's New in v4.2.0
 
-### UX Overhaul — Focus, Narration, Minimal Commands
+### Full Enforcement Hardening — 18 Gaps Closed
+
+- **21 command hooks** (was 11): budget-guard, transition-gate, agent-tool-guard, session-wrap, trace-init all converted from prompt-only to deterministic shell scripts
+- **Stage transition gates**: cannot advance workflow without required artifacts (REQUESTS.md, PROGRESS.md, Action Kamen review)
+- **Budget hard stop**: `hard_limit: true` now actually blocks at 100% — budget counters persist deterministically via session-wrap.sh
+- **Read-only agent enforcement**: advisory/utility agents (hiroshi, actionkamen, etc.) blocked from Edit/Write/destructive Bash
+- **Deny-list expanded**: `git add .`, `git add -A`, `eval()` now hard-blocked
+- **Large file guard**: `git add` of files >10MB blocked by security-check.sh
+- **Plugin portability**: all 15 agent files use `${CLAUDE_PLUGIN_ROOT}/` paths, works correctly in marketplace installs
+
+### v4.1.1 — UX Overhaul
 
 - **5 user commands only**: `start`, `resume`, `autopilot`, `review`, `help` — 35 internal skills hidden from user
-- **Workflow drift prevention**: active workflow forces all messages to stay in context; no more silent derailment
-- **Agent narration**: Shinnosuke announces every delegation (who, why, result, next step) so users always know what's happening
-- **Ontology scanner fixes**: 4 bugs fixed (Component detection, DEPENDS_ON, TESTED_BY, API names)
-- **Agent auto-integration**: Nene/Bo/ActionKamen now auto-run ontology commands without user intervention
+- **Workflow drift prevention**: active workflow forces all messages to stay in context
+- **Agent narration**: Shinnosuke announces every delegation with progress tracking
 
 ### v4.1.0 — Project Ontology
 

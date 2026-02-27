@@ -2,6 +2,28 @@
 
 All notable changes to Team-Shinchan will be documented in this file.
 
+## [4.2.0] - 2026-02-27
+
+### New Features — Full Enforcement Audit & Hardening
+- **budget-guard.sh**: Programmatic budget enforcement — hard block at 100% when `hard_limit: true`, warns at 80% (replaces prompt-only budget guard)
+- **transition-gate.sh**: Stage transition prerequisite validation — blocks advancement without required artifacts (REQUESTS.md, PROGRESS.md, Action Kamen review)
+- **session-wrap.sh**: Deterministic budget counter persistence on session end — fixes compounding failure where budget counters never updated
+- **trace-init.sh**: Deterministic trace ID generation per user prompt — replaces unreliable prompt-based trace generation
+- **agent-tool-guard.sh**: Read-only agent enforcement — blocks Edit/Write/destructive Bash for advisory/utility agents (hiroshi, actionkamen, misae, shiro, masumi, ume, nene)
+
+### Improvements
+- **security-check.sh**: Large file staging block — rejects `git add` of files >10MB
+- **deny-list.json**: Added `git add .`/`git add -A` block (Git R-11) and `eval()` block (Security R-10)
+- **Harness Engineering**: 6 structural improvements — state migrator, eval metrics, layer guard, phase-aware KB loading, budget hard limits
+- **Plugin Portability**: All 15 agent path references fixed (`${CLAUDE_PLUGIN_ROOT}/`), SessionStart command hooks for ontology and KB
+- **Workflow Enforcement**: workflow-guard.sh blocks code tools during requirements/planning stages
+
+### Stats
+- Command hooks: 11 → 21 (+10)
+- Total hooks: 24 → 34
+- Enforcement coverage: 18 identified gaps → 18 addressed
+- New files: 10 shell scripts, 2 JS modules
+
 ## [4.1.1] - 2026-02-26
 
 ### Bug Fixes
