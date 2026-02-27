@@ -82,6 +82,10 @@ if command -v node &>/dev/null; then
         case 'SubagentStart':
           type = 'agent_start';
           agent = extractAgent(input.agent_type);
+          // Write current agent for layer-guard.sh
+          if (agent) {
+            try { fs.writeFileSync(process.cwd() + '/.shinchan-docs/.current-agent', agent); } catch(e) {}
+          }
           break;
 
         case 'SubagentStop':

@@ -28,16 +28,18 @@
       {
         "hooks": [
           {
-            "type": "prompt",
-            "prompt_file": "${CLAUDE_PLUGIN_ROOT}/hooks/security-check.md"
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/security-check.sh",
+            "timeout": 10
           }
         ]
       },
       {
         "hooks": [
           {
-            "type": "prompt",
-            "prompt_file": "${CLAUDE_PLUGIN_ROOT}/hooks/deny-check.md"
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/deny-check.sh",
+            "timeout": 10
           }
         ]
       },
@@ -54,6 +56,16 @@
           {
             "type": "prompt",
             "prompt_file": "${CLAUDE_PLUGIN_ROOT}/hooks/workflow-guard.md"
+          }
+        ]
+      },
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/layer-guard.sh",
+            "timeout": 10
           }
         ]
       },

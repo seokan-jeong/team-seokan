@@ -4,118 +4,48 @@ description: Guide for using Team-Shinchan plugin's agents, skills, and memory s
 user-invocable: true
 ---
 
-# Help Skill
+# Team-Shinchan Help
 
-## Agent Team
+## Commands
 
-### Orchestration
+| Command | Description |
+|---------|-------------|
+| `/team-shinchan:start` | Start a new task — requirements, planning, execution, review all handled |
+| `/team-shinchan:resume` | Resume an interrupted workflow from where it left off |
+| `/team-shinchan:autopilot` | Autonomous execution from idea to working code |
+| `/team-shinchan:review` | Code review with Action Kamen |
+| `/team-shinchan:help` | This guide |
 
-| Character | Role | Description |
-|-----------|------|-------------|
-| Shinnosuke | Orchestrator | Task analysis and delegation |
-| Himawari | Atlas | Complex task decomposition |
+## Quick Start
 
-### Execution
+```
+/team-shinchan:start Add user authentication
+```
 
-| Character | Role | Description |
-|-----------|------|-------------|
-| Bo | Executor | Code writing/modification |
-| Kazama | Hephaestus | Complex implementation |
+Shinnosuke orchestrates 15 agents through 4 stages:
 
-### Specialists
+1. **Requirements** — Nene interviews you, Misae checks risks
+2. **Planning** — Nene creates phased plan with acceptance criteria
+3. **Execution** — Bo/Aichan/Bunta/Masao implement, Action Kamen reviews each phase
+4. **Completion** — Documentation, retrospective, final verification
 
-| Character | Role | Description |
-|-----------|------|-------------|
-| Aichan | Frontend | UI/UX development |
-| Bunta | Backend | Server/API development |
-| Masao | DevOps | Infrastructure/deployment |
+## What Happens Automatically
 
-### Advisors (Read-only)
+- **Project Ontology** — knowledge graph auto-built on first session, updated incrementally
+- **Workflow Guard** — blocks code edits during planning, enforces stage transitions
+- **Security Hook** — blocks secrets, destructive git, sensitive files
+- **Budget Guard** — token budget with 80%/100% alerts
+- **Agent Narration** — Shinnosuke announces every delegation and result
+- **Session Wrap** — auto-summary on session end
 
-| Character | Role | Description |
-|-----------|------|-------------|
-| Hiroshi | Oracle | Architecture advice |
-| Nene | Planner | Strategic planning |
-| Misae | Metis | Requirements analysis |
-| Action Kamen | Reviewer | Code review |
-| Midori | Debate Moderator | Structured debate facilitation |
+## 15 Agents
 
-### Exploration (Read-only)
+| Layer | Agents |
+|-------|--------|
+| Orchestration | Shinnosuke (conductor), Himawari (large projects), Midori (debates) |
+| Execution | Bo (code), Kazama (deep work) |
+| Specialists | Aichan (frontend), Bunta (backend), Masao (devops) |
+| Advisors | Hiroshi (architecture), Nene (planning), Misae (requirements), Action Kamen (review) |
+| Utility | Shiro (explorer), Masumi (docs), Ume (vision) |
 
-| Character | Role | Description |
-|-----------|------|-------------|
-| Shiro | Explorer | Fast code search |
-| Masumi | Librarian | Documentation search |
-| Ume | Multimodal | Image analysis |
-
-## Skills List
-
-### Workflow
-
-| Skill | Trigger | Description |
-|-------|---------|-------------|
-| `/start` | start, begin | Start integrated workflow |
-| `/resume` | resume, continue | Resume interrupted workflow |
-| `/orchestrate` | orchestrate | Invoke Shinnosuke for full workflow orchestration |
-| `/autopilot` | auto, automatically | Autonomous execution |
-| `/ralph` | until done, complete | Loop until complete |
-| `/ultrawork` | fast, parallel, ulw | Parallel execution |
-
-### Analysis & Planning
-
-| Skill | Trigger | Description |
-|-------|---------|-------------|
-| `/plan` | plan, design | Planning |
-| `/analyze` | analyze, debug | Deep analysis |
-| `/deepsearch` | find, search | Code search |
-| `/debate` | debate, opinion, compare | Agent debate |
-| `/requirements` | what am I missing, risks, edge cases | Hidden requirements analysis |
-
-### Implementation
-
-| Skill | Trigger | Description |
-|-------|---------|-------------|
-| `/implement` | implement, code this, fix | Quick code implementation |
-| `/frontend` | UI, component, React, CSS | Frontend development |
-| `/backend` | API, database, server, endpoint | Backend development |
-| `/devops` | CI/CD, Docker, deploy, pipeline | DevOps and infrastructure |
-| `/bigproject` | big project, multi-phase | Large-scale project orchestration |
-
-### Review & Quality
-
-| Skill | Trigger | Description |
-|-------|---------|-------------|
-| `/review` | review, check my code | Code review and verification |
-| `/verify-implementation` | verify all | Run all validators sequentially |
-| `/verify-agents` | - | Validate agent schema compliance |
-| `/verify-skills` | - | Validate skill schema and format |
-| `/verify-consistency` | - | Validate cross-references and config |
-| `/verify-workflow` | - | Validate workflow state and error handling |
-| `/verify-memory` | - | Validate memory system configuration |
-| `/verify-budget` | - | Validate token budget compliance |
-| `/manage-skills` | - | Maintain verification pipeline integrity |
-
-### Utility
-
-| Skill | Trigger | Description |
-|-------|---------|-------------|
-| `/research` | research, lookup | External research |
-| `/vision` | analyze image, read PDF, screenshot | Image and PDF analysis |
-| `/status` | status, progress | Show workflow status |
-| `/help` | help | This guide |
-
-### Memory
-
-| Skill | Trigger | Description |
-|-------|---------|-------------|
-| `/memories` | - | View memories |
-| `/learn` | - | Add learning |
-| `/forget` | - | Delete memory |
-
-## Memory System
-
-Team-Shinchan gets smarter with use:
-- Automatically learns patterns, preferences, mistakes
-- Applies learnings to future tasks
-- `/memories` to view learnings
-- `/learn` to manually add learnings
+All agents are invoked automatically by Shinnosuke. You just describe your task.

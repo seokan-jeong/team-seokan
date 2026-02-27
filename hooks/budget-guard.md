@@ -28,6 +28,7 @@ budget:
   phase: 50         # Max turns for current phase
   used_total: 0     # Accumulated total (updated by session-wrap)
   used_phase: 0     # Accumulated for current phase (updated by session-wrap)
+  hard_limit: false  # true = REFUSE at 100%, false = WARN only (default)
 ```
 
 ## Turn Counting
@@ -70,6 +71,22 @@ Where `remaining` = minimum of `(budget.total - effective_total)` and `(budget.p
 
 If either `total_pct >= 100` or `phase_pct >= 100`:
 
+**Check `hard_limit`**: Read the `budget.hard_limit` field from WORKFLOW_STATE.yaml.
+
+**If `hard_limit: true`**:
+
+**Action**: REFUSE with message:
+```
+BUDGET HARD STOP: Turn limit reached (hard_limit enabled).
+  Total: {effective_total}/{budget.total} turns ({total_pct}%)
+  Phase: {effective_phase}/{budget.phase} turns ({phase_pct}%)
+No further operations allowed. Save state and stop immediately.
+Exception: Read/Write to .shinchan-docs/** paths are still allowed for state saving.
+Use /team-shinchan:budget --reset to continue.
+```
+
+**If `hard_limit: false` or not set** (default — backward compatible):
+
 **Action**: WARN with message:
 ```
 BUDGET EXCEEDED: Turn limit reached.
@@ -81,7 +98,7 @@ Use /team-shinchan:budget --reset to start a new budget cycle if needed.
 
 ## Priority
 
-Budget guard runs AFTER security-check and deny-check (security takes precedence). Budget warnings are advisory — they do NOT block tool calls, but strongly urge the agent to wrap up.
+Budget guard runs AFTER security-check and deny-check (security takes precedence). When `hard_limit: false` (default), budget warnings are advisory. When `hard_limit: true`, the budget guard REFUSES tool calls at 100%.
 
 ## Error Handling
 

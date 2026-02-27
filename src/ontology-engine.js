@@ -459,6 +459,57 @@ function healthScore(projectRoot) {
   return { total, scores, suggestions, orphanCount: orphans.length, cycleCount: cycles };
 }
 
+// ─── Garbage Collection ─────────────────────────────────────────────
+function gc(projectRoot) {
+  const onto = load(projectRoot);
+  if (!onto) return { scanned: 0, marked_stale: 0, removed: 0 };
+
+  const filePathTypes = ['Component', 'DataModel', 'Configuration', 'TestSuite'];
+  const candidates = onto.entities.filter(e => filePathTypes.includes(e.type) && e.file_path);
+
+  let scanned = 0;
+  let markedStale = 0;
+  let removed = 0;
+  const toRemove = [];
+
+  for (const entity of candidates) {
+    scanned++;
+    const fullPath = path.join(projectRoot, entity.file_path);
+    const exists = fs.existsSync(fullPath);
+
+    if (!exists) {
+      if (!entity.stale) {
+        entity.stale = 1;
+        markedStale++;
+      } else if (entity.stale >= 1) {
+        entity.stale++;
+        if (entity.stale >= 2) {
+          toRemove.push(entity.id);
+        } else {
+          markedStale++;
+        }
+      }
+    } else {
+      // File exists again — clear stale flag
+      if (entity.stale) delete entity.stale;
+    }
+  }
+
+  // Remove stale entities and their relations
+  for (const id of toRemove) {
+    const idx = onto.entities.findIndex(e => e.id === id);
+    if (idx !== -1) {
+      onto.entities.splice(idx, 1);
+      removed++;
+    }
+    onto.relations = onto.relations.filter(r => r.from !== id && r.to !== id);
+  }
+
+  save(projectRoot, onto);
+  logHistory(projectRoot, 'gc', { scanned, marked_stale: markedStale, removed });
+  return { scanned, marked_stale: markedStale, removed };
+}
+
 // ─── Mermaid Diagram ────────────────────────────────────────────────
 function generateMermaid(projectRoot, scope = 'modules') {
   const onto = load(projectRoot);
@@ -567,7 +618,7 @@ function cli() {
 
   if (!cmd || cmd === '--help') {
     console.log('Usage: ontology-engine <command> [options]');
-    console.log('Commands: init, summary, query, related, merge, gen-kb, impact, health, diagram, evolution');
+    console.log('Commands: init, summary, query, related, merge, gen-kb, impact, health, gc, diagram, evolution');
     return;
   }
 
@@ -658,6 +709,11 @@ function cli() {
       if (h.suggestions.length > 0) { console.log('Suggestions:'); h.suggestions.forEach(s => console.log(`  - ${s}`)); }
       break;
     }
+    case 'gc': {
+      const result = gc(root);
+      console.log(`GC: scanned=${result.scanned}, marked_stale=${result.marked_stale}, removed=${result.removed}`);
+      break;
+    }
     case 'diagram': {
       const scope = args[1] || 'modules';
       const mermaid = generateMermaid(root, scope);
@@ -685,5 +741,5 @@ module.exports = {
   addEntity, removeEntity, addRelation, removeRelation,
   query, getRelated, summary,
   merge, generateKbSummary, logHistory,
-  impactAnalysis, healthScore, generateMermaid, evolution
+  impactAnalysis, healthScore, gc, generateMermaid, evolution
 };

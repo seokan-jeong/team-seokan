@@ -112,7 +112,7 @@ Before delegating to any agent, check `agents/_shared/layer-map.json` (if it exi
    ```
 5. If `layer-map.json` does not exist, skip this check entirely
 
-This is advisory only — violations produce warnings, not blocks.
+This is advisory at the prompt level. Additionally, `hooks/layer-guard.sh` enforces layer rules as a hard block on Task calls — violations are programmatically refused before the call executes.
 
 ---
 

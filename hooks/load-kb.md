@@ -7,132 +7,88 @@ event: SessionStart
 # Load Knowledge Base Hook
 
 At session start, load KB summary, past learnings, and detect any interrupted workflows.
+Loading is **phase-aware**: when an active workflow exists, only relevant context is loaded.
 
 ## Process
 
+### 0. Detect Active Workflow and Phase
+
+1. **Scan**: Check `.shinchan-docs/*/WORKFLOW_STATE.yaml` files.
+2. **Find**: The most recent file with `status: active`.
+3. **Extract**: `current.stage` and `current.phase` from the active workflow.
+4. If no active workflow → load everything (full mode, backward compatible).
+
 ### 1. Load KB Summary
 
-1. **Check**: If `.shinchan-docs/kb-summary.md` exists, read it. If not, skip silently.
-2. **Parse**: Extract pattern count and decision count from content.
-3. **Display**:
-
-```
-📚 [Team-Shinchan] Knowledge Base loaded ({N} patterns, {M} decisions)
-```
+- **Skip if**: Stage is `execution` (not needed during coding).
+- Read `.shinchan-docs/kb-summary.md` if it exists.
+- Display: `📚 [Team-Shinchan] Knowledge Base loaded ({N} patterns, {M} decisions)`
 
 ### 2. Load Learnings
 
-1. **Check**: If `.shinchan-docs/learnings.md` exists, read it. If not, skip silently.
-2. **Load**: Extract last 20 learnings (most recent first, high-confidence prioritized).
-3. **Display** (max 5 key items):
+- Read `.shinchan-docs/learnings.md` if it exists.
+- **Stage-aware filtering**:
+  - `requirements`: Load only `convention` and `preference` categories
+  - `planning`: Load `pattern` and `convention` categories
+  - `execution`: Load `pattern` and `mistake` categories (most relevant to coding)
+  - `completion`: Load all categories
+  - No active workflow: Load all (last 20, high-confidence first)
+- Display top 5 items.
 
-```
-📚 [Team-Shinchan] Loaded {N} learnings from memory
-• [pattern] {most relevant pattern}
-• [preference] {most relevant preference}
-• [convention] {most relevant convention}
-💡 Applying these learnings to this session.
-```
+### 3. Ontology Summary + GC
 
-### 3. Detect Interrupted Workflows
+1. Read `.shinchan-docs/ontology/ontology.json` if it exists.
+2. **Skip if**: Stage is `requirements` (ontology not needed yet).
+3. Run GC: `node ${CLAUDE_PLUGIN_ROOT}/src/ontology-engine.js gc` (cleans stale entities).
+4. Display: `🔬 [Ontology] {N} entities, {M} relations`
+5. **KB Freshness**: If `kb-summary.md` is older than `ontology.json`, regenerate it:
+   - Run: `node ${CLAUDE_PLUGIN_ROOT}/src/ontology-engine.js gen-kb`
 
-1. **Scan**: Check `.shinchan-docs/*/WORKFLOW_STATE.yaml` files.
-2. **Filter**: Find workflows with `status: active`.
-3. **Display** (if found):
+### 4. Regression Alert
 
+- **Skip if**: Stage is `requirements` or `planning`.
+- Read `.shinchan-docs/eval-history.jsonl` if it exists.
+- Scan for regressions (moving average method).
+- Display if found: `!! [Team-Shinchan] Performance regression detected: Agent: {agent}`
+
+### 5. Detect Interrupted Workflows
+
+1. Check `.shinchan-docs/*/WORKFLOW_STATE.yaml` files.
+2. Filter: `status: active` (not the current one if resuming).
+3. Display if found:
 ```
 ⚠️ [Team-Shinchan] Interrupted workflow detected!
 📁 {doc_id}: Stage {stage}, Phase {phase}
-⏰ Last activity: {updated timestamp}
 ▶️ Resume with: /team-shinchan:resume {doc_id}
 ```
 
-4. **Silent**: If no interrupted workflows found, skip silently.
+### 6. Phase-Specific Context (Execution Only)
 
-### 4. Load Ontology Summary
+If stage is `execution` and a phase number is known:
+1. Read `.shinchan-docs/{doc_id}/PROGRESS.md`
+2. Extract only the `## Phase {N}` section's acceptance criteria
+3. Display: `🎯 Phase {N} AC: {brief summary}`
+4. This replaces loading the full KB during execution.
 
-1. **Check**: If `.shinchan-docs/ontology/ontology.json` exists, read it.
-2. **Parse**: Extract entity count, relation count, module names, domain concepts.
-3. **Display**:
+## State Migration Check
 
-```
-🔬 [Ontology] {N} entities, {M} relations
-   Modules: {module1}, {module2}, ...
-   Domains: {domain1}, {domain2}, ...
-```
-
-4. **KB Freshness**: If `kb-summary.md` is older than `ontology.json` (compare mtime), regenerate it:
-   - Run: `node ${CLAUDE_PLUGIN_ROOT}/src/ontology-engine.js gen-kb`
-   - Display: `🔬 [Ontology] kb-summary.md refreshed from ontology`
-
-5. **Silent**: If no ontology exists, skip silently (graceful degradation).
-
-### 5. Regression Alert
-
-1. **Check**: If `.shinchan-docs/eval-history.jsonl` exists, scan for regressions.
-2. **Quick scan**: Read the file, group records by agent. For each agent with 5+ evaluations, compute a moving average (last 5) for each dimension. Flag if the latest score drops 1+ points below that average.
-3. **Display** (if regression found):
-
-```
-!! [Team-Shinchan] Performance regression detected:
-   Agent: {agent} — {dimension} dropped to {score} (avg: {avg})
-   Run /team-shinchan:eval --agent {agent} for details.
-```
-
-4. **Silent**: If no eval history or no regressions, skip silently.
+If a WORKFLOW_STATE.yaml with `version:` (not `schema_version:`) is found:
+- Run: `node ${CLAUDE_PLUGIN_ROOT}/src/state-migrator.js migrate <path>`
+- Display: `🔄 [State] Migrated workflow state to schema v2`
 
 ## Execution Order
 
-1. KB Summary (first)
-2. Learnings (second)
-3. Ontology Summary (third - project structure context)
-4. Regression Alert (fourth - warns about declining agents)
-5. Interrupted Workflows (last - highest priority alert)
-
-## Apply Rules
-
-During the session, actively apply loaded knowledge:
-
-- **KB Patterns**: Reference past architectural decisions in similar situations
-- **Learnings**: Avoid known mistakes, follow discovered patterns
-- **Preferences**: Respect user coding style and conventions
-- **Conventions**: Apply project-specific standards consistently
+1. Detect Active Workflow (first — determines loading strategy)
+2. State Migration (if needed)
+3. KB Summary (conditional)
+4. Learnings (stage-filtered)
+5. Ontology Summary + GC (conditional)
+6. Regression Alert (conditional)
+7. Interrupted Workflows (last — highest priority alert)
+8. Phase-Specific Context (execution only)
 
 ## Graceful Degradation
 
-- All files (kb-summary.md, learnings.md, WORKFLOW_STATE.yaml) are optional
-- Each step is independent - failure in one step doesn't block others
-- No errors if files don't exist - session starts normally
-- Silent fallback for missing data
-
-## Examples
-
-### Full Session Start (All Available)
-
-```
-📚 [Team-Shinchan] Knowledge Base loaded (12 patterns, 8 decisions)
-📚 [Team-Shinchan] Loaded 18 learnings from memory
-• [pattern] Use Task tool for all agent invocations
-• [preference] Prefer opus for complex analysis tasks
-• [convention] Always create REQUESTS.md before execution
-• [pattern] Run Action Kamen review after code changes
-• [preference] Keep functions under 50 lines
-💡 Applying these learnings to this session.
-⚠️ [Team-Shinchan] Interrupted workflow detected!
-📁 feature-auth-001: Stage execution, Phase 2
-⏰ Last activity: 2026-02-07 15:30:42
-▶️ Resume with: /team-shinchan:resume feature-auth-001
-```
-
-### Partial Session Start (Only Learnings)
-
-```
-📚 [Team-Shinchan] Loaded 5 learnings from memory
-• [pattern] Always delegate code writing to Bo
-• [convention] Use snake_case for Python files
-💡 Applying these learnings to this session.
-```
-
-### Minimal Session Start (No Data)
-
-(Silent - session starts normally with no output)
+- All files are optional. Each step is independent.
+- If no active workflow → full load (backward compatible).
+- Missing files → skip silently.

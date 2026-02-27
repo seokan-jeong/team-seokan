@@ -71,6 +71,12 @@ Before appending:
 
 After completing the retrospective, rate each agent that was used in this session.
 
+**Ground-Truth Metrics**: Before scoring, run the following to get objective metrics:
+```bash
+node ${CLAUDE_PLUGIN_ROOT}/src/eval-metrics.js .shinchan-docs/work-tracker.jsonl
+```
+Use the output (avg_duration_sec, file_changes, test_pass_rate, first_pass_rate) to calibrate your scores below. If the script is unavailable, proceed with observation-based scoring.
+
 **For each agent used**, score on 4 dimensions (1-5 scale):
 
 | Dimension | Description | Scale |
@@ -88,8 +94,10 @@ After completing the retrospective, rate each agent that was used in this sessio
 
 **JSONL format** (one line per agent, appended to file):
 ```
-{"ts":"2026-02-25T10:30:00.000Z","agent":"bo","doc_id":"main-031","phase":1,"scores":{"correctness":4,"efficiency":5,"compliance":4,"quality":4},"notes":"Implemented all 6 sub-tasks accurately"}
+{"ts":"2026-02-25T10:30:00.000Z","agent":"bo","doc_id":"main-031","phase":1,"scores":{"correctness":4,"efficiency":5,"compliance":4,"quality":4},"ground_truth":{"avg_duration_sec":45,"file_changes":3,"test_pass_rate":1.0,"first_pass_rate":0.8},"notes":"Implemented all 6 sub-tasks accurately"}
 ```
+
+Include `ground_truth` from eval-metrics.js output when available. If not available, omit the field.
 
 4. Create the file if it does not exist
 5. Use the current `doc_id` from the active workflow, or `"session"` if no workflow is active
