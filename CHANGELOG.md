@@ -2,6 +2,20 @@
 
 All notable changes to Team-Shinchan will be documented in this file.
 
+## [4.2.1] - 2026-02-27
+
+### Bug Fixes
+- **ontology-integrity.js**: Fix `rel.type` → `rel.relation` field alignment — resolves 75 false-positive validation errors
+- **workflow-guard.sh**: Allow read-only Bash (git log, ls, etc.) during requirements/planning stages — was blocking all Bash
+- **budget-guard.sh**: Strip YAML comment lines before parsing — prevents matching commented-out values
+- **agent-tool-guard.sh**: Block compound commands in actionkamen test exception — prevents `mkdir && npm test` bypass
+- **transition-gate.sh**: Handle Edit tool partial stage replacements — detects bare stage names in old/new strings
+
+### Improvements
+- **Agent frontmatter**: Add missing `maxTurns`/`permissionMode` to himawari, misae, shinnosuke, ume, midori
+- **README**: Update plugin inventory counts — 34 hooks (21 cmd + 13 prompt), 21 validators, 41 skills, 9 src scripts
+- **Ontology scanner**: Plugin-aware cross-reference detection for .md/.sh files, health scoring calibrated (connectivity target 3.0 → 1.5)
+
 ## [4.2.0] - 2026-02-27
 
 ### New Features — Full Enforcement Audit & Hardening
