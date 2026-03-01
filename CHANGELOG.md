@@ -13,7 +13,7 @@ All notable changes to Team-Shinchan will be documented in this file.
 ### Fixed
 - **BASH_SOURCE path resolution**: Use `${BASH_SOURCE[0]:-$0}` fallback for reliable path resolution when hooks are invoked via `bash <script>` (deny-check, layer-guard, session-init, session-wrap, ontology-auto-build)
 - **run.cjs stdin timeout**: Increased from 50ms to 200ms with `readable` event detection to prevent intermittent hook failures
-- **run.cjs exit code propagation**: Now propagates exit code 2 for block decisions (tofu-at convention)
+- **run.cjs exit code propagation**: Now propagates exit code 2 for block decisions
 - **Sandboxed environment compatibility**: Use `${TMPDIR:-/tmp}` instead of hardcoded `/tmp` in ontology-auto-build
 - **gzip availability check**: Verify `gzip` exists before background compression in write-tracker
 - **openssl fallback**: Robust trace ID generation when `openssl` is unavailable in trace-init

@@ -94,52 +94,30 @@ Durable state across sessions and workflows.
 
 ---
 
-## What's New in v4.2.0
+## What's New in v4.3
 
-### Full Enforcement Hardening — 18 Gaps Closed
+### v4.3.2 — Hooks Finally Work (Critical Fix)
 
-- **21 command hooks** (was 11): budget-guard, transition-gate, agent-tool-guard, session-wrap, trace-init all converted from prompt-only to deterministic shell scripts
-- **Stage transition gates**: cannot advance workflow without required artifacts (REQUESTS.md, PROGRESS.md, Action Kamen review)
-- **Budget hard stop**: `hard_limit: true` now actually blocks at 100% — budget counters persist deterministically via session-wrap.sh
-- **Read-only agent enforcement**: advisory/utility agents (hiroshi, actionkamen, etc.) blocked from Edit/Write/destructive Bash
-- **Deny-list expanded**: `git add .`, `git add -A`, `eval()` now hard-blocked
-- **Large file guard**: `git add` of files >10MB blocked by security-check.sh
-- **Plugin portability**: all 15 agent files use `${CLAUDE_PLUGIN_ROOT}/` paths, works correctly in marketplace installs
+The root cause of hooks never loading in marketplace installs was found and fixed:
 
-### v4.1.1 — UX Overhaul
+- **`prompt_file` → `prompt`**: Claude Code expects `"prompt"` field for prompt-type hooks, not `"prompt_file"`. This schema mismatch caused ALL 32 hooks to be silently rejected.
+- **Duplicate hooks file**: Removed explicit `"hooks"` field from plugin.json — auto-discovery handles `hooks/hooks.json` natively, and the duplicate caused a fatal load error.
 
-- **5 user commands only**: `start`, `resume`, `autopilot`, `review`, `help` — 35 internal skills hidden from user
-- **Workflow drift prevention**: active workflow forces all messages to stay in context
-- **Agent narration**: Shinnosuke announces every delegation with progress tracking
+### v4.3.0–4.3.1 — Hook Execution Reliability
 
-### v4.1.0 — Project Ontology
+- **Node.js hook runner** (`scripts/run.cjs`): Cross-platform wrapper for reliable hook execution — stdin piping, env var injection, exit code 2 propagation
+- **Commit lint hook**: Enforces conventional commit format (`type(scope): description`, 72-char limit)
+- **Branch naming rule**: Enforces `{type}/{description}` branch convention
+- **Dependency pinning check**: Blocks `"*"` and `"latest"` in package.json
+- **Agent memory expansion**: 10/15 agents now have persistent project memory
+- **109-assertion hook test suite**: Automated validation of all hook scripts
+- **BASH_SOURCE fallback**, **stdin timeout tuning**, **gzip/openssl checks**
 
-### Project Ontology -- Auto-Build Knowledge Graph
+### Earlier Highlights
 
-Agents now **understand your project from the first session**. No setup required.
-
-```
-[Session Start]
-  └── No ontology? → auto-scan codebase → build knowledge graph
-  └── Ontology exists? → git diff → incremental update
-  └── Agents query the graph for smarter routing, planning, and review
-```
-
-- **`src/ontology-engine.js`** -- CRUD + query + merge + impact analysis + health score + Mermaid diagrams
-- **`src/ontology-scanner.js`** -- regex-based scanner detects Modules, Components, APIs, DataModels, DomainConcepts, Configs, TestSuites
-- **`hooks/ontology-auto-build.md`** -- SessionStart hook builds/updates automatically
-- **`/team-shinchan:ontology`** -- manual query, add, scan, diagram
-- **`/team-shinchan:impact-analysis`** -- cascade dependency analysis with risk levels (HIGH/MEDIUM/LOW)
-- **6 agents enhanced** -- Shinnosuke (routing), Nene (planning), Action Kamen (compliance), Misae (risk), Shiro (exploration), Midori (decisions)
-
-### v4.0.0 Harness Foundation
-
-- **Analytics and Trace IDs** -- `src/analytics.js` tracks agent events with unique trace IDs
-- **Budget Guard** -- token budget enforcement with 80%/100% thresholds
-- **Harness Lint** -- static analysis validates plugin structure integrity
-- **Eval System** -- schema validation and regression detection
-- **AGENTS.md** -- auto-generated agent map with layer enforcement
-- **Layer Enforcement** -- 5-layer architecture (Orchestration → Execution → Specialist → Advisory → Utility)
+- **v4.2.0**: 18 enforcement gaps closed — budget hard stop, stage transition gates, read-only agent enforcement, deny-list expansion
+- **v4.1.0**: Project Ontology — auto-build knowledge graph at session start, impact analysis, 6 agents enhanced
+- **v4.0.0**: Harness foundation — analytics, trace IDs, budget guard, harness lint, eval system, 5-layer architecture
 
 ---
 
@@ -368,8 +346,8 @@ No commands needed -- just say:
 | Agents | 15 | `agents/` |
 | Skills | 41 | `skills/` |
 | Commands | 41 | `commands/` |
-| Hooks | 36 (22 command + 14 prompt) | `hooks/` |
-| Validators | 21 | `tests/validate/` |
+| Hooks | 32 entries (13 shell + 15 prompt) | `hooks/` |
+| Validators | 23 | `tests/validate/` |
 | Rules | 4 categories (54 rules) | `rules/` |
 | Src Scripts | 9 | `src/` |
 
@@ -381,7 +359,7 @@ Team-Shinchan is validated by 3 tiers of automated testing:
 
 | Tier | Tests | What It Checks |
 |------|-------|----------------|
-| Static Validators | 21 | Schema, cross-refs, consistency, API contracts, token budget, layer enforcement, agents-map, ontology integrity |
+| Static Validators | 23 | Schema, cross-refs, consistency, API contracts, token budget, layer enforcement, agents-map, ontology integrity, hook execution |
 | Agent Behavior (promptfoo) | 25 | Individual agent role adherence |
 | E2E Workflow | 11 | Full workflow scenarios (5 types) |
 
