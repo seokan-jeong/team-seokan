@@ -2,6 +2,12 @@
 
 All notable changes to Team-Shinchan will be documented in this file.
 
+## [4.3.2] - 2026-03-01
+
+### Fixed
+- **CRITICAL: Hooks not loading** — `"prompt_file"` field renamed to `"prompt"` in all 14 prompt hook entries; Claude Code schema expects `"prompt"` for `type: "prompt"` hooks
+- **Duplicate hooks file error** — Removed `"hooks": "./hooks/hooks.json"` from plugin.json; auto-discovery handles this, explicit field caused fatal duplicate detection
+
 ## [4.3.1] - 2026-03-01
 
 ### Fixed
