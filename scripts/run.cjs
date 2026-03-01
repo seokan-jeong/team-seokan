@@ -78,9 +78,10 @@ function runScript(script, envVars) {
     child.stdout.on('data', d => { stdout += d; });
     child.stderr.on('data', () => {}); // absorb stderr
 
-    child.on('close', () => {
+    child.on('close', (code) => {
       if (stdout.trim()) process.stdout.write(stdout);
-      process.exit(0);
+      // Propagate exit code: 0 = allow, 2 = block (tofu-at convention)
+      process.exit(code === 2 ? 2 : 0);
     });
 
     child.on('error', () => {
@@ -88,10 +89,16 @@ function runScript(script, envVars) {
     });
   });
 
-  // Handle case where stdin is already ended (no piped data)
-  setTimeout(() => {
-    if (!chunks.length && process.stdin.readableEnded) {
+  // Handle case where stdin is already ended or empty
+  // Use 'readable' event for robust detection; fallback timeout at 200ms
+  process.stdin.once('readable', () => {
+    if (process.stdin.read() === null && !chunks.length) {
       process.stdin.emit('end');
     }
-  }, 50);
+  });
+  setTimeout(() => {
+    if (!chunks.length) {
+      process.stdin.emit('end');
+    }
+  }, 200);
 }

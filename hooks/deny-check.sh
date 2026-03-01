@@ -12,7 +12,7 @@ if [ -z "$INPUT" ]; then
 fi
 
 # Resolve deny-list.json path
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 DENY_LIST="${SCRIPT_DIR}/deny-list.json"
 
 if [ ! -f "$DENY_LIST" ]; then

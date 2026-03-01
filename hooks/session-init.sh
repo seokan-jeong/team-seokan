@@ -6,7 +6,7 @@
 # Output is injected into LLM context.
 set -eo pipefail
 
-PLUGIN_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PLUGIN_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")/.." && pwd)"
 PROJECT_ROOT="${PWD}"
 DOCS_DIR="${PROJECT_ROOT}/.shinchan-docs"
 

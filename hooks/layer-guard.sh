@@ -11,7 +11,7 @@ if [ -z "$INPUT" ]; then
   exit 0
 fi
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 LAYER_MAP="${SCRIPT_DIR}/../agents/_shared/layer-map.json"
 CURRENT_AGENT_FILE="${PWD}/.shinchan-docs/.current-agent"
 

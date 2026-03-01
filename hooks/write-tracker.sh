@@ -37,7 +37,7 @@ if [ -f "$TRACKER_FILE" ]; then
     ARCHIVE_NAME="work-tracker.$(date +%Y%m%dT%H%M%S).jsonl"
     mv "$TRACKER_FILE" "${DOCS_DIR}/${ARCHIVE_NAME}"
     # Compress in background (non-blocking)
-    gzip "${DOCS_DIR}/${ARCHIVE_NAME}" &
+    command -v gzip &>/dev/null && gzip "${DOCS_DIR}/${ARCHIVE_NAME}" 2>/dev/null &
   fi
 fi
 

@@ -8,7 +8,8 @@ DOCS_DIR="${PWD}/.shinchan-docs"
 mkdir -p "$DOCS_DIR"
 
 # Generate trace ID: trace-{epoch_ms}-{4_hex}
-TRACE_ID="trace-$(date +%s)$(printf '%03d' $((RANDOM % 1000)))-$(openssl rand -hex 2 2>/dev/null || printf '%04x' $RANDOM)"
+RAND_HEX=$(openssl rand -hex 2 2>/dev/null || printf '%04x' $((RANDOM % 65536)))
+TRACE_ID="trace-$(date +%s)$(printf '%03d' $((RANDOM % 1000)))-${RAND_HEX}"
 
 echo "$TRACE_ID" > "${DOCS_DIR}/.trace-id"
 
